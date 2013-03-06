@@ -1,12 +1,10 @@
-
+package team04.fanorona;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
-import java.awt.*;
-import javax.swing.*;
 
 public class FanoronaGame extends JFrame {
     
@@ -40,14 +38,6 @@ public class FanoronaGame extends JFrame {
         g.drawRect(100, 800, 300, 500);
         
         repaint();
-    }
-    /** Adds a "New Game" button to the startup screen
-    *   Removes Text fieds when pressed
-    *   Proceeds to launch
-    */
-    public void mainMenu(){
-    	JFrame menu = new JFrame();
-    	JButton start = new JButton("New Game");
     }
     
     
