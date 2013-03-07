@@ -41,6 +41,7 @@ public class FanoronaGame extends JFrame {
         
         repaint();
     }
+    
     /** Adds a "New Game" button to the startup screen
     *   Removes Text fieds when pressed
     *   Proceeds to launch
