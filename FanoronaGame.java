@@ -43,7 +43,7 @@ public class FanoronaGame extends JFrame {
     }
     
     /** Adds a "New Game" button to the startup screen
-    *   Removes Text fieds when pressed
+    *   Removes Text fields when pressed
     *   Proceeds to launch
     */
     public void mainMenu(){
