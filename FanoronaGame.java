@@ -34,11 +34,13 @@ public class FanoronaGame extends JFrame {
         g.drawString("Fanorona Game", 400, 250);
         g.setColor(Color.blue);
         g.drawString("Created by: Megan Kerins, Matt Hacker, and Patrick Casey", 300, 280);
+        //g.mainMenu();
     }
     
     public void newPaint(Graphics g) { //After I figure out how to make the Initial display go away..
+        g.clearRect(0, 0, getWidth(), getHeight() );
         g.drawRect(100, 800, 300, 500);
-        
+       // g.drawLine();
         repaint();
     }
     
