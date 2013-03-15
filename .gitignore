@@ -4,3 +4,5 @@
 *.jar
 *.war
 *.ear
+/team04FanoronaGame/nbproject/private/
+/team04FanoronaGame/build/

@@ -1,5 +1,4 @@
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
@@ -29,18 +28,21 @@ public class FanoronaGame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void paint(Graphics g) { //paint graphics to screen
-        g.setColor(Color.red);
-        g.drawString("Fanorona Game", 400, 250);
-        g.setColor(Color.blue);
-        g.drawString("Created by: Megan Kerins, Matt Hacker, and Patrick Casey", 300, 280);
-        //g.mainMenu();
-    }
+     public void paint(Graphics g) { //paint graphics to screen
+         g.setColor(Color.red);
+         g.drawString("Fanorona Game", 400, 250);
+         g.setColor(Color.blue);
+         g.drawString("Created by: Megan Kerins, Matt Hacker, and Patrick Casey", 300, 280);
+         //g.clearRect(0, 0, getHeight(), getWidth() );
+         //g.mainMenu();
+     }
     
     public void newPaint(Graphics g) { //After I figure out how to make the Initial display go away..
-        g.clearRect(0, 0, getWidth(), getHeight() );
+        g.clearRect(0, 0, 900, 500 );
+        g.setColor(Color.black);
         g.drawRect(100, 800, 300, 500);
-       // g.drawLine();
+        g.setColor(Color.black);
+        g.drawLine(100, 800, 300, 500);
         repaint();
     }
     
@@ -51,10 +53,11 @@ public class FanoronaGame extends JFrame {
     public void mainMenu(){
     	JFrame menu = new JFrame();
     	JButton start = new JButton("New Game");
+        //start.addActionListener(this);
     }
     
     
     public static void main(String[] args) {
-        new FanoronaGame();
+    	new FanoronaGame();
     }
 }
