@@ -1,11 +1,12 @@
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
+
 
 public class FanoronaGame extends JFrame {
     
@@ -20,12 +21,16 @@ public class FanoronaGame extends JFrame {
     }
     
 
+
     public FanoronaGame() { //create the window
         setTitle("Team04-Fanorona");
         setSize(900, 500);
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        Panels intro = new Panels();
+        this.add(intro);
     }
 
      public void paint(Graphics g) { //paint graphics to screen
@@ -36,28 +41,90 @@ public class FanoronaGame extends JFrame {
          //g.clearRect(0, 0, getHeight(), getWidth() );
          //g.mainMenu();
      }
+     
     
-    public void newPaint(Graphics g) { //After I figure out how to make the Initial display go away..
+     class Panels extends JPanel{
+
+         private JPanel intro, game;
+         private JButton startgame,newgame; 
+
+         public Panels()
+         {
+             createPanel();
+             addPanel();
+         }
+
+         private void createPanel()
+         {
+             intro = new JPanel();
+             startgame = new JButton("Start Game");
+             startgame.addActionListener(new addButtonListener());
+
+             game = new JPanel();
+             newgame = new JButton("New Game");
+
+         }
+
+         private void addPanel()
+         {
+             intro.add(startgame);
+             game.add(newgame);
+
+             add(intro);
+
+         }
+
+         class addButtonListener implements ActionListener
+         {
+             public void actionPerformed(ActionEvent ae) 
+             {
+                 getContentPane().removeAll();
+                 add(game);
+
+                 repaint();
+             }
+         }
+     }
+     
+//    class ButtonAction {
+//    	  public ButtonAction() {
+//    	    JFrame frame = new JFrame("Fanorona Game");
+//    	    frame.setSize(900, 500);
+//    	    frame.setResizable(false);
+//    	    frame.setVisible(true);
+//    	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    	    JButton button = new JButton("Start New Game");
+//
+//    	    ActionListener actionListener = new ActionListener(){
+//    	      public void actionPerformed(ActionEvent actionEvent) {
+//    	    	  Panels game = new Panels();
+//    	    	  game.add(game);
+//    	      
+//    	    }
+//    
+  /*  public void newPaint(Graphics g) { //After I figure out how to make the Initial display go away..
         g.clearRect(0, 0, 900, 500 );
         g.setColor(Color.black);
         g.drawRect(100, 800, 300, 500);
         g.setColor(Color.black);
         g.drawLine(100, 800, 300, 500);
-        repaint();
     }
     
-    /** Adds a "New Game" button to the startup screen
-    *   Removes Text fields when pressed
-    *   Proceeds to launch
-    */
     public void mainMenu(){
-    	JFrame menu = new JFrame();
-    	JButton start = new JButton("New Game");
-        //start.addActionListener(this);
-    }
+        JFrame menu = new JFrame();
+        JButton start = new JButton("New Game");
+       }
     
     
     public static void main(String[] args) {
+     new FanoronaGame();
+     FanoronaGame.Panels.addButtonListener intro = null;
+	intro.addButtonListener();
+    }*/
+    	
+    public static void main(String args[])
+    {
     	new FanoronaGame();
     }
 }
+    
