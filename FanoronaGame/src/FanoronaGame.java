@@ -11,7 +11,6 @@ import javax.swing.*;
 
 
 public class FanoronaGame extends JPanel {
-    
     public class AL extends KeyAdapter {
         public void keyPessed(KeyEvent e) {
             int keyCode = e.getKeyCode();
@@ -22,17 +21,22 @@ public class FanoronaGame extends JPanel {
         }
     }
     
-
+    class clearWindow implements ActionListener {
+        public void actionPerformed(ActionEvent ae) {
+           //getRootPane().getContentPane().removeAll();
+        }
+    }
 
     public FanoronaGame() { //create the window
-        super(new BorderLayout(3,3));
         JPanel board = new JPanel();
         board.setSize(900,500);
-       
         JButton startButton = new JButton("Start Game");
-        JPanel buttonCenter = new JPanel( new FlowLayout(FlowLayout.CENTER) );
+        JPanel buttonCenter = new JPanel();
         buttonCenter.add(startButton);
-        add(buttonCenter, BorderLayout.SOUTH);
+        add(buttonCenter, BorderLayout.NORTH);
+        startButton.setVisible(true);
+        buttonCenter.setVisible(true);
+        startButton.addActionListener(new clearWindow() );
     }
 
     public static void createGUI() {
@@ -42,15 +46,18 @@ public class FanoronaGame extends JPanel {
         frame.setContentPane(newGame);
         frame.pack();
         frame.setVisible(true);
+        frame.setSize(900,500);
     }
+
+
 
      public void paint(Graphics g) { //paint graphics to screen
          g.setColor(Color.red);
          g.drawString("Fanorona Game", 400, 250);
          g.setColor(Color.blue);
          g.drawString("Created by: Megan Kerins, Matt Hacker, and Patrick Casey", 300, 280);
-         //g.clearRect(0, 0, getHeight(), getWidth() );
-         //g.mainMenu();
+         g.setColor(Color.black);
+         g.drawString("Click Here to Start the Game", 360, 30);
      }
      
     
@@ -71,7 +78,7 @@ public class FanoronaGame extends JPanel {
      {
          intro = new JPanel();
          startgame = new JButton("Start Game");
-         startgame.addActionListener(new addButtonListener());
+         startgame.addActionListener(new addButtonListener() );
 
          game = new JPanel();
          newgame = new JButton("New Game");
@@ -137,6 +144,7 @@ public class FanoronaGame extends JPanel {
     	
 	public static void main(String args[])
 	{
+        new FanoronaGame();
 		FanoronaGame.createGUI();
 	}
 }
