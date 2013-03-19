@@ -102,7 +102,7 @@ public class FanoronaGame implements ActionListener {
 				System.exit(0);
 		}
 		else if (actionSource == about) {
-			JOptionPane.showMessageDialog(null, "This Game was created by Megan Kernis, Patrick Casey, and Matt Hacker.\n" +
+			JOptionPane.showMessageDialog(null, "This Game was created by Megan Kerins, Patrick Casey, and Matt Hacker.\n" +
 					"Current Version: 0.1\n" +
 					"Team 04, CSCE 315-501\n",
 					"About", JOptionPane.ERROR_MESSAGE);
