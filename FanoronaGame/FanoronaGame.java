@@ -16,7 +16,7 @@ public class FanoronaGame implements ActionListener {
 	// Buttons for Menus
 	JButton pve = new JButton("Player vs CPU"),
 			back = new JButton("exit");
-	JButton buttonArray[] = new JButton[32];
+	JButton buttonArray[] = new JButton[45];
 
 	// Panels for Graphic interface
 	JPanel	newGamePanel = new JPanel(),
@@ -69,7 +69,8 @@ public class FanoronaGame implements ActionListener {
 		pve.addActionListener(this);
 
 		//Game board setup
-		playingFieldPanel.setLayout(new GridLayout(4, 8, 2, 2));
+		playingFieldPanel.setLayout(new GridLayout(5, 9, 2, 2));
+		playingFieldPanel.add(new DrawLine());
 		playingFieldPanel.setBackground(Color.black);
 		for (int i = 0; i < 32; i++) {
 			buttonArray[i] = new JButton();
@@ -85,6 +86,8 @@ public class FanoronaGame implements ActionListener {
 		window.add(southPanel, BorderLayout.CENTER);
 		window.setVisible(true);
 	}
+
+
 
 	public void actionPerformed(ActionEvent click) {
 		Object actionSource = click.getSource();
@@ -121,5 +124,29 @@ public class FanoronaGame implements ActionListener {
 
 	public static void main(String[] args) {
 		 new FanoronaGame();
+	}
+}
+
+class DrawLine extends JPanel {
+	
+	public Dimension getPreferredSize() {
+		return new Dimension(240, 50);
+	}
+
+	public int getY() {
+		return 0;
+	}
+
+	public int getX() {
+		return 0; 
+	}
+	
+	protected void paintComponent(Graphics g) {
+ 
+		g.setColor( Color.red );
+		// X Start, Y Start, X End, Y End
+		// X = <---------->
+		g.drawLine ( getX(), getY(), 240, 50 );
+ 
 	}
 }
