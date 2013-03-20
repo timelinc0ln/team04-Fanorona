@@ -13,10 +13,15 @@ public class FanoronaGame implements ActionListener {
 				about = new JMenuItem("About"),
 				instructions = new JMenuItem("Instructions"),
 				exit = new JMenuItem("Exit");
+	//New Game buttons
+	Object[] options = {"Easy",
+						"Medium",
+						"Hard"};
+
 	// Buttons for Menus
 	JButton pve = new JButton("Player vs CPU"),
 			back = new JButton("exit");
-	JButton buttonArray[] = new JButton[45];
+	GamePieces buttonArray[] = new GamePieces[45];
 
 	// Panels for Graphic interface
 	JPanel	newGamePanel = new JPanel(),
@@ -70,15 +75,81 @@ public class FanoronaGame implements ActionListener {
 
 		//Game board setup
 		playingFieldPanel.setLayout(new GridLayout(5, 9, 2, 2));
-		playingFieldPanel.add(new DrawLine());
-		playingFieldPanel.setBackground(Color.black);
-		for (int i = 0; i < 32; i++) {
-			buttonArray[i] = new JButton();
-			buttonArray[i].setBackground(new Color(220, 220, 220));
+		playingFieldPanel.setBackground(Color.GRAY);
+		for (int i = 0; i < 18; i++) {
+			buttonArray[i] = new GamePieces(Color.black);
+			buttonArray[i].setBackground(new Color(0, 0, 0));
 			buttonArray[i].addActionListener(this);
 			playingFieldPanel.add(buttonArray[i]);
+			buttonArray[i].setVisible(true);
+		}
+		
+		buttonArray[18] = new GamePieces(Color.white);
+		buttonArray[18].setBackground(new Color(255, 255, 255));
+		buttonArray[18].addActionListener(this);
+		playingFieldPanel.add(buttonArray[18]);
+		buttonArray[18].setVisible(true);
+		
+		buttonArray[19] = new GamePieces(Color.black);
+		buttonArray[19].setBackground(new Color(0, 0, 0));
+		buttonArray[19].addActionListener(this);
+		playingFieldPanel.add(buttonArray[19]);
+		buttonArray[19].setVisible(true);
+		
+		buttonArray[20] = new GamePieces(Color.white);
+		buttonArray[20].setBackground(new Color(255, 255, 255));
+		buttonArray[20].addActionListener(this);
+		playingFieldPanel.add(buttonArray[20]);
+		buttonArray[20].setVisible(true);
+		
+		buttonArray[21] = new GamePieces(Color.black);
+		buttonArray[21].setBackground(new Color(0, 0, 0));
+		buttonArray[21].addActionListener(this);
+		playingFieldPanel.add(buttonArray[21]);
+		buttonArray[21].setVisible(true);
+		
+		
+		buttonArray[22] = new GamePieces(Color.GRAY);
+		playingFieldPanel.add(buttonArray[22]);
+		buttonArray[22].setVisible(false);
+		
+	
+		buttonArray[23] = new GamePieces(Color.white);
+		buttonArray[23].setBackground(new Color(255, 255, 255));
+		buttonArray[23].addActionListener(this);
+		playingFieldPanel.add(buttonArray[23]);
+		buttonArray[23].setVisible(true);
+		
+		buttonArray[24] = new GamePieces(Color.black);
+		buttonArray[24].setBackground(new Color(0, 0, 0));
+		buttonArray[24].addActionListener(this);
+		playingFieldPanel.add(buttonArray[24]);
+		buttonArray[24].setVisible(true);
+		
+		buttonArray[25] = new GamePieces(Color.white);
+		buttonArray[25].setBackground(new Color(255, 255, 255));
+		buttonArray[25].addActionListener(this);
+		playingFieldPanel.add(buttonArray[25]);
+		buttonArray[25].setVisible(true);
+		
+		buttonArray[26] = new GamePieces(Color.black);
+		buttonArray[26].setBackground(new Color(0, 0, 0));
+		buttonArray[26].addActionListener(this);
+		playingFieldPanel.add(buttonArray[26]);
+		buttonArray[26].setVisible(true);
+		
+		
+		for (int i = 27; i < 45; i++) {
+			buttonArray[i] = new GamePieces(Color.white);
+			buttonArray[i].setBackground(new Color(255, 255, 255));
+			buttonArray[i].addActionListener(this);
+			playingFieldPanel.add(buttonArray[i]);
+			buttonArray[i].setVisible(true);
 		}
 
+		playingFieldPanel.setVisible(true);
+
+		
 		northPanel.add(mainMenu);
 		southPanel.add(gameTitle);
 
@@ -87,8 +158,6 @@ public class FanoronaGame implements ActionListener {
 		window.setVisible(true);
 	}
 
-
-
 	public void actionPerformed(ActionEvent click) {
 		Object actionSource = click.getSource();
 		if (actionSource == newGame) {
@@ -96,7 +165,21 @@ public class FanoronaGame implements ActionListener {
 				" WARNING: All current progress will be lost.\n", 
 				"Quit Game?", JOptionPane.YES_NO_OPTION);
 			if(option == JOptionPane.YES_OPTION) {
-				// do stuff
+				int playOption = JOptionPane.showOptionDialog(newGamePanel, "Select your difficulty", "Difficulty Level",
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+				if(playOption == JOptionPane.OK_OPTION){
+					window.add(playingFieldPanel, BorderLayout.CENTER);
+					window.setVisible(true);
+				}
+				else if(playOption == JOptionPane.NO_OPTION){
+					window.add(playingFieldPanel, BorderLayout.CENTER);
+					window.setVisible(true);
+				}
+				else if(playOption == JOptionPane.CANCEL_OPTION){
+					window.add(playingFieldPanel, BorderLayout.CENTER);
+					window.setVisible(true);
+				}
+				
 			}
 		}
 		else if (actionSource == exit) {
@@ -105,7 +188,7 @@ public class FanoronaGame implements ActionListener {
 				System.exit(0);
 		}
 		else if (actionSource == about) {
-			JOptionPane.showMessageDialog(null, "This Game was created by Megan Kerins, Patrick Casey, and Matt Hacker.\n" +
+			JOptionPane.showMessageDialog(null, "This Game was created by Megan Kernis, Patrick Casey, and Matt Hacker.\n" +
 					"Current Version: 0.1\n" +
 					"Team 04, CSCE 315-501\n",
 					"About", JOptionPane.ERROR_MESSAGE);
@@ -124,29 +207,5 @@ public class FanoronaGame implements ActionListener {
 
 	public static void main(String[] args) {
 		 new FanoronaGame();
-	}
-}
-
-class DrawLine extends JPanel {
-	
-	public Dimension getPreferredSize() {
-		return new Dimension(240, 50);
-	}
-
-	public int getY() {
-		return 0;
-	}
-
-	public int getX() {
-		return 0; 
-	}
-	
-	protected void paintComponent(Graphics g) {
- 
-		g.setColor( Color.red );
-		// X Start, Y Start, X End, Y End
-		// X = <---------->
-		g.drawLine ( getX(), getY(), 240, 50 );
- 
 	}
 }
