@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.io.*; 
 import java.util.*; 
 
+
 public class FanoronaGame implements ActionListener {
 	JFrame window = new JFrame("Fanorona Game");
 
@@ -38,6 +39,33 @@ public class FanoronaGame implements ActionListener {
 	final int windowX = 900, windowY = 500, color = 190; 
 
 	public FanoronaGame() {
+		class gameGrid extends JPanel  {
+			public void paintComponent(Graphics g) {
+				int x = getWidth();
+				int y = getHeight();
+				g.setColor(Color.black);
+				g.fillRect(0, 0, x, y);
+
+				Graphics2D g2 = (Graphics2D) g;
+				int w = x/10;
+				int h = y/10;
+				g.setColor(Color.cyan);
+
+				g2.setStroke(new BasicStroke(1));
+				for (int i = 1; i < 10; i++)
+					g2.drawLine(i*w, 0, i*w, y);
+				for (int i = 1; i < 10; i++)
+					g2.drawLine(0, i*h, x, i*h);
+	/*			g2.setColor(Color.red);
+				double rowH = getHeight() / 10.0;
+				for (int i = 1; i < 10; i++) {
+					Line2D line = new Line2D.Double(0.0, (double) i * rowH,
+					(double) getWidth(), (double) i * rowH);
+					g2.draw(line);
+				}*/
+			}
+		}
+		
 		// Game window formatting
 		window.setSize(windowX, windowY);
 		window.setLocation(400, 400);
@@ -76,6 +104,9 @@ public class FanoronaGame implements ActionListener {
 		//Game board setup
 		playingFieldPanel.setLayout(new GridLayout(5, 9, 2, 2));
 		playingFieldPanel.setBackground(Color.GRAY);
+		
+
+		// Create Black Pieces
 		for (int i = 0; i < 18; i++) {
 			buttonArray[i] = new GamePieces(Color.black);
 			buttonArray[i].setBackground(new Color(0, 0, 0));
@@ -84,6 +115,7 @@ public class FanoronaGame implements ActionListener {
 			buttonArray[i].setVisible(true);
 		}
 		
+		// Manually set Row 3
 		buttonArray[18] = new GamePieces(Color.white);
 		buttonArray[18].setBackground(new Color(255, 255, 255));
 		buttonArray[18].addActionListener(this);
@@ -138,7 +170,7 @@ public class FanoronaGame implements ActionListener {
 		playingFieldPanel.add(buttonArray[26]);
 		buttonArray[26].setVisible(true);
 		
-		
+		// Create White Pieces
 		for (int i = 27; i < 45; i++) {
 			buttonArray[i] = new GamePieces(Color.white);
 			buttonArray[i].setBackground(new Color(255, 255, 255));
@@ -156,7 +188,8 @@ public class FanoronaGame implements ActionListener {
 		window.add(northPanel, BorderLayout.NORTH);
 		window.add(southPanel, BorderLayout.CENTER);
 		window.setVisible(true);
-	}
+}
+	
 
 	public void actionPerformed(ActionEvent click) {
 		Object actionSource = click.getSource();
@@ -206,6 +239,6 @@ public class FanoronaGame implements ActionListener {
 	} 
 
 	public static void main(String[] args) {
-		 new FanoronaGame();
+		 FanoronaGame game = new FanoronaGame();
 	}
 }

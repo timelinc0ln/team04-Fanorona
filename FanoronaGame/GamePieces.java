@@ -29,8 +29,8 @@ public class GamePieces extends JButton {
 	    } else {
 	      g.setColor(getBackground());
 	    }
-	    g.fillOval(0, 0, getSize().width-1, 
-	      getSize().height-1);
+	    g.fillOval(15, 15, getSize().width-30, 
+	      getSize().height-30);
 
 	// This call will paint the label and the 
 	   // focus rectangle.
@@ -39,8 +39,9 @@ public class GamePieces extends JButton {
 
 	// Paint the border of the button using a simple stroke.
 	  protected void paintBorder(Graphics g) {
-	    g.drawOval(0, 0, getSize().width-1, 
-	      getSize().height-1);
+	    g.drawOval(15, 15, getSize().width-30, 
+	      getSize().height-30);
+	    // g.drawLine(getWidth()/2, 0, getWidth()/2, getHeight()); // very ghetto grid solution
 	  }
 
 	// Hit detection.
