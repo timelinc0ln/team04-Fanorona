@@ -18,12 +18,15 @@ public class FanoronaGame implements ActionListener {
 	//New Game buttons
 	Object[] options = {"Easy",
 						"Medium",
-						"Hard"};
+						"Hard",
+						"9x5",
+						"5x5",
+						"3x3"};
 
 	// Buttons for Menus
 	JButton pve = new JButton("Player vs CPU"),
 			back = new JButton("exit");
-	GamePieces buttonArray[] = new GamePieces[45];
+	GamePieces buttonArray[] = new GamePieces[];
 
 	// Panels for Graphic interface
 	JPanel	newGamePanel = new JPanel(),
@@ -40,7 +43,7 @@ public class FanoronaGame implements ActionListener {
 	
 
 	// set window size and default color
-	final int windowX = 900, windowY = 500, color = 190; 
+	final int windowX = 1000, windowY = 1000, color = 190; 
 
 	public FanoronaGame() {
 		class gameGrid extends JPanel  {
@@ -194,7 +197,6 @@ public class FanoronaGame implements ActionListener {
 		window.add(southPanel, BorderLayout.CENTER);
 		window.setVisible(true);
 }
-	
 
 	public void actionPerformed(ActionEvent click) {
 		Object actionSource = click.getSource();
@@ -205,17 +207,28 @@ public class FanoronaGame implements ActionListener {
 			if(option == JOptionPane.YES_OPTION) {
 				int playOption = JOptionPane.showOptionDialog(newGamePanel, "Select your difficulty", "Difficulty Level",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
-				if(playOption == JOptionPane.OK_OPTION){
+				if (playOption == JOptionPane.OK_OPTION){
 					window.add(playingFieldPanel, BorderLayout.CENTER);
 					window.setVisible(true);
 				}
-				else if(playOption == JOptionPane.NO_OPTION){
+				else if (playOption == JOptionPane.NO_OPTION){
 					window.add(playingFieldPanel, BorderLayout.CENTER);
 					window.setVisible(true);
 				}
-				else if(playOption == JOptionPane.CANCEL_OPTION){
+				else if (playOption == JOptionPane.CANCEL_OPTION){
 					window.add(playingFieldPanel, BorderLayout.CENTER);
 					window.setVisible(true);
+				}
+				int sizeOption = JOptionPane.showOptionDialog(newGamePanel, "Select board size", "Board Sizse", 
+					JoptionPane.YES_NO_CANCEL_OPTION, JoptionPane.QUESTION_MESSAGE, options[3], options[4], options[5])
+				if (sizeOption ==JOptionPane.OK_OPTION) {
+
+				}
+				else if (sizeOption == JOptionPane.NO_OPTION) {
+
+				}
+				else if (sizeOption == JOptionPane.CANCEL_OPTION) {
+
 				}
 				
 			}

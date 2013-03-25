@@ -6,12 +6,13 @@ import java.util.*;
 
 
 public class MiniMaxTree {
-	private Tree tree;
+	private Tree mmtree;
 
 	/** 
 	* Get the best move give the current board state
 	*/
 	public int getBestMove() {
+
 		return 0;
 	}
 
