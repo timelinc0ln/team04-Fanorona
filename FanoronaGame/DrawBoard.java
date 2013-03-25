@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
-public final class Board extends JPanel {
+public final class DrawBoard extends JPanel {
 
     static Graphics g = null;
 
@@ -44,8 +44,8 @@ public final class Board extends JPanel {
         g.drawLine(650, 275, 500, 475);
     }
 
-/*   public Board() {
- }*/
+   public DrawBoard() {
+ }
 //   @Override
 //   public void update(Graphics g) {
 //       repaint();

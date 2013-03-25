@@ -4,8 +4,18 @@ import javax.swing.*;
 
 
 public class GamePieces extends JButton {
-	  public GamePieces(Color c) {
-
+	  Color c;
+	  public GamePieces(char color) {
+	 // get the color of the piece based on the data array
+	  	if (color == 'B') {
+	  		c = Color.black;
+	  	}
+	  	else if (color == 'W') {
+	  		c = Color.white;
+	  	}
+	  	else {
+	  		c = Color.gray;
+	  	}
 	// These statements enlarge the button so that it 
 	// becomes a circle rather than an oval.
 	    Dimension size = getPreferredSize();

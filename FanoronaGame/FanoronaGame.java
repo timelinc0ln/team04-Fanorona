@@ -4,7 +4,6 @@ import java.awt.event.*;
 import java.io.*; 
 import java.util.*; 
 
-
 public class FanoronaGame implements ActionListener {
 	JFrame window = new JFrame("Fanorona Game");
 
@@ -31,9 +30,12 @@ public class FanoronaGame implements ActionListener {
 			topPanel = new JPanel(),
 			bottomPanel = new JPanel(),
 			playingFieldPanel = new JPanel();
-
+	DrawBoard visibleBoard = new DrawBoard();
 	JLabel gameTitle = new JLabel("Fanorona");
 	JTextArea text = new JTextArea();
+	
+	// Board gameBoard = new Board(); //this will work soon
+	
 
 	// set window size and default color
 	final int windowX = 900, windowY = 500, color = 190; 
@@ -102,12 +104,13 @@ public class FanoronaGame implements ActionListener {
 		pve.addActionListener(this);
 
 		//Game board setup
-		playingFieldPanel.setLayout(new GridLayout(5, 9, 2, 2));
-		playingFieldPanel.setBackground(Color.GRAY);
+		playingFieldPanel.add(visibleBoard);
+		playingFieldPanel.setLayout(new GridLayout(5, 9, 10, 10));
+		playingFieldPanel.setOpaque(true);
+		//playingFieldPanel.setBackground(Color.GRAY);
 		
-
 		// Create Black Pieces
-		for (int i = 0; i < 18; i++) {
+	/*	for (int i = 0; i < 18; i++) {
 			buttonArray[i] = new GamePieces(Color.black);
 			buttonArray[i].setBackground(new Color(0, 0, 0));
 			buttonArray[i].addActionListener(this);
@@ -177,7 +180,7 @@ public class FanoronaGame implements ActionListener {
 			buttonArray[i].addActionListener(this);
 			playingFieldPanel.add(buttonArray[i]);
 			buttonArray[i].setVisible(true);
-		}
+		}*/
 
 		playingFieldPanel.setVisible(true);
 
