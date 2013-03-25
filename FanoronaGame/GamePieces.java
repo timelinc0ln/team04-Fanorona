@@ -1,3 +1,5 @@
+package FanoronaGame;
+
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;

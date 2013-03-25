@@ -1,25 +1,35 @@
+package FanoronaGame;
+
 import java.awt.*;
 import java.awt.List;
 import java.util.*;
 
-public class MinimaxTree extends FanoronaAI {
-	class Tree<T> {
-		class Node<T> {
-			private T data;
-			private Node<T> parent;
-			private List children;
-		}
-		private Node<T> root;
 
-		public Tree(T rootData) {
-			root = new Node<T>();
-			root.data = rootData;
-			List<Node<T>>root.children = new ArrayList<Node<T>>();
-		}
+public class MiniMaxTree {
+	private Tree tree;
 
+	/** 
+	* Get the best move give the current board state
+	*/
+	public int getBestMove() {
+		return 0;
+	}
 
-}
-	public MinimaxTree() {
+	/**
+	* Node get's the largest of its children
+	* @param node
+	*/
+	private void maximize(Node node) {
 
 	}
+
+	/**
+	* Node get's the largest of its chilren
+	* @param node
+	*/
+	private void minimize(Node node) {
+
+	}
+
+
 }

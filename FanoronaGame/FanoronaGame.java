@@ -1,3 +1,5 @@
+package FanoronaGame;
+
 import javax.swing.*; 
 import java.awt.*; 
 import java.awt.event.*; 
@@ -104,13 +106,13 @@ public class FanoronaGame implements ActionListener {
 		pve.addActionListener(this);
 
 		//Game board setup
-		playingFieldPanel.add(visibleBoard);
+		//playingFieldPanel.add(visibleBoard);
 		playingFieldPanel.setLayout(new GridLayout(5, 9, 2, 2));
-		playingFieldPanel.setOpaque(true);
-		//playingFieldPanel.setBackground(Color.GRAY);
+		//playingFieldPanel.setOpaque(true);
+		playingFieldPanel.setBackground(Color.GRAY);
 		
 		// Create Black Pieces
-		/*for (int i = 0; i < 18; i++) {
+		for (int i = 0; i < 18; i++) {
 			buttonArray[i] = new GamePieces('B');
 			buttonArray[i].setBackground(new Color(0, 0, 0));
 			buttonArray[i].addActionListener(this);
@@ -180,7 +182,7 @@ public class FanoronaGame implements ActionListener {
 			buttonArray[i].addActionListener(this);
 			playingFieldPanel.add(buttonArray[i]);
 			buttonArray[i].setVisible(true);
-		}*/
+		}
 
 		playingFieldPanel.setVisible(true);
 

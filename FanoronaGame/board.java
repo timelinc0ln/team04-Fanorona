@@ -1,3 +1,5 @@
+package FanoronaGame;
+
 class Board {
 	private char board[][] = new char[5][9];
 	
