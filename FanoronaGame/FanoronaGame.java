@@ -105,13 +105,13 @@ public class FanoronaGame implements ActionListener {
 
 		//Game board setup
 		playingFieldPanel.add(visibleBoard);
-		playingFieldPanel.setLayout(new GridLayout(5, 9, 10, 10));
+		playingFieldPanel.setLayout(new GridLayout(5, 9, 2, 2));
 		playingFieldPanel.setOpaque(true);
 		//playingFieldPanel.setBackground(Color.GRAY);
 		
 		// Create Black Pieces
-	/*	for (int i = 0; i < 18; i++) {
-			buttonArray[i] = new GamePieces(Color.black);
+		/*for (int i = 0; i < 18; i++) {
+			buttonArray[i] = new GamePieces('B');
 			buttonArray[i].setBackground(new Color(0, 0, 0));
 			buttonArray[i].addActionListener(this);
 			playingFieldPanel.add(buttonArray[i]);
@@ -119,55 +119,55 @@ public class FanoronaGame implements ActionListener {
 		}
 		
 		// Manually set Row 3
-		buttonArray[18] = new GamePieces(Color.white);
+		buttonArray[18] = new GamePieces('W');
 		buttonArray[18].setBackground(new Color(255, 255, 255));
 		buttonArray[18].addActionListener(this);
 		playingFieldPanel.add(buttonArray[18]);
 		buttonArray[18].setVisible(true);
 		
-		buttonArray[19] = new GamePieces(Color.black);
+		buttonArray[19] = new GamePieces('B');
 		buttonArray[19].setBackground(new Color(0, 0, 0));
 		buttonArray[19].addActionListener(this);
 		playingFieldPanel.add(buttonArray[19]);
 		buttonArray[19].setVisible(true);
 		
-		buttonArray[20] = new GamePieces(Color.white);
+		buttonArray[20] = new GamePieces('W');
 		buttonArray[20].setBackground(new Color(255, 255, 255));
 		buttonArray[20].addActionListener(this);
 		playingFieldPanel.add(buttonArray[20]);
 		buttonArray[20].setVisible(true);
 		
-		buttonArray[21] = new GamePieces(Color.black);
+		buttonArray[21] = new GamePieces('B');
 		buttonArray[21].setBackground(new Color(0, 0, 0));
 		buttonArray[21].addActionListener(this);
 		playingFieldPanel.add(buttonArray[21]);
 		buttonArray[21].setVisible(true);
 		
 		
-		buttonArray[22] = new GamePieces(Color.GRAY);
+		buttonArray[22] = new GamePieces('E');
 		playingFieldPanel.add(buttonArray[22]);
 		buttonArray[22].setVisible(false);
 		
 	
-		buttonArray[23] = new GamePieces(Color.white);
+		buttonArray[23] = new GamePieces('W');
 		buttonArray[23].setBackground(new Color(255, 255, 255));
 		buttonArray[23].addActionListener(this);
 		playingFieldPanel.add(buttonArray[23]);
 		buttonArray[23].setVisible(true);
 		
-		buttonArray[24] = new GamePieces(Color.black);
+		buttonArray[24] = new GamePieces('B');
 		buttonArray[24].setBackground(new Color(0, 0, 0));
 		buttonArray[24].addActionListener(this);
 		playingFieldPanel.add(buttonArray[24]);
 		buttonArray[24].setVisible(true);
 		
-		buttonArray[25] = new GamePieces(Color.white);
+		buttonArray[25] = new GamePieces('W');
 		buttonArray[25].setBackground(new Color(255, 255, 255));
 		buttonArray[25].addActionListener(this);
 		playingFieldPanel.add(buttonArray[25]);
 		buttonArray[25].setVisible(true);
 		
-		buttonArray[26] = new GamePieces(Color.black);
+		buttonArray[26] = new GamePieces('B');
 		buttonArray[26].setBackground(new Color(0, 0, 0));
 		buttonArray[26].addActionListener(this);
 		playingFieldPanel.add(buttonArray[26]);
@@ -175,7 +175,7 @@ public class FanoronaGame implements ActionListener {
 		
 		// Create White Pieces
 		for (int i = 27; i < 45; i++) {
-			buttonArray[i] = new GamePieces(Color.white);
+			buttonArray[i] = new GamePieces('W');
 			buttonArray[i].setBackground(new Color(255, 255, 255));
 			buttonArray[i].addActionListener(this);
 			playingFieldPanel.add(buttonArray[i]);
