@@ -61,104 +61,318 @@ class Board {
 						if ( ((i % 2) == 1 && (j % 2) == 1) || ((i % 2) == 0 && (j % 2) == 0)) {
 							// Check nodes that can move in all directions
 							
-							// Check up and to the left
+							// Check up and to the left 
+								// Forwards capture
 							if (board[i-1][j-1] == team && board[i+1][j+1] != team && board[i+1][j+1] != 'E')
 								Captures += 1;
 								
-							// Check up
+								// Backwards capture
+							if (i != 1 && j != 1) {
+								if (board[i-1][j-1] == team && board[i-2][j-2] != team && board[i-2][j-2] != 'E')
+									Captures += 1;
+							}
+								
+							// Check up 
+								// Forwards capture
 							if (board[i-1][j] == team && board[i+1][j] != team && board[i+1][j] != 'E')
 								Captures += 1;
 								
-							// Check up and to the right
+								// Backwards capture
+							if (i != 1) {
+								if (board[i][j-1] == team && board[i][j-2] != team && board[i][j-2] != 'E')
+									Captures += 1;
+							}
+							
+							// Check up and to the right 
+								// Forwards capture
 							if (board[i-1][j+1] == team && board[i+1][j-1] != team && board[i+1][j-1] != 'E')
 								Captures += 1;
 								
-							// Check left
+								// Backwards capture
+							if (i != 1 && j != 7) {
+								if (board[i-1][j+1] == team && board[i-2][j+2] != team && board[i-2][j+2] != 'E')
+									Captures += 1;
+							}
+								
+							// Check left 
+								// Forwards capture
 							if (board[i][j-1] == team && board[i][j+1] != team && board[i][j+1] != 'E')
 								Captures += 1;
 								
-							// Check right
+								// Backwards capture
+							if (j != 1) {	
+								if (board[i][j-1] == team && board[i][j-2] != team && board[i][j-2] != 'E')
+									Captures += 1;
+							}
+							
+							// Check right 
+								// forward capture
 							if (board[i][j+1] == team && board[i][j-1] != team && board[i][j-1] != 'E')
 								Captures += 1;
 								
-							// Check down and to the left
+								// Backwards capture
+							if (j != 7) {
+								if (board[i][j+1] == team && board[i][j+2] != team && board[i][j+2] != 'E')
+								Captures += 1;
+							}
+								
+							// Check down and to the left 
+								// forward capture
 							if (board[i+1][j-1] == team && board[i-1][j+1] != team && board[i-1][j+1] != 'E')
 								Captures += 1;
 								
-							// Check down
+								// Backwards capture
+							if (i != 3 && j != 1) {
+								if (board[i+1][j-1] == team && board[i+2][j-2] != team && board[i+2][j-2] != 'E')
+								Captures += 1;
+							}
+								
+							// Check down 
+								// Forwards capture
 							if (board[i+1][j] == team && board[i-1][j] != team && board[i-1][j] != 'E')
 								Captures += 1;
 								
-							// Check down and to the right
+								// Backwards capture
+							if (i != 3) {
+								if (board[i+1][j] == team && board[i+2][j] != team && board[i+2][j] != 'E')
+								Captures += 1;
+							}
+								
+							// Check down and to the right 
+								// Forwards capture
 							if (board[i+1][j+1] == team && board[i-1][j-1] != team && board[i-1][j-1] != 'E')
 								Captures += 1;
+								
+								// Backwards capture
+							if ( i != 3 && j != 7) {
+								if (board[i+1][j+1] == team && board[i+2][j+2] != team && board[i+2][j+2] != 'E')
+								Captures += 1;
+							}
 						}
 						else {
-							// Check nodes that can move up, down, left, and right
+							// Check nodes that can move up, down, left, and right 
 							
-							// Check up
+							// Check up 
+								// Forwards capture
 							if (board[i-1][j] == team && board[i+1][j] != team && board[i+1][j] != 'E')
 								Captures += 1;
 								
-							// Check down
+								// Backwards capture
+							if (i != 1) {
+								if (board[i-1][j] == team && board[i-2][j] != team && board[i-2][j] != 'E')
+									Captures += 1;
+							}
+							
+							// Check down 
+								// Forwards capture
 							if (board[i+1][j] == team && board[i-1][j] != team && board[i-1][j] != 'E')
 								Captures += 1;
 								
-							// Check left
+								// Backwards capture
+							if (i != 3) {
+								if (board[i+1][j] == team && board[i+2][j] != team && board[i+2][j] != 'E')
+									Captures += 1;
+							}
+								
+							// Check left 
+								// Forwards capture
 							if (board[i][j-1] == team && board[i][j+1] != team && board[i][j+1] != 'E')
 								Captures += 1;
 								
-							// Check right
+								// Backwards capture
+							if ( j != 1) {
+								if (board[i][j-1] == team && board[i][j-2] != team && board[i][j-2] != 'E')
+									Captures += 1;
+							}
+								
+							// Check right 
+								// Forwards capture
 							if (board[i][j+1] == team && board[i][j-1] != team && board[i][j-1] != 'E')
 								Captures += 1;
+								
+								// Backwards caputre
+							if (j != 7) {
+								if (board[i][j+1] == team && board[i][j+2] != team && board[i][j+2] != 'E')
+									Captures += 1;
+							}
 						}
 					}
 					else if (i == 0) {
 						// Checks the top edge
-						if (j > 0 && j < 8) {
-							// Check left
-							if (board[i][j-1] == team && board[i][j+1] != team && board[i][j+1] != 'E')
-								Captures += 1;
+						if (j > 0) {
+							// Check left 
+								// Forwards capture
+							if ( j != 8) {
+								if (board[i][j-1] == team && board[i][j+1] != team && board[i][j+1] != 'E')
+									Captures += 1;
+							}
 								
-							// Check right
-							if (board[i][j+1] == team && board[i][j-1] != team && board[i][j+1] != 'E')
+								// Backwards capture
+							if (j != 1) {
+								if (board[i][j-1] == team && board[i][j-2] != team && board[i][j-2] != 'E')
+									Captures += 1;
+							}
+							
+							// Check down and to the left
+								// Backwards capture
+							if ((j % 2) == 0) {
+								if (board[i+1][j-1] == team && board[i+2][j-2] != team && board[i+2][j-2] != 'E')
+									Captures += 1;
+							}
+							
+						}
+						if (j < 8) {
+							// Check right 
+								// Forwards capture
+							if (j != 0) {
+								if (board[i][j+1] == team && board[i][j-1] != team && board[i][j-1] != 'E')
+									Captures += 1;
+							}
+								
+								// Backwards capture
+							if (j != 7) {
+								if (board[i][j+1] == team && board[i][j+2] != team && board[i][j+2] != 'E')
 								Captures += 1;
+							}
+														
+							// Check down and to the right
+								// Backwards capture
+							if ((j % 2) == 0) {
+								if (board[i+1][j+1] == team && board[i+2][j+2] != team && board[i+2][j+2] != 'E')
+								Captures += 1;
+							}
 						}
 					}
 					else if (i == 4) {
 						// Checks the bottom edge
-						if (j > 0 && j < 8) {
-							// Check left
-							if (board[i][j-1] == team && board[i][j+1] != team && board[i][j+1] != 'E')
-								Captures += 1;
+						if (j > 0) {
+							// Check left 
+								// Forwards capture
+							if ( j != 8) {
+								if (board[i][j-1] == team && board[i][j+1] != team && board[i][j+1] != 'E')
+									Captures += 1;
+							}
 								
-							// Check right
-							if (board[i][j+1] == team && board[i][j-1] != team && board[i][j+1] != 'E')
+								// Backwards capture
+							if (j != 1) {
+								if (board[i][j-1] == team && board[i][j-2] != team && board[i][j-2] != 'E')
+									Captures += 1;
+							}
+							
+							// Check up and to the left
+								// Backwards capture
+							if ((j % 2) == 0) {
+								if (board[i-1][j-1] == team && board[i-2][j-2] != team && board[i-2][j-2] != 'E')
+									Captures += 1;
+							}
+							
+						}
+						if (j < 8) {
+							// Check right 
+								// Forwards capture
+							if (j != 0) {
+								if (board[i][j+1] == team && board[i][j-1] != team && board[i][j-1] != 'E')
+									Captures += 1;
+							}
+								
+								// Backwards capture
+							if (j != 7) {
+								if (board[i][j+1] == team && board[i][j+2] != team && board[i][j+2] != 'E')
 								Captures += 1;
+							}
+														
+							// Check up and to the right
+								// Backwards capture
+							if ((j % 2) == 0) {
+								if (board[i-1][j+1] == team && board[i-2][j+2] != team && board[i-2][j+2] != 'E')
+								Captures += 1;
+							}
 						}
 					}
 					else if (j == 0) {
 						// Checks the left edge
-						if (i > 0 && i < 4) {
-							// Check up
-							if (board[i-1][j] == team && board[i+1][j] != team && board[i][j+1] != 'E')
-								Captures += 1;
-								
-							// Check down
-							if (board[i+1][j] == team && board[i-1][j] != team && board[i][j+1] != 'E')
-								Captures += 1;
+						if (i > 0) {
+							// Check up 
+								// Forwards capture
+							if (i != 4) {
+								if (board[i-1][j] == team && board[i+1][j] != team && board[i+1][j] != 'E')
+									Captures += 1;
+							}
+								// Backwards capture
+							if (i != 1) {
+								if (board[i-1][j] == team && board[i-2][j] != team && board[i-2][j] != 'E')
+									Captures +=1;
+							}
+							
+							// Check up and to the right
+								// Backwards capture
+							if ((i % 2) == 0) {
+								if (board[i-1][j+1] == team && board[i-2][j+2] != team && board[-+2][j+2] != 'E')
+									Captures +=1;
+							}
+						}
+						
+						if (i < 4) {
+							// Check down 
+								// Forwards capture
+							if (i != 0) {
+								if (board[i+1][j] == team && board[i-1][j] != team && board[i-1][j] != 'E')
+									Captures += 1;
+							}
+								// Backwards capture
+							if (i != 3) {
+								if (board[i+1][j] == team && board[i+2][j] != team && board[i+2][j] != 'E')
+									Captures += 1;
+							}
+							// Check down and to the right
+								// Backwards capture
+							if ((i %2 ) == 0) {
+								if (board[i+1][j+1] == team && board[i+2][j+2] != team && board[i+2][j+2] != 'E')
+									Captures +=1;
+							}
 						}
 					}
 					else if (j == 8) {
-						// Checks the right edge
-						if (i > 0 && i < 4) {
-							// Check up
-							if (board[i-1][j] == team && board[i+1][j] != team && board[i][j+1] != 'E')
-								Captures += 1;
-								
-							// Check down
-							if (board[i+1][j] == team && board[i-1][j] != team && board[i][j+1] != 'E')
-								Captures += 1;
+						// Checks right edge
+						if (i > 0) {
+							// Check up 
+								// Forwards capture
+							if (i != 4) {
+								if (board[i-1][j] == team && board[i+1][j] != team && board[i+1][j] != 'E')
+									Captures += 1;
+							}
+								// Backwards capture
+							if (i != 1) {
+								if (board[i-1][j] == team && board[i-2][j] != team && board[i-2][j] != 'E')
+									Captures +=1;
+							}
+							
+							// Check up and to the left
+								// Backwards capture
+							if ((i % 2) == 0) {
+								if (board[i-1][j-1] == team && board[i-2][j-2] != team && board[-+2][j-2] != 'E')
+									Captures +=1;
+							}
+						}
+						
+						if (i < 4) {
+							// Check down 
+								// Forwards capture
+							if (i != 0) {
+								if (board[i+1][j] == team && board[i-1][j] != team && board[i-1][j] != 'E')
+									Captures += 1;
+							}
+								// Backwards capture
+							if (i != 3) {
+								if (board[i+1][j] == team && board[i+2][j] != team && board[i+2][j] != 'E')
+									Captures += 1;
+							}
+							// Check down and to the left
+								// Backwards capture
+							if ((i % 2) == 0) {
+								if (board[i+1][j-1] == team && board[i+2][j-2] != team && board[i+2][j-2] != 'E')
+									Captures +=1;
+							}
 						}
 					}
 				}
