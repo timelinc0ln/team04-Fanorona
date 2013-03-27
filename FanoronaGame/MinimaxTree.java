@@ -6,7 +6,7 @@ import java.util.*;
 
 
 public class MiniMaxTree {
-	private Tree mmtree;
+	private Tree mmTree;
 
 	/** 
 	* Get the best move give the current board state
@@ -21,7 +21,14 @@ public class MiniMaxTree {
 	* @param node
 	*/
 	private void maximize(Node node) {
-
+		double max = mmTree.MININT;
+		List<Node<int>> children = node.getChildren(); // Node type may be an issue
+		for (Node<int> child : children) {
+			if (child.getData() > max) {
+				// assign value as the new max
+				max = child.getData();
+			}
+		}
 	}
 
 	/**
@@ -29,7 +36,15 @@ public class MiniMaxTree {
 	* @param node
 	*/
 	private void minimize(Node node) {
+		double min = mmTree.MAXINT;
+		List<Node<int>> children = node.getChildren();
 
+		for (Node<int> child : children) {
+			if (child.getData() < min) {
+				// assign value to the new min
+				min = child.getData();
+			}
+		}
 	}
 
 
