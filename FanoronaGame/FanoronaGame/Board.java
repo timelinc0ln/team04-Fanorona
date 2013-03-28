@@ -131,14 +131,16 @@ class Board {
 									// Forwards capture
 									if (board[i-1][j-1] == team && 
 										board[i+1][j+1] != team && 
-										board[i+1][j+1] != 'E') {
+										board[i+1][j+1] != 'E'  &&
+										board[i+1][j+1] != 'X') {
 											Captures += 1;	
 										}
 									// Backwards capture
 									if (i != 1 && j != 1) {
 										if (board[i-1][j-1] == team && 
 											board[i-2][j-2] != team && 
-											board[i-2][j-2] != 'E') {
+											board[i-2][j-2] != 'E'  &&
+											board[i-2][j-2] != 'X') {
 												Captures += 1;
 											}
 									}	
@@ -146,14 +148,16 @@ class Board {
 									// Forwards capture
 									if (board[i-1][j] == team && 
 										board[i+1][j] != team && 
-										board[i+1][j] != 'E') {
+										board[i+1][j] != 'E'  &&
+										board[i+1][j] != 'X') {
 											Captures += 1;
 										}
 									// Backwards capture
 									if (i != 1) {
 										if (board[i-1][j] == team && 
 											board[i-2][j] != team && 
-											board[i-2][j] != 'E') {
+											board[i-2][j] != 'E'  &&
+											board[i-2][j] != 'X') {
 												Captures += 1;
 											}
 									}
@@ -161,14 +165,16 @@ class Board {
 									// Forwards capture
 									if (board[i-1][j+1] == team && 
 										board[i+1][j-1] != team && 
-										board[i+1][j-1] != 'E') {
+										board[i+1][j-1] != 'E'	&&
+										board[i+1][j-1] != 'X') {
 											Captures += 1;
 										}	
 									// Backwards capture
 									if (i != 1 && j != column_limit-2) {
 										if (board[i-1][j+1] == team && 
 											board[i-2][j+2] != team && 
-											board[i-2][j+2] != 'E') {
+											board[i-2][j+2] != 'E'	&&
+											board[i-2][j+2] != 'X') {
 												Captures += 1;
 											}
 									}	
@@ -176,14 +182,16 @@ class Board {
 									// Forwards capture
 									if (board[i][j-1] == team && 
 										board[i][j+1] != team && 
-										board[i][j+1] != 'E') {
+										board[i][j+1] != 'E'  &&
+										board[i][j+1] != 'X') {
 											Captures += 1;
 										}
 									// Backwards capture
 									if (j != 1) {	
 										if (board[i][j-1] == team && 
 											board[i][j-2] != team && 
-											board[i][j-2] != 'E') {
+											board[i][j-2] != 'E'  &&
+											board[i][j-2] != 'X') {
 												Captures += 1;
 											}
 									}
@@ -191,14 +199,16 @@ class Board {
 									// Forwards capture
 									if (board[i][j+1] == team && 
 										board[i][j-1] != team && 
-										board[i][j-1] != 'E') {
+										board[i][j-1] != 'E'  &&
+										board[i][j-1] != 'X') {
 											Captures += 1;
 										}
 									// Backwards capture
 									if (j != column_limit-2) {
 										if (board[i][j+1] == team && 
 											board[i][j+2] != team && 
-											board[i][j+2] != 'E') {
+											board[i][j+2] != 'E'&&
+											board[i][j+2] != 'X') {
 												Captures += 1;
 											}
 									}	
@@ -206,14 +216,16 @@ class Board {
 									// Forwards capture
 									if (board[i+1][j-1] == team && 
 										board[i-1][j+1] != team && 
-										board[i-1][j+1] != 'E') {
+										board[i-1][j+1] != 'E'	&&
+										board[i-1][j+1] != 'X') {
 											Captures += 1;
 										}
 									// Backwards capture
 									if (i != row_limit-2 && j != 1) {
 										if (board[i+1][j-1] == team && 
 											board[i+2][j-2] != team && 
-											board[i+2][j-2] != 'E') {
+											board[i+2][j-2] != 'E'  &&
+											board[i+2][j-2] != 'X') {
 												Captures += 1;
 											}
 									}	
@@ -221,14 +233,16 @@ class Board {
 									// Forwards capture
 									if (board[i+1][j] == team && 
 										board[i-1][j] != team && 
-										board[i-1][j] != 'E') {
+										board[i-1][j] != 'E'  &&
+										board[i-1][j] != 'X') {
 											Captures += 1;
 										}
 									// Backwards capture
 									if (i != row_limit-2) {
 										if (board[i+1][j] == team && 
 											board[i+2][j] != team && 
-											board[i+2][j] != 'E') {
+											board[i+2][j] != 'E'  &&
+											board[i+2][j] != 'X') {
 												Captures += 1;
 											}
 									}	
@@ -236,7 +250,8 @@ class Board {
 									// Forwards capture
 									if (board[i+1][j+1] == team && 
 										board[i-1][j-1] != team && 
-										board[i-1][j-1] != 'E') {
+										board[i-1][j-1] != 'E' &&
+										board[i-1][j-1] != 'X') {
 											Captures += 1;
 										}
 									// Backwards capture
@@ -244,7 +259,8 @@ class Board {
 										j != column_limit-2) {
 											if (board[i+1][j+1] == team && 
 												board[i+2][j+2] != team && 
-												board[i+2][j+2] != 'E') {
+												board[i+2][j+2] != 'E'	&&
+												board[i+2][j+2] != 'X') {
 													Captures += 1;
 												}
 									}
@@ -255,14 +271,16 @@ class Board {
 							// Forwards capture
 							if (board[i-1][j] == team && 
 								board[i+1][j] != team && 
-								board[i+1][j] != 'E') {
+								board[i+1][j] != 'E'  &&
+								board[i+1][j] != 'X') {
 									Captures += 1;
 								}
 							// Backwards capture
 							if (i != 1) {
 								if (board[i-1][j] == team && 
 									board[i-2][j] != team && 
-									board[i-2][j] != 'E') {
+									board[i-2][j] != 'E'  &&
+									board[i-2][j] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -270,14 +288,16 @@ class Board {
 							// Forwards capture
 							if (board[i+1][j] == team &&
 								board[i-1][j] != team && 
-								board[i-1][j] != 'E') {
+								board[i-1][j] != 'E'  &&
+								board[i-1][j] != 'X') {
 									Captures += 1;
 								}
 							// Backwards capture
 							if (i != row_limit-2) {
 								if (board[i+1][j] == team && 
 									board[i+2][j] != team && 
-									board[i+2][j] != 'E') {
+									board[i+2][j] != 'E'  &&
+									board[i+2][j] != 'X') {
 										Captures += 1;
 									}
 							}	
@@ -285,14 +305,16 @@ class Board {
 							// Forwards capture
 							if (board[i][j-1] == team && 
 								board[i][j+1] != team && 
-								board[i][j+1] != 'E') {
+								board[i][j+1] != 'E'  &&
+								board[i][j+1] != 'X') {
 									Captures += 1;
 								}
 							// Backwards capture
 							if ( j != 1) {
 								if (board[i][j-1] == team && 
 									board[i][j-2] != team && 
-									board[i][j-2] != 'E') {
+									board[i][j-2] != 'E'  &&
+									board[i][j-2] != 'X') {
 										Captures += 1;
 									}
 							}	
@@ -300,14 +322,16 @@ class Board {
 							// Forwards capture
 							if (board[i][j+1] == team && 
 								board[i][j-1] != team && 
-								board[i][j-1] != 'E') {
+								board[i][j-1] != 'E'  &&
+								board[i][j-1] != 'X') {
 									Captures += 1;
 								}
 							// Backwards caputre
 							if (j != column_limit-2) {
 								if (board[i][j+1] == team && 
 									board[i][j+2] != team &&
-									board[i][j+2] != 'E') {
+									board[i][j+2] != 'E'  &&
+									board[i][j+2] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -321,7 +345,8 @@ class Board {
 							if ( j != column_limit-1) {
 								if (board[i][j-1] == team && 
 									board[i][j+1] != team && 
-									board[i][j+1] != 'E') {
+									board[i][j+1] != 'E'  &&
+									board[i][j+1] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -329,7 +354,8 @@ class Board {
 							if (j != 1) {
 								if (board[i][j-1] == team && 
 									board[i][j-2] != team && 
-									board[i][j-2] != 'E') {
+									board[i][j-2] != 'E'  &&
+									board[i][j-2] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -339,7 +365,8 @@ class Board {
 								if ((j % 2) == 0) {
 									if (board[i+1][j-1] == team && 
 										board[i+2][j-2] != team && 
-										board[i+2][j-2] != 'E') {
+										board[i+2][j-2] != 'E'  &&
+										board[i+2][j-2] != 'X') {
 											Captures += 1;
 										}
 								}
@@ -351,7 +378,8 @@ class Board {
 							if (j != 0) {
 								if (board[i][j+1] == team && 
 									board[i][j-1] != team && 
-									board[i][j-1] != 'E') {
+									board[i][j-1] != 'E'  &&
+									board[i][j-1] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -359,7 +387,8 @@ class Board {
 							if (j != column_limit-2) {
 								if (board[i][j+1] == team && 
 									board[i][j+2] != team && 
-									board[i][j+2] != 'E') {
+									board[i][j+2] != 'E'  &&
+									board[i][j+2] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -369,7 +398,8 @@ class Board {
 								if ((j % 2) == 0) {
 									if (board[i+1][j+1] == team && 
 										board[i+2][j+2] != team && 
-										board[i+2][j+2] != 'E') {
+										board[i+2][j+2] != 'E'  &&
+										board[i+2][j+2] != 'X') {
 											Captures += 1;
 										}
 								}
@@ -384,7 +414,8 @@ class Board {
 							if ( j != column_limit-2) {
 								if (board[i][j-1] == team && 
 									board[i][j+1] != team && 
-									board[i][j+1] != 'E') {
+									board[i][j+1] != 'E'  &&
+									board[i][j+1] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -392,7 +423,8 @@ class Board {
 							if (j != 1) {
 								if (board[i][j-1] == team && 
 									board[i][j-2] != team && 
-									board[i][j-2] != 'E') {
+									board[i][j-2] != 'E'  &&
+									board[i][j-2] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -402,7 +434,8 @@ class Board {
 								if ((j % 2) == 0) {
 									if (board[i-1][j-1] == team && 
 										board[i-2][j-2] != team && 
-										board[i-2][j-2] != 'E') {
+										board[i-2][j-2] != 'E'  &&
+										board[i-2][j-2] != 'X') {
 											Captures += 1;
 										}
 								}
@@ -414,7 +447,8 @@ class Board {
 							if (j != 0) {
 								if (board[i][j+1] == team && 
 									board[i][j-1] != team && 
-									board[i][j-1] != 'E') {
+									board[i][j-1] != 'E'  &&
+									board[i][j-1] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -422,7 +456,8 @@ class Board {
 							if (j != column_limit-1) {
 								if (board[i][j+1] == team && 
 									board[i][j+2] != team && 
-									board[i][j+2] != 'E') {
+									board[i][j+2] != 'E'  &&
+									board[i][j+2] != 'X') {
 										Captures += 1;
 									}
 							}	
@@ -432,7 +467,8 @@ class Board {
 								if ((j % 2) == 0) {
 									if (board[i-1][j+1] == team && 
 										board[i-2][j+2] != team && 
-										board[i-2][j+2] != 'E') {
+										board[i-2][j+2] != 'E'  &&
+										board[i-2][j+2] != 'X') {
 											Captures += 1;
 										}
 								}
@@ -447,7 +483,8 @@ class Board {
 							if (i != row_limit-1) {
 								if (board[i-1][j] == team && 
 									board[i+1][j] != team && 
-									board[i+1][j] != 'E') {
+									board[i+1][j] != 'E'  &&
+									board[i+1][j] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -455,7 +492,8 @@ class Board {
 							if (i != 1) {
 								if (board[i-1][j] == team && 
 									board[i-2][j] != team && 
-									board[i-2][j] != 'E') {
+									board[i-2][j] != 'E'  &&
+									board[i-2][j] != 'X') {
 										Captures +=1;
 									}
 							}
@@ -465,7 +503,8 @@ class Board {
 								if ((i % 2) == 0) {
 									if (board[i-1][j+1] == team && 
 										board[i-2][j+2] != team && 
-										board[i-2][j+2] != 'E') {
+										board[i-2][j+2] != 'E'  &&
+										board[i-2][j+2] != 'X') {
 											Captures +=1;
 										}
 								}
@@ -477,7 +516,8 @@ class Board {
 							if (i != 0) {
 								if (board[i+1][j] == team && 
 									board[i-1][j] != team && 
-									board[i-1][j] != 'E') {
+									board[i-1][j] != 'E'  &&
+									board[i-1][j] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -485,7 +525,8 @@ class Board {
 							if (i != row_limit-2) {
 								if (board[i+1][j] == team && 
 									board[i+2][j] != team && 
-									board[i+2][j] != 'E') {
+									board[i+2][j] != 'E'  &&
+									board[i+2][j] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -495,7 +536,8 @@ class Board {
 								if ((i %2 ) == 0) {
 									if (board[i+1][j+1] == team && 
 										board[i+2][j+2] != team && 
-										board[i+2][j+2] != 'E') {
+										board[i+2][j+2] != 'E'  &&
+										board[i+2][j+2] != 'X') {
 											Captures +=1;
 										}
 								}
@@ -510,7 +552,8 @@ class Board {
 							if (i != row_limit-1) {
 								if (board[i-1][j] == team && 
 									board[i+1][j] != team && 
-									board[i+1][j] != 'E') {
+									board[i+1][j] != 'E' &&
+									board[i+1][j] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -518,7 +561,8 @@ class Board {
 							if (i != 1) {
 								if (board[i-1][j] == team && 
 									board[i-2][j] != team && 
-									board[i-2][j] != 'E') {
+									board[i-2][j] != 'E'  &&
+									board[i-2][j] != 'X') {
 										Captures +=1;
 									}
 							}
@@ -528,7 +572,8 @@ class Board {
 								if ((i % 2) == 0) {
 									if (board[i-1][j-1] == team && 
 										board[i-2][j-2] != team && 
-										board[i-2][j-2] != 'E') {
+										board[i-2][j-2] != 'E'  &&
+										board[i-2][j-2] != 'X') {
 											Captures +=1;
 										}
 								}
@@ -540,7 +585,8 @@ class Board {
 							if (i != 0) {
 								if (board[i+1][j] == team && 
 									board[i-1][j] != team && 
-									board[i-1][j] != 'E') {
+									board[i-1][j] != 'E'  &&
+									board[i-1][j] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -548,7 +594,8 @@ class Board {
 							if (i != row_limit-2) {
 								if (board[i+1][j] == team && 
 									board[i+2][j] != team && 
-									board[i+2][j] != 'E') {
+									board[i+2][j] != 'E' &&
+									board[i+2][j] != 'X') {
 										Captures += 1;
 									}
 							}
@@ -558,7 +605,8 @@ class Board {
 								if ((i % 2) == 0) {
 									if (board[i+1][j-1] == team && 
 										board[i+2][j-2] != team && 
-										board[i+2][j-2] != 'E') {
+										board[i+2][j-2] != 'E'  &&
+										board[i+2][j-2] != 'X') {
 											Captures +=1;
 										}
 								}
@@ -680,6 +728,17 @@ class Board {
 			}
 		}
 	}
+
+	public void move(int x_ps, int y_ps, int x_zs, int y_zs) {
+		char team = board[x_ps][y_ps];
+		board[x_zs][y_zs] = team;
+		board[x_ps][y_ps] = 'E';
+	}
+	
+	public void sacrifice(int x, int y) {
+		board[x][y] = 'X';
+	}
+	
 // -----------------------------------------------------------------------------------
 // ------------------------------ Main testing ---------------------------------------	
 	public static void main(String[]args) {
@@ -687,6 +746,7 @@ class Board {
 	fanorona.display_board();
 	System.out.println("White has " + fanorona.white_remaining() + " remaining");
 	System.out.println("Black has " + fanorona.black_remaining() + " remaining");
+	fanorona.sacrifice(2, 5);
 	System.out.println("White currently has " + fanorona.check_for_capture('W') + " captures");
 	//fanorona.capture('W', 3, 3, 2, 4, 1);
 	//fanorona.capture('W', 3, 4, 2, 4, 1);
