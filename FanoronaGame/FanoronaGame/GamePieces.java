@@ -15,7 +15,9 @@ public class GamePieces extends JButton {
 		} else if (color == 'W') {
 			c = Color.white;
 		} else {
-			c = Color.gray;
+			c = new Color(110,110,110);
+			setContentAreaFilled(false);
+			setBorderPainted(false);
 		}
 		// These statements enlarge the button so that it
 		// becomes a circle rather than an oval.
@@ -38,6 +40,9 @@ public class GamePieces extends JButton {
 			g.setColor(Color.red);
 		} else {
 			g.setColor(getBackground()) ;
+			if(this.c == new Color(110,110,110) )
+				g.clearRect(getX(), getY(), getWidth()-10, getHeight()-10);
+				this.setContentAreaFilled(false);
 		}
 		g.fillOval(10, 10,  getWidth()-10, getWidth()-10);
 		
