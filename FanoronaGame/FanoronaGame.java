@@ -1,93 +1,93 @@
 package FanoronaGame;
 
-import javax.swing.*; 
-import java.awt.*; 
-import java.awt.event.*; 
-import java.io.*; 
-import java.util.*; 
 
-public class FanoronaGame implements ActionListener {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+
+public class FanoronaGame extends JPanel implements ActionListener {
 	JFrame window = new JFrame("Fanorona Game");
 
 	// Game Menu variables
 	JMenuBar mainMenu = new JMenuBar();
-	JMenuItem newGame = new JMenuItem("New Game"), 
-				about = new JMenuItem("About"),
-				instructions = new JMenuItem("Instructions"),
-				exit = new JMenuItem("Exit");
-	//New Game buttons
-	Object[] options = {"Easy",
-						"Medium",
-						"Hard",
-						"9x5",
-						"5x5",
-						"3x3"};
+	JMenuItem newGame = new JMenuItem("New Game"), about = new JMenuItem(
+			"About"), instructions = new JMenuItem("Instructions"),
+			exit = new JMenuItem("Exit");
+	// New Game buttons
+	Object[] options = { "Easy", "Medium", "Hard" };
 
 	// Buttons for Menus
-	JButton pve = new JButton("Player vs CPU"),
-			back = new JButton("exit");
-	GamePieces buttonArray[] = new GamePieces[];
+	JButton pve = new JButton("Player vs CPU"), back = new JButton("exit");
+	GamePieces buttonArray[][] = new GamePieces[9][5];
 
 	// Panels for Graphic interface
-	JPanel	newGamePanel = new JPanel(),
-			northPanel = new JPanel(),
-			southPanel = new JPanel(),
-			topPanel = new JPanel(),
-			bottomPanel = new JPanel(),
-			playingFieldPanel = new JPanel();
+	JPanel newGamePanel = new JPanel(), northPanel = new JPanel(),
+			southPanel = new JPanel(), topPanel = new JPanel(),
+			bottomPanel = new JPanel(), playingFieldPanel = new JPanel();
 	DrawBoard visibleBoard = new DrawBoard();
 	JLabel gameTitle = new JLabel("Fanorona");
-	JTextArea text = new JTextArea();
-	
+	//JTextArea text = new JTextArea();
+
 	// Board gameBoard = new Board(); //this will work soon
-	
 
 	// set window size and default color
-	final int windowX = 1000, windowY = 1000, color = 190; 
+	int windowX = 900, windowY = 500, color = 190;
 
-	public FanoronaGame() {
-		class gameGrid extends JPanel  {
-			public void paintComponent(Graphics g) {
+	
+	
+	public FanoronaGame() throws IOException {
+	//	class gameGrid extends JPanel {
+			
+			
+			/*public void paintComponent(Graphics g) {
 				int x = getWidth();
 				int y = getHeight();
 				g.setColor(Color.black);
 				g.fillRect(0, 0, x, y);
 
 				Graphics2D g2 = (Graphics2D) g;
-				int w = x/10;
-				int h = y/10;
+				int w = x / 10;
+				int h = y / 10;
 				g.setColor(Color.cyan);
 
 				g2.setStroke(new BasicStroke(1));
 				for (int i = 1; i < 10; i++)
-					g2.drawLine(i*w, 0, i*w, y);
+					g2.drawLine(i * w, 0, i * w, y);
 				for (int i = 1; i < 10; i++)
-					g2.drawLine(0, i*h, x, i*h);
-	/*			g2.setColor(Color.red);
-				double rowH = getHeight() / 10.0;
-				for (int i = 1; i < 10; i++) {
-					Line2D line = new Line2D.Double(0.0, (double) i * rowH,
-					(double) getWidth(), (double) i * rowH);
-					g2.draw(line);
-				}*/
-			}
-		}
+					g2.drawLine(0, i * h, x, i * h);
+				
+				 * g2.setColor(Color.red); double rowH = getHeight() / 10.0; for
+				 * (int i = 1; i < 10; i++) { Line2D line = new
+				 * Line2D.Double(0.0, (double) i * rowH, (double) getWidth(),
+				 * (double) i * rowH); g2.draw(line); }
+				 */
+			//}
 		
+
 		// Game window formatting
 		window.setSize(windowX, windowY);
 		window.setLocation(400, 400);
 		window.setResizable(false);
 		window.setLayout(new BorderLayout());
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		//Panel properties
+		
+	
+		// Panel properties
 		newGamePanel.setLayout(new GridLayout(2, 1, 2, 10));
 		northPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		southPanel.setLayout( new FlowLayout(FlowLayout.CENTER));
+		southPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-		northPanel.setBackground(new Color(color-20, color-20, color-20));
+		northPanel.setBackground(new Color(color - 20, color - 20, color - 20));
 		southPanel.setBackground(new Color(color, color, color));
 		bottomPanel.setBackground(new Color(color, color, color));
 		topPanel.setBackground(new Color(color, color, color));
@@ -108,155 +108,243 @@ public class FanoronaGame implements ActionListener {
 		back.addActionListener(this);
 		pve.addActionListener(this);
 
-		//Game board setup
+		// Game board setup
 		//playingFieldPanel.add(visibleBoard);
-		playingFieldPanel.setLayout(new GridLayout(5, 9, 2, 2));
-		//playingFieldPanel.setOpaque(true);
-		playingFieldPanel.setBackground(Color.GRAY);
 		
-		// Create Black Pieces
-		for (int i = 0; i < 18; i++) {
-			buttonArray[i] = new GamePieces('B');
-			buttonArray[i].setBackground(new Color(0, 0, 0));
-			buttonArray[i].addActionListener(this);
-			playingFieldPanel.add(buttonArray[i]);
-			buttonArray[i].setVisible(true);
+		BufferedImage myPicture = null;
+		Image pic = null; //pic that is scaled
+		try {
+			//myPicture = ImageIO.read(new File("H:/csce315/killme/FanoronaGame/src/FanoronaGame/board.jpg"));
+                        myPicture = ImageIO.read(new File("C:/Users/Meg/Documents/CSCE 315/ProjectNumberTwo/FanoronaGame/src/fanoronagame/board.jpg"));
+			pic = myPicture.getScaledInstance(800, 400, 0); //how far spaced the buttons are seems to be determined by how large this is scaled..
+		} catch (IOException e) {
+			System.out.println("Could not load image.");
 		}
 		
-		// Manually set Row 3
-		buttonArray[18] = new GamePieces('W');
-		buttonArray[18].setBackground(new Color(255, 255, 255));
-		buttonArray[18].addActionListener(this);
-		playingFieldPanel.add(buttonArray[18]);
-		buttonArray[18].setVisible(true);
+		JLabel picLabel = new JLabel(new ImageIcon( pic ));
+                
+                GridLayout grid = new GridLayout(5,9,15,8);
+                grid.setHgap(30);
+                grid.setVgap(20);
 		
-		buttonArray[19] = new GamePieces('B');
-		buttonArray[19].setBackground(new Color(0, 0, 0));
-		buttonArray[19].addActionListener(this);
-		playingFieldPanel.add(buttonArray[19]);
-		buttonArray[19].setVisible(true);
-		
-		buttonArray[20] = new GamePieces('W');
-		buttonArray[20].setBackground(new Color(255, 255, 255));
-		buttonArray[20].addActionListener(this);
-		playingFieldPanel.add(buttonArray[20]);
-		buttonArray[20].setVisible(true);
-		
-		buttonArray[21] = new GamePieces('B');
-		buttonArray[21].setBackground(new Color(0, 0, 0));
-		buttonArray[21].addActionListener(this);
-		playingFieldPanel.add(buttonArray[21]);
-		buttonArray[21].setVisible(true);
+		picLabel.setLayout(grid);
+
+		//\playingFieldPanel.setOpaque(true);
+		playingFieldPanel.setBackground(Color.gray);
+
 		
 		
-		buttonArray[22] = new GamePieces('E');
-		playingFieldPanel.add(buttonArray[22]);
-		buttonArray[22].setVisible(false);
 		
-	
-		buttonArray[23] = new GamePieces('W');
-		buttonArray[23].setBackground(new Color(255, 255, 255));
-		buttonArray[23].addActionListener(this);
-		playingFieldPanel.add(buttonArray[23]);
-		buttonArray[23].setVisible(true);
-		
-		buttonArray[24] = new GamePieces('B');
-		buttonArray[24].setBackground(new Color(0, 0, 0));
-		buttonArray[24].addActionListener(this);
-		playingFieldPanel.add(buttonArray[24]);
-		buttonArray[24].setVisible(true);
-		
-		buttonArray[25] = new GamePieces('W');
-		buttonArray[25].setBackground(new Color(255, 255, 255));
-		buttonArray[25].addActionListener(this);
-		playingFieldPanel.add(buttonArray[25]);
-		buttonArray[25].setVisible(true);
-		
-		buttonArray[26] = new GamePieces('B');
-		buttonArray[26].setBackground(new Color(0, 0, 0));
-		buttonArray[26].addActionListener(this);
-		playingFieldPanel.add(buttonArray[26]);
-		buttonArray[26].setVisible(true);
-		
-		// Create White Pieces
-		for (int i = 27; i < 45; i++) {
-			buttonArray[i] = new GamePieces('W');
-			buttonArray[i].setBackground(new Color(255, 255, 255));
-			buttonArray[i].addActionListener(this);
-			playingFieldPanel.add(buttonArray[i]);
-			buttonArray[i].setVisible(true);
+//		picLabel.addMouseListener(new MouseListener() {
+//            public void mouseClicked(MouseEvent e) {
+//                System.out.println(" (" + e.getX() + ", " + e.getY() + ") ;");
+//            }
+//
+//
+//			@Override
+//			public void mouseEntered(MouseEvent arg0) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void mouseExited(MouseEvent arg0) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void mousePressed(MouseEvent arg0) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void mouseReleased(MouseEvent arg0) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+
+		playingFieldPanel.add( picLabel );
+		playingFieldPanel.setBounds(77, 70, 770, 390);
+
+		// Create Black Pieces
+		for (int x = 0; x < 9; x++) {
+			for(int y =0; y < 2; y++) {
+				buttonArray[x][y] = new GamePieces('B');
+				buttonArray[x][y].setLocation(79+x*85, 70+y*77);
+				buttonArray[x][y].setBackground(new Color(0, 0, 0));
+				buttonArray[x][y].addActionListener(this);
+				buttonArray[x][y].setVisible(true);
+				
+				picLabel.add(buttonArray[x][y]);
+			}
 		}
 
+		// Manually set Row 3
+		buttonArray[0][2] = new GamePieces('W');
+		//buttonArray[0][2].setLocation(82, 230);
+		buttonArray[0][2].setAlignmentX(82);
+		buttonArray[0][2].setAlignmentY(230);
+		buttonArray[0][2].setBackground(new Color(255, 255, 255));
+		buttonArray[0][2].addActionListener(this);
+		buttonArray[0][2].setVisible(true);
+		picLabel. add(buttonArray[0][2]);
+
+		buttonArray[1][2] = new GamePieces('B');
+		//buttonArray[1][2].setLocation(167, 230);
+		buttonArray[1][2].setAlignmentX(167);
+		buttonArray[1][2].setAlignmentY(230);
+		buttonArray[1][2].setBackground(new Color(0, 0, 0));
+		buttonArray[1][2].addActionListener(this);
+		buttonArray[1][2].setVisible(true);
+		picLabel.add(buttonArray[1][2]);
+
+		buttonArray[2][2] = new GamePieces('W');
+		//buttonArray[2][2].setLocation(252, 230);
+		buttonArray[2][2].setAlignmentX(252);
+		buttonArray[2][2].setAlignmentY(230);
+		buttonArray[2][2].setBackground(new Color(255, 255, 255));
+		buttonArray[2][2].addActionListener(this);
+		buttonArray[2][2].setVisible(true);
+		picLabel.add(buttonArray[2][2]);
+
+		buttonArray[3][2] = new GamePieces('B');
+//		buttonArray[3][2].setLocation(167, 230);
+		buttonArray[3][2].setAlignmentX(337);
+		buttonArray[3][2].setAlignmentY(230);
+		buttonArray[3][2].setBackground(new Color(0, 0, 0));
+		buttonArray[3][2].addActionListener(this);
+		buttonArray[3][2].setVisible(true);
+		picLabel.add(buttonArray[3][2]);
+
+		buttonArray[4][2] = new GamePieces('E');
+//		buttonArray[4][2].setLocation(422, 230);
+		buttonArray[4][2].setAlignmentX(422);
+		buttonArray[4][2].setAlignmentY(230);
+		buttonArray[4][2].setVisible(false);
+		picLabel.add(buttonArray[4][2]);
+
+		buttonArray[5][2] = new GamePieces('W');
+//		buttonArray[5][2].setLocation(507, 230);
+		buttonArray[5][2].setAlignmentX(507);
+		buttonArray[5][2].setAlignmentY(230);
+		buttonArray[5][2].setBackground(new Color(255, 255, 255));
+		buttonArray[5][2].addActionListener(this);
+		buttonArray[5][2].setVisible(true);
+		picLabel.add(buttonArray[5][2]);
+
+		buttonArray[6][2] = new GamePieces('B');
+//		buttonArray[6][2].setLocation(592, 230);
+		buttonArray[6][2].setAlignmentX(592);
+		buttonArray[6][2].setAlignmentY(230);
+		buttonArray[6][2].setBackground(new Color(0, 0, 0));
+		buttonArray[6][2].addActionListener(this);
+		buttonArray[6][2].setVisible(true);
+		picLabel.add(buttonArray[6][2]);
+
+		buttonArray[7][2] = new GamePieces('W');
+//		buttonArray[7][2].setLocation(677, 230);
+		buttonArray[7][2].setAlignmentX(677);
+		buttonArray[7][2].setAlignmentY(230);
+		buttonArray[7][2].setBackground(new Color(255, 255, 255));
+		buttonArray[7][2].addActionListener(this);
+		buttonArray[7][2].setVisible(true);
+		picLabel.add(buttonArray[7][2]);
+
+		buttonArray[8][2] = new GamePieces('B');
+//		buttonArray[8][2].setLocation(762, 230);
+		buttonArray[8][2].setAlignmentX(762);
+		buttonArray[8][2].setAlignmentY(230);
+		buttonArray[8][2].setBackground(new Color(0, 0, 0));
+		buttonArray[8][2].addActionListener(this);
+		buttonArray[8][2].setVisible(true);
+		picLabel.add(buttonArray[8][2]);
+
+		// Create White Pieces
+		for(int y = 3; y < 5; y++ ) {
+			for(int x = 0; x < 9; x++) {
+				buttonArray[x][y] = new GamePieces('W');
+//				buttonArray[x][y].setLocation(79+x*85, 70+y*77);
+				buttonArray[x][y].setAlignmentX(82 + x*85);
+				buttonArray[x][y].setAlignmentY(230 + y*77);
+				buttonArray[x][y].setBackground(new Color(255, 255, 255));
+				buttonArray[x][y].addActionListener(this);
+				buttonArray[x][y].setVisible(true);
+				picLabel.add(buttonArray[x][y]);
+			}
+		}
 		playingFieldPanel.setVisible(true);
 
-		
 		northPanel.add(mainMenu);
 		southPanel.add(gameTitle);
 
 		window.add(northPanel, BorderLayout.NORTH);
 		window.add(southPanel, BorderLayout.CENTER);
 		window.setVisible(true);
-}
+	}
 
 	public void actionPerformed(ActionEvent click) {
 		Object actionSource = click.getSource();
 		if (actionSource == newGame) {
-			int option = askMessage("Are you prepared to start a new game vs CPU?" +
-				" WARNING: All current progress will be lost.\n", 
-				"Quit Game?", JOptionPane.YES_NO_OPTION);
-			if(option == JOptionPane.YES_OPTION) {
-				int playOption = JOptionPane.showOptionDialog(newGamePanel, "Select your difficulty", "Difficulty Level",
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
-				if (playOption == JOptionPane.OK_OPTION){
+			int option = askMessage(
+					"Are you prepared to start a new game vs CPU?"
+							+ " WARNING: All current progress will be lost.\n",
+					"New Game", JOptionPane.YES_NO_OPTION);
+			if (option == JOptionPane.YES_OPTION) {
+				int playOption = JOptionPane
+						.showOptionDialog(newGamePanel,
+								"Select your difficulty", "Difficulty Level",
+								JOptionPane.YES_NO_CANCEL_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[2]);
+				if (playOption == JOptionPane.OK_OPTION) {
+					window.remove(southPanel);
 					window.add(playingFieldPanel, BorderLayout.CENTER);
-					window.setVisible(true);
-				}
-				else if (playOption == JOptionPane.NO_OPTION){
+					window.validate();
+					//window.setVisible(true);
+				} else if (playOption == JOptionPane.NO_OPTION) {
+					window.remove(southPanel);
 					window.add(playingFieldPanel, BorderLayout.CENTER);
-					window.setVisible(true);
-				}
-				else if (playOption == JOptionPane.CANCEL_OPTION){
+					window.validate();
+					//window.setVisible(true);
+				} else if (playOption == JOptionPane.CANCEL_OPTION) {
+					window.remove(southPanel);
 					window.add(playingFieldPanel, BorderLayout.CENTER);
-					window.setVisible(true);
+					window.validate();
+					//window.setVisible(true);
 				}
-				int sizeOption = JOptionPane.showOptionDialog(newGamePanel, "Select board size", "Board Sizse", 
-					JoptionPane.YES_NO_CANCEL_OPTION, JoptionPane.QUESTION_MESSAGE, options[3], options[4], options[5])
-				if (sizeOption ==JOptionPane.OK_OPTION) {
 
-				}
-				else if (sizeOption == JOptionPane.NO_OPTION) {
-
-				}
-				else if (sizeOption == JOptionPane.CANCEL_OPTION) {
-
-				}
-				
 			}
-		}
-		else if (actionSource == exit) {
-			int option = askMessage("Are you sure you want to exit?", "Exit Game", JOptionPane.YES_NO_OPTION); 
-			if(option == JOptionPane.YES_OPTION) 
+		} else if (actionSource == exit) {
+			int option = askMessage("Are you sure you want to exit?",
+					"Exit Game", JOptionPane.YES_NO_OPTION);
+			if (option == JOptionPane.YES_OPTION)
 				System.exit(0);
-		}
-		else if (actionSource == about) {
-			JOptionPane.showMessageDialog(null, "This Game was created by Megan Kernis, Patrick Casey, and Matt Hacker.\n" +
-					"Current Version: 0.1\n" +
-					"Team 04, CSCE 315-501\n",
-					"About", JOptionPane.ERROR_MESSAGE);
-		}
-		else if (actionSource == instructions) {
-			JOptionPane.showMessageDialog(null, "Move your piece toward or way from an enemy piece to capture it.\n" +
-					"You may only move a piece that will cause the capture of an enemy piece.\n" +
-					"The Game will continue as long as there are valid move to be made.\n" +
-					"More instructions to follow...", "Instructions", JOptionPane.ERROR_MESSAGE);
+		} else if (actionSource == about) {
+			JOptionPane.showMessageDialog(null,
+					"This Game was created by Megan Kernis, Patrick Casey, and Matt Hacker.\n"
+							+ "Current Version: 0.1\n"
+							+ "Team 04, CSCE 315-501\n", "About",
+					JOptionPane.ERROR_MESSAGE);
+		} else if (actionSource == instructions) {
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"Move your piece toward or way from an enemy piece to capture it.\n"
+									+ "You may only move a piece that will cause the capture of an enemy piece.\n"
+									+ "The Game will continue as long as there are valid move to be made.\n"
+									+ "More instructions to follow...",
+							"Instructions", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	public int askMessage(String message, String title, int option) { 
-		return JOptionPane.showConfirmDialog(null, message, title, option); 
-	} 
+	public int askMessage(String message, String title, int option) {
+		return JOptionPane.showConfirmDialog(null, message, title, option);
+	}
 
-	public static void main(String[] args) {
-		 FanoronaGame game = new FanoronaGame();
+	public static void main(String[] args) throws IOException {
+		FanoronaGame game = new FanoronaGame();
 	}
 }
