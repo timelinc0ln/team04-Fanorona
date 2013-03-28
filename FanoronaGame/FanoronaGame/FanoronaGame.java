@@ -130,11 +130,11 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		picLabel.setLayout(grid);
 
 		//\playingFieldPanel.setOpaque(true);
-		playingFieldPanel.setBackground(Color.gray);
+		playingFieldPanel.setBackground(new Color(110,110,110));
 
 		
 		
-		
+		//THIS IS TO FIND X Y COORDINATES ON THE CURRENT PLANE OR PIC BY CLICKING
 //		picLabel.addMouseListener(new MouseListener() {
 //            public void mouseClicked(MouseEvent e) {
 //                System.out.println(" (" + e.getX() + ", " + e.getY() + ") ;");
@@ -173,7 +173,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		for (int x = 0; x < 9; x++) {
 			for(int y =0; y < 2; y++) {
 				buttonArray[x][y] = new GamePieces('B');
-				buttonArray[x][y].setLocation(79+x*85, 70+y*77);
+			//	buttonArray[x][y].setLocation(79+x*85, 70+y*77);
 				buttonArray[x][y].setBackground(new Color(0, 0, 0));
 				buttonArray[x][y].addActionListener(this);
 				buttonArray[x][y].setVisible(true);
@@ -185,8 +185,8 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		// Manually set Row 3
 		buttonArray[0][2] = new GamePieces('W');
 		//buttonArray[0][2].setLocation(82, 230);
-		buttonArray[0][2].setAlignmentX(82);
-		buttonArray[0][2].setAlignmentY(230);
+		buttonArray[0][2].setAlignmentX(82); //DONT THINK THIS LINE
+		buttonArray[0][2].setAlignmentY(230); //OR THIS ONE ARE NEEDED. BUT IT TELLS YOU WHERE THE PIECES ARE
 		buttonArray[0][2].setBackground(new Color(255, 255, 255));
 		buttonArray[0][2].addActionListener(this);
 		buttonArray[0][2].setVisible(true);
@@ -223,7 +223,11 @@ public class FanoronaGame extends JPanel implements ActionListener {
 //		buttonArray[4][2].setLocation(422, 230);
 		buttonArray[4][2].setAlignmentX(422);
 		buttonArray[4][2].setAlignmentY(230);
-		buttonArray[4][2].setVisible(false);
+		buttonArray[4][2].setBackground(new Color(110,110,110)); //background pic color
+		buttonArray[4][2].setContentAreaFilled(false);
+		buttonArray[4][2].setBorderPainted(false);
+		buttonArray[4][2].addActionListener(this);
+		//buttonArray[4][2].setVisible(false);
 		picLabel.add(buttonArray[4][2]);
 
 		buttonArray[5][2] = new GamePieces('W');
