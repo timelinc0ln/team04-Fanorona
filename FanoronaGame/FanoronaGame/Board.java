@@ -1,3 +1,4 @@
+import java.util.Scanner;
 class Board {
 // ---------------- This is a resize function for an array --------------------------
 	private static Object resize_array (Object oldArray, int newSize) {
@@ -14,6 +15,234 @@ class Board {
 	private int row_limit;
 	private int column_limit;
 	private char board[][] = new char[row_limit][column_limit];
+	// Move type functions
+	private void capture(char team_moved, int x_ps, int y_ps, int x_zs, int y_zs, int forward) {
+		int i = 1;
+		if (forward == 1) {
+			// Upper left
+			if ((x_ps-x_zs) > 0 && (y_ps-y_zs) > 0) {
+				while (x_zs-i >= 0 && y_zs-i >= 0) {
+					if (board[x_zs-i][y_zs-i] != 'E') {
+						if (board[x_zs-i][y_zs-i] == team_moved && 
+							board[x_zs-i][y_zs-i] != 'X') {
+								break;
+							}
+						board[x_zs-i][y_zs-i] = 'E';
+					}
+					i++;
+				}
+			}
+			// Upper
+			else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) == 0) {
+				while (x_zs-i >= 0) {
+					if (board[x_zs-i][y_zs] != 'E') {
+						if (board[x_zs-i][y_zs] == team_moved && 
+							board[x_zs-i][y_zs] != 'X') {
+								break;
+							}
+						board[x_zs-i][y_zs] = 'E';
+					}
+					i++;
+				}
+			}
+			// Upper right
+			else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) < 0) {
+				while (x_zs-i >= 0 && y_zs+i < column_limit) {
+					if (board[x_zs-i][y_zs+i] != 'E') {
+						if (board[x_zs-i][y_zs+i] == team_moved && 
+							board[x_zs-i][y_zs+i] != 'X') {
+								break;
+							}
+						board[x_zs-i][y_zs+i] = 'E';
+					}
+					i++;
+				}
+			}
+			// Left
+			else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) > 0) {
+				while (y_zs-i >= 0) {
+					if (board[x_zs][y_zs-i] != 'E') {
+						if (board[x_zs][y_zs-i] == team_moved && 
+							board[x_zs][y_zs-i] != 'X') {
+								break;
+							}
+						board[x_zs][y_zs-i] = 'E';
+					}
+					i++;
+				}
+			}
+			// Right
+			else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) < 0) {
+				while (y_zs+i < column_limit) {
+					if (board[x_zs][y_zs+i] != 'E') {
+						if (board[x_zs][y_zs+i] == team_moved && 
+							board[x_zs][y_zs+i] != 'X') {
+								break;
+							}
+						board[x_zs][y_zs+i] = 'E';
+					}
+					i++;
+				}
+			}
+			// Down Left
+			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) > 0) {
+				while (x_zs+i < row_limit && y_zs-i >= 0) {
+					if (board[x_zs+i][y_zs-i] != 'E') {
+						if (board[x_zs+i][y_zs-i] == team_moved && 
+							board[x_zs+i][y_zs-i] != 'X') {
+								break;
+							}
+						board[x_zs+i][y_zs-i] = 'E';
+					}
+					i++;
+				}
+			}
+			// Down
+			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) == 0) {
+				while (x_zs+i < row_limit) {
+					if (board[x_zs+i][y_zs] != 'E') {
+						if (board[x_zs+i][y_zs] == team_moved && 
+							board[x_zs+i][y_zs] != 'X') {
+								break;
+							}
+						board[x_zs+i][y_zs] = 'E';
+					}
+					i++;
+				}
+			}
+			// Down Right
+			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) < 0) {
+				while (x_zs+i < row_limit && y_zs+i < column_limit) {
+					if (board[x_zs+i][y_zs+i] != 'E') {
+						if (board[x_zs+i][y_zs+i] == team_moved && 
+							board[x_zs+i][y_zs+i] != 'X') {
+								break;
+							}
+						board[x_zs+i][y_zs+i] = 'E';
+					}
+					i++;
+				}
+			}
+		}
+		// Backwards capture
+		else if (forward == 0) {
+			// Upper left
+			if ((x_ps-x_zs) > 0 && (y_ps-y_zs) > 0) {
+				while (x_ps+i < row_limit && y_ps+i < column_limit) {
+					if (board[x_ps+i][y_ps+i] != 'E') {
+						if (board[x_ps+i][y_ps+i] == team_moved && 
+							board[x_ps+i][y_ps+i] != 'X') {
+								break;
+							}
+						board[x_ps+i][y_ps+i] = 'E';
+					}
+					i++;
+				}
+			}
+			// Upper
+			else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) == 0) {
+				while (x_ps+i < row_limit) {
+					if (board[x_ps+i][y_ps] != 'E') {
+						if (board[x_ps+i][y_ps] == team_moved && 
+							board[x_ps+i][y_ps] != 'X') {
+								break;
+							}
+						board[x_ps+i][y_ps] = 'E';
+					}
+					i++;
+				}
+			}
+			// Upper right
+			else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) < 0) {
+				while (x_ps-i < row_limit && y_ps+i >= 0) {
+					if (board[x_ps+i][y_ps-i] != 'E') {
+						if (board[x_ps+i][y_ps-i] == team_moved && 
+							board[x_ps+i][y_ps-i] != 'X') {
+								break;
+							}
+						board[x_ps+i][y_ps-i] = 'E';
+					}
+					i++;
+				}
+			}
+			// Left
+			else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) > 0) {
+				while (y_ps-i < column_limit) {
+					if (board[x_ps][y_ps+i] != 'E') {
+						if (board[x_ps][y_ps+i] == team_moved && 
+							board[x_ps][y_ps+i] != 'X') {
+								break;
+							}
+						board[x_ps][y_ps+i] = 'E';
+					}
+					i++;
+				}
+			}
+			// Right
+			else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) < 0) {
+				while (y_ps+i >= 0) {
+					if (board[x_ps][y_ps-i] != 'E') {
+						if (board[x_ps][y_ps-i] == team_moved && 
+							board[x_ps][y_ps-i] != 'X') {
+								break;
+							}
+						board[x_ps][y_ps-i] = 'E';
+					}
+					i++;
+				}
+			}
+			// Down Left
+			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) > 0) {
+				while (x_ps+i >= 0 && y_ps-i < column_limit) {
+					if (board[x_ps-i][y_ps+i] != 'E') {
+						if (board[x_ps-i][y_ps+i] == team_moved && 
+							board[x_ps-i][y_ps+i] != 'X') {
+								break;
+							}
+						board[x_ps-i][y_ps+i] = 'E';
+					}
+					i++;
+				}
+			}
+			// Down
+			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) == 0) {
+				while (x_ps+i >= 0) {
+					if (board[x_ps-i][y_ps] != 'E') {
+						if (board[x_ps-i][y_ps] == team_moved && 
+							board[x_ps-i][y_ps] != 'X') {
+								break;
+							}
+						board[x_ps-i][y_ps] = 'E';
+					}
+					i++;
+				}
+			}
+			// Down Right
+			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) < 0) {
+				while (x_ps+i >= 0 && y_ps+i >= 0) {
+					if (board[x_ps-i][y_ps-i] != 'E') {
+						if (board[x_ps-i][y_ps-i] == team_moved && 
+							board[x_ps-i][y_ps-i] != 'X') {
+								break;
+							}
+						board[x_ps-i][y_ps-i] = 'E';
+					}
+					i++;
+				}
+			}
+		}
+	}
+
+	private void paika(int x_ps, int y_ps, int x_zs, int y_zs) {
+		char team = board[x_ps][y_ps];
+		board[x_zs][y_zs] = team;
+		board[x_ps][y_ps] = 'E';
+	}
+	
+	private void sacrifice(int x, int y) {
+		board[x][y] = 'X';
+	}
+
 // ----------------------------------------------------------------------------------
 // ------------------------------- Constructors -------------------------------------
 	//Default Board constructor
@@ -81,10 +310,6 @@ class Board {
 	}		
 // ----------------------------------------------------------------------------------
 // ---------------------------- Public Functions ------------------------------------
-	public char game_piece(int i, int j) {
-		return board[i][j];
-	}
-	
 	public int white_remaining() {
 		int total = 0;
 		for (int i = 0; i < row_limit; i++) {
@@ -619,145 +844,68 @@ class Board {
 		return Captures;
 	}
 	
-	public void capture(char team_moved, int x_ps, int y_ps, int x_zs, int y_zs, int forward) {
-		int i = 1;
-		if (forward == 1) {
-			// Upper left
-			if ((x_ps-x_zs) > 0 && (y_ps-y_zs) > 0) {
-				while (x_zs-i >= 0 && y_zs-i >= 0) {
-					if (board[x_zs-i][y_zs-i] != 'E') {
-						if (board[x_zs-i][y_zs-i] == team_moved && 
-							board[x_zs-i][y_zs-i] != 'X') {
-								break;
-							}
-						board[x_zs-i][y_zs-i] = 'E';
-					}
-					i++;
-				}
-			}
-			// Upper
-			else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) == 0) {
-				while (x_zs-i >= 0) {
-					if (board[x_zs-i][y_zs] != 'E') {
-						if (board[x_zs-i][y_zs] == team_moved && 
-							board[x_zs-i][y_zs] != 'X') {
-								break;
-							}
-						board[x_zs-i][y_zs] = 'E';
-					}
-					i++;
-				}
-			}
-			// Upper right
-			else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) < 0) {
-				while (x_zs-i >= 0 && y_zs+i < column_limit) {
-					if (board[x_zs-i][y_zs+i] != 'E') {
-						if (board[x_zs-i][y_zs+i] == team_moved && 
-							board[x_zs-i][y_zs+i] != 'X') {
-								break;
-							}
-						board[x_zs-i][y_zs+i] = 'E';
-					}
-					i++;
-				}
-			}
-			// Left
-			else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) > 0) {
-				while (y_zs-i >= 0) {
-					if (board[x_zs][y_zs-i] != 'E') {
-						if (board[x_zs][y_zs-i] == team_moved && 
-							board[x_zs][y_zs-i] != 'X') {
-								break;
-							}
-						board[x_zs][y_zs-i] = 'E';
-					}
-					i++;
-				}
-			}
-			// Right
-			else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) < 0) {
-				while (y_zs+i < column_limit) {
-					if (board[x_zs][y_zs+i] != 'E') {
-						if (board[x_zs][y_zs+i] == team_moved && 
-							board[x_zs][y_zs+i] != 'X') {
-								break;
-							}
-						board[x_zs][y_zs+i] = 'E';
-					}
-					i++;
-				}
-			}
-			// Down Left
-			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) > 0) {
-				while (x_zs+i < row_limit && y_zs-i >= 0) {
-					if (board[x_zs+i][y_zs-i] != 'E') {
-						if (board[x_zs+i][y_zs-i] == team_moved && 
-							board[x_zs+i][y_zs-i] != 'X') {
-								break;
-							}
-						board[x_zs+i][y_zs-i] = 'E';
-					}
-					i++;
-				}
-			}
-			// Down
-			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) == 0) {
-				while (x_zs+i < row_limit) {
-					if (board[x_zs+i][y_zs] != 'E') {
-						if (board[x_zs+i][y_zs] == team_moved && 
-							board[x_zs+i][y_zs] != 'X') {
-								break;
-							}
-						board[x_zs+i][y_zs] = 'E';
-					}
-					i++;
-				}
-			}
-			// Down Right
-			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) < 0) {
-				while (x_zs+i < row_limit && y_zs+i < column_limit) {
-					if (board[x_zs+i][y_zs+i] != 'E') {
-						if (board[x_zs+i][y_zs+i] == team_moved && 
-							board[x_zs+i][y_zs+i] != 'X') {
-								break;
-							}
-						board[x_zs+i][y_zs+i] = 'E';
-					}
-					i++;
+	public void turn(char team, int move, int x_ps, int y_ps, int x_zs, int y_zs) {
+		Scanner in = new Scanner(System.in);
+		while (check_for_capture(team) > 0 && move == 3) {
+			System.out.println("You must preform a capture move or sacrifice move");
+			System.out.print("current x: ");
+			x_ps = in.nextInt();
+			System.out.print("current y: ");
+			y_ps = in.nextInt();
+			System.out.print("next x: ");
+			x_zs = in.nextInt();
+			System.out.print("next y: ");
+			y_zs = in.nextInt();
+		}
+		if (move == 1) {
+			capture(team, x_ps, y_ps, x_zs, y_zs, move);
+			board[x_ps][y_ps] = 'M';
+			board[x_zs][y_zs] = team;
+		}
+		else if (move == 2) {
+			capture(team, x_ps, y_ps, x_zs, y_zs, move);
+			board[x_ps][y_ps] = 'M';
+			board[x_zs][y_zs] = team;
+		}
+		else if (move ==3) {
+			paika(x_ps, y_ps, x_zs, y_zs);
+		}
+		else if (move == 4) {
+			sacrifice(x_ps, y_ps);
+		}
+	}
+	
+	public void turn_change() {
+		for (int i = 0; i < row_limit; i++) {
+			for (int j = 0; j < column_limit; j++) {
+				if (board[i][j] == 'M') {
+					board[i][j] = 'E';
 				}
 			}
 		}
 	}
-
-	public void move(int x_ps, int y_ps, int x_zs, int y_zs) {
-		char team = board[x_ps][y_ps];
-		board[x_zs][y_zs] = team;
-		board[x_ps][y_ps] = 'E';
-	}
-	
-	public void sacrifice(int x, int y) {
-		board[x][y] = 'X';
-	}
-	
 // -----------------------------------------------------------------------------------
 // ------------------------------ Main testing ---------------------------------------	
 	public static void main(String[]args) {
-	Board fanorona = new Board();
-	fanorona.display_board();
-	System.out.println("White has " + fanorona.white_remaining() + " remaining");
-	System.out.println("Black has " + fanorona.black_remaining() + " remaining");
-	fanorona.sacrifice(2, 5);
-	System.out.println("White currently has " + fanorona.check_for_capture('W') + " captures");
-	//fanorona.capture('W', 3, 3, 2, 4, 1);
-	//fanorona.capture('W', 3, 4, 2, 4, 1);
-	//fanorona.capture('W', 3, 5, 2, 4, 1);
-	//fanorona.capture('B', 2, 5, 2, 4, 1);
-	//fanorona.capture('B', 0, 5, 1, 4, 1);
-	fanorona.capture('B', 1, 4, 2, 4, 1);
-	fanorona.display_board();
-	Board test = new Board(13,1);
-	test.display_board();
-	System.out.println("White currently has " + test.check_for_capture('W') + " captures");
+		System.out.println("Default Board");
+		Board fanorona = new Board();
+		fanorona.display_board();
+		System.out.println("White has " + fanorona.white_remaining() + " remaining");
+		System.out.println("Black has " + fanorona.black_remaining() + " remaining");
+		System.out.println("White currently has " + fanorona.check_for_capture('W') + " captures");
+		System.out.println("Black currently has " + fanorona.check_for_capture('B') + " captures");
+		fanorona.turn('W', 1, 2, 3, 2, 4);
+		fanorona.display_board();
+		fanorona.turn_change();
+		System.out.println("Turn change");
+		fanorona.display_board();
+		System.out.println("13x1");
+		Board test = new Board(13,1);
+		test.display_board();
+		System.out.println("White has " + test.white_remaining() + " remaining");
+		System.out.println("Black has " + test.black_remaining() + " remaining");
+		System.out.println("White currently has " + test.check_for_capture('W') + " captures");
+		System.out.println("Black currently has " + test.check_for_capture('B') + " captures");
 	}
 //------------------------------------------------------------------------------------
 }
