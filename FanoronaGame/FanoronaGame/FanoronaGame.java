@@ -329,7 +329,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		} else if (actionSource == about) {
 			JOptionPane.showMessageDialog(null,
 					"This Game was created by Megan Kernis, Patrick Casey, and Matt Hacker.\n"
-							+ "Current Version: 0.1\n"
+							+ "Current Version: 0.8\n"
 							+ "Team 04, CSCE 315-501\n", "About",
 					JOptionPane.ERROR_MESSAGE);
 		} else if (actionSource == instructions) {

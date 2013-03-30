@@ -5,7 +5,7 @@ import java.awt.List;
 import java.util.*;
 
 public class MiniMaxTree {
-	private Tree mmTree;
+	private Tree<T> mmTree;
 
 	/**
 	 * Get the best move give the current board state

@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+
 class Board {
 // ---------------- This is a resize function for an array --------------------------
 	private static Object resize_array (Object oldArray, int newSize) {
@@ -16,6 +18,10 @@ class Board {
 	private int column_limit;
 	private char board[][] = new char[row_limit][column_limit];
 	// Move type functions
+// -------------------------- Public members ---------------------------------------
+	List<int> x_index = new ArrayList<int>();
+	List<int> y_index = new ArrayList<int>();
+// -------------------------- Private Functions ---------------------------------------
 	private void capture(char team_moved, int x_ps, int y_ps, int x_zs, int y_zs, int forward) {
 		int i = 1;
 		if (forward == 1) {
@@ -340,10 +346,13 @@ class Board {
 			System.out.println();
 		}
 	}
+
 	// This function returns the number of captures that are
 	// available for a given team.
 	public int check_for_capture(char team) {
 		int Captures = 0;
+		x_index.clear();
+		y_index.clear();
 		for (int i = 0; i < row_limit; i++) {
 			for (int j = 0; j < column_limit; j++) {
 				if (board[i][j] == 'E') {
@@ -358,7 +367,9 @@ class Board {
 										board[i+1][j+1] != team && 
 										board[i+1][j+1] != 'E'  &&
 										board[i+1][j+1] != 'X') {
-											Captures += 1;	
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);	
 										}
 									// Backwards capture
 									if (i != 1 && j != 1) {
@@ -366,7 +377,9 @@ class Board {
 											board[i-2][j-2] != team && 
 											board[i-2][j-2] != 'E'  &&
 											board[i-2][j-2] != 'X') {
-												Captures += 1;
+												Captures +=1;
+												x_index.add(i);
+												y_index.add(j);
 											}
 									}	
 									// Check up 
@@ -375,7 +388,9 @@ class Board {
 										board[i+1][j] != team && 
 										board[i+1][j] != 'E'  &&
 										board[i+1][j] != 'X') {
-											Captures += 1;
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 									// Backwards capture
 									if (i != 1) {
@@ -383,7 +398,9 @@ class Board {
 											board[i-2][j] != team && 
 											board[i-2][j] != 'E'  &&
 											board[i-2][j] != 'X') {
-												Captures += 1;
+												Captures +=1;
+												x_index.add(i);
+												y_index.add(j);
 											}
 									}
 									// Check up and to the right 
@@ -392,7 +409,9 @@ class Board {
 										board[i+1][j-1] != team && 
 										board[i+1][j-1] != 'E'	&&
 										board[i+1][j-1] != 'X') {
-											Captures += 1;
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}	
 									// Backwards capture
 									if (i != 1 && j != column_limit-2) {
@@ -400,7 +419,9 @@ class Board {
 											board[i-2][j+2] != team && 
 											board[i-2][j+2] != 'E'	&&
 											board[i-2][j+2] != 'X') {
-												Captures += 1;
+												Captures +=1;
+												x_index.add(i);
+												y_index.add(j);
 											}
 									}	
 									// Check left 
@@ -409,7 +430,9 @@ class Board {
 										board[i][j+1] != team && 
 										board[i][j+1] != 'E'  &&
 										board[i][j+1] != 'X') {
-											Captures += 1;
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 									// Backwards capture
 									if (j != 1) {	
@@ -417,7 +440,9 @@ class Board {
 											board[i][j-2] != team && 
 											board[i][j-2] != 'E'  &&
 											board[i][j-2] != 'X') {
-												Captures += 1;
+												Captures +=1;
+												x_index.add(i);
+												y_index.add(j);
 											}
 									}
 									// Check right 
@@ -426,7 +451,9 @@ class Board {
 										board[i][j-1] != team && 
 										board[i][j-1] != 'E'  &&
 										board[i][j-1] != 'X') {
-											Captures += 1;
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 									// Backwards capture
 									if (j != column_limit-2) {
@@ -434,7 +461,9 @@ class Board {
 											board[i][j+2] != team && 
 											board[i][j+2] != 'E'&&
 											board[i][j+2] != 'X') {
-												Captures += 1;
+												Captures +=1;
+												x_index.add(i);
+												y_index.add(j);
 											}
 									}	
 									// Check down and to the left 
@@ -443,7 +472,9 @@ class Board {
 										board[i-1][j+1] != team && 
 										board[i-1][j+1] != 'E'	&&
 										board[i-1][j+1] != 'X') {
-											Captures += 1;
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 									// Backwards capture
 									if (i != row_limit-2 && j != 1) {
@@ -451,7 +482,9 @@ class Board {
 											board[i+2][j-2] != team && 
 											board[i+2][j-2] != 'E'  &&
 											board[i+2][j-2] != 'X') {
-												Captures += 1;
+												Captures +=1;
+												x_index.add(i);
+												y_index.add(j);
 											}
 									}	
 									// Check down 
@@ -460,7 +493,9 @@ class Board {
 										board[i-1][j] != team && 
 										board[i-1][j] != 'E'  &&
 										board[i-1][j] != 'X') {
-											Captures += 1;
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 									// Backwards capture
 									if (i != row_limit-2) {
@@ -468,7 +503,9 @@ class Board {
 											board[i+2][j] != team && 
 											board[i+2][j] != 'E'  &&
 											board[i+2][j] != 'X') {
-												Captures += 1;
+												Captures +=1;
+												x_index.add(i);
+												y_index.add(j);
 											}
 									}	
 									// Check down and to the right 
@@ -477,7 +514,9 @@ class Board {
 										board[i-1][j-1] != team && 
 										board[i-1][j-1] != 'E' &&
 										board[i-1][j-1] != 'X') {
-											Captures += 1;
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 									// Backwards capture
 									if ( i != row_limit-2 && 
@@ -486,7 +525,9 @@ class Board {
 												board[i+2][j+2] != team && 
 												board[i+2][j+2] != 'E'	&&
 												board[i+2][j+2] != 'X') {
-													Captures += 1;
+													Captures +=1;
+													x_index.add(i);
+													y_index.add(j);
 												}
 									}
 								}
@@ -498,7 +539,9 @@ class Board {
 								board[i+1][j] != team && 
 								board[i+1][j] != 'E'  &&
 								board[i+1][j] != 'X') {
-									Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 								}
 							// Backwards capture
 							if (i != 1) {
@@ -506,7 +549,9 @@ class Board {
 									board[i-2][j] != team && 
 									board[i-2][j] != 'E'  &&
 									board[i-2][j] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Check down 
@@ -515,7 +560,9 @@ class Board {
 								board[i-1][j] != team && 
 								board[i-1][j] != 'E'  &&
 								board[i-1][j] != 'X') {
-									Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 								}
 							// Backwards capture
 							if (i != row_limit-2) {
@@ -523,7 +570,9 @@ class Board {
 									board[i+2][j] != team && 
 									board[i+2][j] != 'E'  &&
 									board[i+2][j] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}	
 							// Check left 
@@ -532,7 +581,9 @@ class Board {
 								board[i][j+1] != team && 
 								board[i][j+1] != 'E'  &&
 								board[i][j+1] != 'X') {
-									Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 								}
 							// Backwards capture
 							if ( j != 1) {
@@ -540,7 +591,9 @@ class Board {
 									board[i][j-2] != team && 
 									board[i][j-2] != 'E'  &&
 									board[i][j-2] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}	
 							// Check right 
@@ -549,7 +602,9 @@ class Board {
 								board[i][j-1] != team && 
 								board[i][j-1] != 'E'  &&
 								board[i][j-1] != 'X') {
-									Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 								}
 							// Backwards caputre
 							if (j != column_limit-2) {
@@ -557,7 +612,9 @@ class Board {
 									board[i][j+2] != team &&
 									board[i][j+2] != 'E'  &&
 									board[i][j+2] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 						}
@@ -572,7 +629,9 @@ class Board {
 									board[i][j+1] != team && 
 									board[i][j+1] != 'E'  &&
 									board[i][j+1] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Backwards capture
@@ -581,7 +640,9 @@ class Board {
 									board[i][j-2] != team && 
 									board[i][j-2] != 'E'  &&
 									board[i][j-2] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Check down and to the left
@@ -592,7 +653,9 @@ class Board {
 										board[i+2][j-2] != team && 
 										board[i+2][j-2] != 'E'  &&
 										board[i+2][j-2] != 'X') {
-											Captures += 1;
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 								}
 							}
@@ -605,7 +668,9 @@ class Board {
 									board[i][j-1] != team && 
 									board[i][j-1] != 'E'  &&
 									board[i][j-1] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Backwards capture
@@ -614,7 +679,9 @@ class Board {
 									board[i][j+2] != team && 
 									board[i][j+2] != 'E'  &&
 									board[i][j+2] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Check down and to the right
@@ -625,7 +692,9 @@ class Board {
 										board[i+2][j+2] != team && 
 										board[i+2][j+2] != 'E'  &&
 										board[i+2][j+2] != 'X') {
-											Captures += 1;
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 								}
 							}
@@ -641,7 +710,9 @@ class Board {
 									board[i][j+1] != team && 
 									board[i][j+1] != 'E'  &&
 									board[i][j+1] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Backwards capture
@@ -650,7 +721,9 @@ class Board {
 									board[i][j-2] != team && 
 									board[i][j-2] != 'E'  &&
 									board[i][j-2] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Check up and to the left
@@ -661,7 +734,9 @@ class Board {
 										board[i-2][j-2] != team && 
 										board[i-2][j-2] != 'E'  &&
 										board[i-2][j-2] != 'X') {
-											Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 										}
 								}
 							}
@@ -674,7 +749,9 @@ class Board {
 									board[i][j-1] != team && 
 									board[i][j-1] != 'E'  &&
 									board[i][j-1] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Backwards capture
@@ -683,7 +760,9 @@ class Board {
 									board[i][j+2] != team && 
 									board[i][j+2] != 'E'  &&
 									board[i][j+2] != 'X') {
-										Captures += 1;
+										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}	
 							// Check up and to the right
@@ -694,7 +773,9 @@ class Board {
 										board[i-2][j+2] != team && 
 										board[i-2][j+2] != 'E'  &&
 										board[i-2][j+2] != 'X') {
-											Captures += 1;
+											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 								}
 							}
@@ -711,6 +792,8 @@ class Board {
 									board[i+1][j] != 'E'  &&
 									board[i+1][j] != 'X') {
 										Captures += 1;
+										x_index.add(i);
+										y_index.add(j);									
 									}
 							}
 							// Backwards capture
@@ -720,6 +803,8 @@ class Board {
 									board[i-2][j] != 'E'  &&
 									board[i-2][j] != 'X') {
 										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Check up and to the right
@@ -730,7 +815,9 @@ class Board {
 										board[i-2][j+2] != team && 
 										board[i-2][j+2] != 'E'  &&
 										board[i-2][j+2] != 'X') {
-											Captures +=1;
+											Captures +=1;											
+											x_index.add(i);
+											y_index.add(j);
 										}
 								}
 							}
@@ -743,7 +830,9 @@ class Board {
 									board[i-1][j] != team && 
 									board[i-1][j] != 'E'  &&
 									board[i-1][j] != 'X') {
-										Captures += 1;
+										Captures += 1;	
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Backwards capture
@@ -753,6 +842,8 @@ class Board {
 									board[i+2][j] != 'E'  &&
 									board[i+2][j] != 'X') {
 										Captures += 1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Check down and to the right
@@ -764,6 +855,8 @@ class Board {
 										board[i+2][j+2] != 'E'  &&
 										board[i+2][j+2] != 'X') {
 											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 								}
 							}
@@ -780,6 +873,8 @@ class Board {
 									board[i+1][j] != 'E' &&
 									board[i+1][j] != 'X') {
 										Captures += 1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Backwards capture
@@ -789,6 +884,8 @@ class Board {
 									board[i-2][j] != 'E'  &&
 									board[i-2][j] != 'X') {
 										Captures +=1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Check up and to the left
@@ -800,6 +897,8 @@ class Board {
 										board[i-2][j-2] != 'E'  &&
 										board[i-2][j-2] != 'X') {
 											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 								}
 							}
@@ -813,6 +912,8 @@ class Board {
 									board[i-1][j] != 'E'  &&
 									board[i-1][j] != 'X') {
 										Captures += 1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Backwards capture
@@ -822,6 +923,8 @@ class Board {
 									board[i+2][j] != 'E' &&
 									board[i+2][j] != 'X') {
 										Captures += 1;
+										x_index.add(i);
+										y_index.add(j);
 									}
 							}
 							// Check down and to the left
@@ -833,6 +936,8 @@ class Board {
 										board[i+2][j-2] != 'E'  &&
 										board[i+2][j-2] != 'X') {
 											Captures +=1;
+											x_index.add(i);
+											y_index.add(j);
 										}
 								}
 							}
