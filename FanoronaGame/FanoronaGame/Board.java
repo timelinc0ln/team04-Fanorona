@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.List;
 import java.util.ArrayList;
 
 class Board {
@@ -19,8 +20,8 @@ class Board {
 	private char board[][] = new char[row_limit][column_limit];
 	// Move type functions
 // -------------------------- Public members ---------------------------------------
-	List<int> x_index = new ArrayList<int>();
-	List<int> y_index = new ArrayList<int>();
+	List<Integer> x_index = new ArrayList<Integer>();
+	List<Integer> y_index = new ArrayList<Integer>();
 // -------------------------- Private Functions ---------------------------------------
 	private void capture(char team_moved, int x_ps, int y_ps, int x_zs, int y_zs, int forward) {
 		int i = 1;
