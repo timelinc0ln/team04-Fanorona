@@ -14,10 +14,13 @@ public class GamePieces extends JButton {
 			c = Color.black;
 		} else if (color == 'W') {
 			c = Color.white;
-		} else {
-			c = new Color(110,110,110);
+		} else if (color == 'E'){
+			c = new Color(110,110,110); //board color
 			setContentAreaFilled(false);
 			setBorderPainted(false);
+		} else {
+			color = 'X';
+			c = Color.gray; //sacrifice piece, light grey color means blocked
 		}
 		// These statements enlarge the button so that it
 		// becomes a circle rather than an oval.
@@ -65,6 +68,9 @@ public class GamePieces extends JButton {
 //		graphics.setLocation(x, y);
 //	}
 	
+	public Color getColor() { //returns what c is set to. So the actual color (black, white, 110, or grey)
+            return this.c;
+        }
 
 //	// Hit detection.
 	Shape shape;
@@ -78,3 +84,7 @@ public class GamePieces extends JButton {
 		return shape.contains(x, y);
 	}
 }
+
+	//public String pieceLoc(GamePieces g[][]) { TRYING TO MAKE A FUCTION RETURN A STRING OF X AND Y GIVEN A GAMEPIECES OBJ
+    	//   if(FanoronaGame.)
+    	//}
