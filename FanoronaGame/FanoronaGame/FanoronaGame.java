@@ -174,8 +174,8 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		playingFieldPanel.setBounds(77, 70, 770, 390); //not sure if this is used?
 
 		// Create Black Pieces
-		for (int x = 0; x < 9; x++) {
-			for(int y =0; y < 2; y++) {
+		for(int y =0; y < 2; y++) {
+			for(int x = 0; x < 9; x++) {
 				buttonArray[x][y] = new GamePieces('B',x,y);
 			//	buttonArray[x][y].setLocation(79+x*85, 70+y*77);
 				buttonArray[x][y].setBackground(new Color(0, 0, 0));
