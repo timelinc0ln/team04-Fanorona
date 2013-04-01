@@ -34,7 +34,7 @@ public class FanoronaAI extends Board {
 	public FanoronaAI(boolean activeGame) {
 		// TODO: This
 		while(activeGame) {
-			int caputers = 0;
+			int captures = 0;
 			captures = check_for_capture(aiColor)
 			if (captures > 0) {
 				// It is possible for a piece to make a move
