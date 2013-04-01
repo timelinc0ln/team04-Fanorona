@@ -7,20 +7,25 @@ import javax.swing.*;
 
 public class GamePieces extends JButton {
 	Color c;
+	char team;
 	int x, y;
-
+	
 	public GamePieces(char color, int x, int y) {
 		// get the color of the piece based on the data array
 		if (color == 'B') {
 			c = Color.black;
+			team = 'B';
 		} else if (color == 'W') {
 			c = Color.white;
+			team = 'W';
 		} else if (color == 'E') {
 			c = new Color(110,110,110);
+			team = 'E';
 			setContentAreaFilled(false);
 			setBorderPainted(false);
 		} else {
 			color = 'X';
+			team = 'X';
 			c = Color.gray; //sacrifice piece, light grey color means blocked
 		}
 		this.x = x;
@@ -38,14 +43,14 @@ public class GamePieces extends JButton {
 	}
 
 	// Paint the round background and label.
-	@Override
+	//@Override
 	protected void paintComponent(Graphics g) {
 		if (getModel().isArmed()) {
 			// You might want to make the highlight color
 			// a property of the GamePieces class.
 			g.setColor(Color.red);
 		} else {
-			g.setColor(getBackground()) ;
+			g.setColor(getBackground());
 		}
 		g.fillOval(10, 10,  getWidth()-10, getWidth()-10);
 		
@@ -55,7 +60,6 @@ public class GamePieces extends JButton {
 	}
 
 	// Paint the border of the button using a simple stroke.
-	@Override
 	protected void paintBorder(Graphics g) {
 		g.drawOval(10, 10, getWidth()-10, getWidth()-10);
 		//g.drawLine(getWidth()/2, 0, getWidth()/2, getHeight()); // very
@@ -66,36 +70,43 @@ public class GamePieces extends JButton {
 		this.setBackground(clr);
 	}
 	
-	GamePieces source = null;
-   	GamePieces target = null;
 	
-	public Color getColor() { //returns what c is set to. So the actual color (black, white, 110, or grey)
-            return this.c;
-        }
-        
-         public int getXPos()
-         {
-         	int xpos;
-    		xpos = this.x;
-    		return xpos;
-    	}
+	public char checkTeam(int x, int y) {
+		return team;
+	}
     
-    	public int getYPos()
-    	{
-    		int ypos;
-    		ypos = this.y;
-    		return ypos;
-    	}
+
+    public int getXPos(){
+    	int xpos;
+    	xpos = this.x;
+    	return xpos;
+    	
+    }
+    
+    public int getYPos(){
+    	int ypos;
+    	ypos = this.y;
+    	return ypos;
+    	
+    }
      
     
     
      public boolean legalMove(GamePieces t) { //source piece calls it
-    	 if(this.getXPos() == t.getXPos() || this.getXPos()+1 == t.getXPos()+1 || this.getXPos()-1 == t.getXPos()-1
-    			 && this.getYPos() == t.getYPos() || this.getYPos()+1 == t.getYPos()+1 || this.getYPos()-1 == t.getYPos()-1)
-    	 	return true;
+    	 if( (this.getXPos() == t.getXPos() || this.getXPos()+1 == t.getXPos() || this.getXPos()-1 == t.getXPos() )
+    	   && (this.getYPos() == t.getYPos() || this.getYPos()+1 == t.getYPos() || this.getYPos()-1 == t.getYPos()) )
+    		 return true;
     	 else
-    		return false;
+    		 return false;
      }
+     
+     
+//     
+//     public boolean checkCapture() {
+//    	 
+//    	 
+//     }
+     
 
 //	// Hit detection.
 	Shape shape;
