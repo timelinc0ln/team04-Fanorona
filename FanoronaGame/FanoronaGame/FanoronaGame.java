@@ -28,14 +28,13 @@ public class FanoronaGame extends JPanel implements ActionListener {
 	// Buttons for Menus
 	JButton pve = new JButton("Player vs CPU");
 	JButton back = new JButton("exit");
-	
 	GamePieces buttonArray[][] = new GamePieces[9][5];
 
 	// Panels for Graphic interface
 	JPanel newGamePanel = new JPanel(), northPanel = new JPanel(),
 			southPanel = new JPanel(), topPanel = new JPanel(),
 			bottomPanel = new JPanel();
-	static JPanel playingFieldPanel = new JPanel(); //static so it can be accessed outside this class
+	static JPanel playingFieldPanel = new JPanel();
 	DrawBoard visibleBoard = new DrawBoard();
 	JLabel gameTitle = new JLabel("Fanorona");
 	//JTextArea text = new JTextArea();
@@ -103,6 +102,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		mainMenu.add(exit);
 
 		newGamePanel.add(pve);
+		newGamePanel.add(back);
 
 		// Add action listeners
 		newGame.addActionListener(this);
@@ -118,8 +118,8 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		BufferedImage myPicture = null;
 		Image pic = null; //pic that is scaled
 		try {
-			//myPicture = ImageIO.read(new File("H:/csce315/killme/FanoronaGame/src/FanoronaGame/board.jpg"));
-                        myPicture = ImageIO.read(new File("C:/Users/Meg/Documents/CSCE 315/ProjectNumberTwo/FanoronaGame/src/fanoronagame/board.jpg"));
+			myPicture = ImageIO.read(new File("H:/csce315/killme/FanoronaGame/src/FanoronaGame/board.jpg"));
+                       // myPicture = ImageIO.read(new File("C:/Users/Meg/Documents/CSCE 315/ProjectNumberTwo/FanoronaGame/src/fanoronagame/board.jpg"));
 			pic = myPicture.getScaledInstance(800, 400, 0); //how far spaced the buttons are seems to be determined by how large this is scaled..
 		} catch (IOException e) {
 			System.out.println("Could not load image.");
@@ -133,12 +133,11 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		
 		picLabel.setLayout(grid);
 
-		//\playingFieldPanel.setOpaque(true);
 		playingFieldPanel.setBackground(new Color(110,110,110));
 
 		
 		
-		//THIS IS TO FIND X Y COORDINATES ON THE CURRENT PLANE OR PIC BY CLICKING
+		//THIS IS USED TO FIND X Y POINTS ON THE SCREEN
 //		picLabel.addMouseListener(new MouseListener() {
 //            public void mouseClicked(MouseEvent e) {
 //                System.out.println(" (" + e.getX() + ", " + e.getY() + ") ;");
@@ -170,14 +169,16 @@ public class FanoronaGame extends JPanel implements ActionListener {
 //			}
 //		});
 
-		playingFieldPanel.add( picLabel );
-		playingFieldPanel.setBounds(77, 70, 770, 390); //not sure if this is used?
+		playingFieldPanel.add( picLabel ); //add the board background
+		playingFieldPanel.setBounds(77, 70, 770, 390); //don't think this does anything..
+
+		
 
 		// Create Black Pieces
-		for(int y =0; y < 2; y++) {
+		for (int y =0; y < 2; y++){
 			for(int x = 0; x < 9; x++) {
 				buttonArray[x][y] = new GamePieces('B',x,y);
-			//	buttonArray[x][y].setLocation(79+x*85, 70+y*77);
+				//buttonArray[x][y].setLocation(79+x*85, 70+y*77); this is for later, tells how the spacing is and where the pieces are
 				buttonArray[x][y].setBackground(new Color(0, 0, 0));
 				buttonArray[x][y].addActionListener(this);
 				buttonArray[x][y].setVisible(true);
@@ -189,9 +190,9 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		// Manually set Row 3
 		buttonArray[0][2] = new GamePieces('W',0,2);
 		//buttonArray[0][2].setLocation(82, 230);
-		//buttonArray[0][2].setAlignmentX(82); //DONT THINK THIS LINE
-		//buttonArray[0][2].setAlignmentY(230); //OR THIS ONE ARE NEEDED. BUT IT TELLS YOU WHERE THE PIECES ARE
-		buttonArray[0][2].setBackground(new Color(255, 255, 255)); //white
+		//buttonArray[0][2].setAlignmentX(82);
+		//buttonArray[0][2].setAlignmentY(230);
+		buttonArray[0][2].setBackground(new Color(255, 255, 255)); //black
 		buttonArray[0][2].addActionListener(this);
 		buttonArray[0][2].setVisible(true);
 		picLabel. add(buttonArray[0][2]);
@@ -200,71 +201,69 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		//buttonArray[1][2].setLocation(167, 230);
 		//buttonArray[1][2].setAlignmentX(167);
 		//buttonArray[1][2].setAlignmentY(230);
-		buttonArray[1][2].setBackground(new Color(0, 0, 0)); //black
+		buttonArray[1][2].setBackground(new Color(0, 0, 0)); //white
 		buttonArray[1][2].addActionListener(this);
 		buttonArray[1][2].setVisible(true);
 		picLabel.add(buttonArray[1][2]);
 
 		buttonArray[2][2] = new GamePieces('W',2,2);
 		//buttonArray[2][2].setLocation(252, 230);
-		//buttonArray[2][2].setAlignmentX(252);
-		//buttonArray[2][2].setAlignmentY(230);
+		buttonArray[2][2].setAlignmentX(252);
+		buttonArray[2][2].setAlignmentY(230);
 		buttonArray[2][2].setBackground(new Color(255, 255, 255));
 		buttonArray[2][2].addActionListener(this);
 		buttonArray[2][2].setVisible(true);
 		picLabel.add(buttonArray[2][2]);
 
 		buttonArray[3][2] = new GamePieces('B',3,2);
-		//buttonArray[3][2].setLocation(167, 230);
-		//buttonArray[3][2].setAlignmentX(337);
-		//buttonArray[3][2].setAlignmentY(230);
+//		buttonArray[3][2].setLocation(167, 230);
+		buttonArray[3][2].setAlignmentX(337);
+		buttonArray[3][2].setAlignmentY(230);
 		buttonArray[3][2].setBackground(new Color(0, 0, 0));
 		buttonArray[3][2].addActionListener(this);
 		buttonArray[3][2].setVisible(true);
 		picLabel.add(buttonArray[3][2]);
 
 		buttonArray[4][2] = new GamePieces('E',4,2);
-		//buttonArray[4][2].setLocation(422, 230);
-		//buttonArray[4][2].setAlignmentX(422);
-		//buttonArray[4][2].setAlignmentY(230);
-		buttonArray[4][2].setBackground(new Color(110,110,110)); //background pic color (dark grey)
-		buttonArray[4][2].setContentAreaFilled(false); //trying to make it invisible
-		buttonArray[4][2].setBorderPainted(false);	//but still clickable.. maybe setEnabled(true)
-		buttonArray[4][2].addActionListener(this);	// and have setVisible(false)?
-		//buttonArray[4][2].setVisible(false);
+		buttonArray[4][2].setBackground(new Color(110,110,110,0)); //background pic color2
+		buttonArray[4][2].setContentAreaFilled(false);
+		buttonArray[4][2].setBorderPainted(false);
+		buttonArray[4][2].addActionListener(this);
 		picLabel.add(buttonArray[4][2]);
 
+
+
 		buttonArray[5][2] = new GamePieces('W',5,2);
-		//buttonArray[5][2].setLocation(507, 230);
-		//buttonArray[5][2].setAlignmentX(507);
-		//buttonArray[5][2].setAlignmentY(230);
+//		buttonArray[5][2].setLocation(507, 230);
+		buttonArray[5][2].setAlignmentX(507);
+		buttonArray[5][2].setAlignmentY(230);
 		buttonArray[5][2].setBackground(new Color(255, 255, 255));
 		buttonArray[5][2].addActionListener(this);
 		buttonArray[5][2].setVisible(true);
 		picLabel.add(buttonArray[5][2]);
 
 		buttonArray[6][2] = new GamePieces('B',6,2);
-		//buttonArray[6][2].setLocation(592, 230);
-		//buttonArray[6][2].setAlignmentX(592);
-		//buttonArray[6][2].setAlignmentY(230);
+//		buttonArray[6][2].setLocation(592, 230);
+		buttonArray[6][2].setAlignmentX(592);
+		buttonArray[6][2].setAlignmentY(230);
 		buttonArray[6][2].setBackground(new Color(0, 0, 0));
 		buttonArray[6][2].addActionListener(this);
 		buttonArray[6][2].setVisible(true);
 		picLabel.add(buttonArray[6][2]);
 
 		buttonArray[7][2] = new GamePieces('W',7,2);
-		//buttonArray[7][2].setLocation(677, 230);
-		//buttonArray[7][2].setAlignmentX(677);
-		//buttonArray[7][2].setAlignmentY(230);
+//		buttonArray[7][2].setLocation(677, 230);
+		buttonArray[7][2].setAlignmentX(677);
+		buttonArray[7][2].setAlignmentY(230);
 		buttonArray[7][2].setBackground(new Color(255, 255, 255));
 		buttonArray[7][2].addActionListener(this);
 		buttonArray[7][2].setVisible(true);
 		picLabel.add(buttonArray[7][2]);
 
 		buttonArray[8][2] = new GamePieces('B',8,2);
-		//buttonArray[8][2].setLocation(762, 230);
-		//buttonArray[8][2].setAlignmentX(762);
-		//buttonArray[8][2].setAlignmentY(230);
+//		buttonArray[8][2].setLocation(762, 230);
+		buttonArray[8][2].setAlignmentX(762);
+		buttonArray[8][2].setAlignmentY(230);
 		buttonArray[8][2].setBackground(new Color(0, 0, 0));
 		buttonArray[8][2].addActionListener(this);
 		buttonArray[8][2].setVisible(true);
@@ -274,9 +273,9 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		for(int y = 3; y < 5; y++ ) {
 			for(int x = 0; x < 9; x++) {
 				buttonArray[x][y] = new GamePieces('W',x,y);
-				//buttonArray[x][y].setLocation(79+x*85, 70+y*77);
-				//buttonArray[x][y].setAlignmentX(82 + x*85);
-				//buttonArray[x][y].setAlignmentY(230 + y*77);
+//				buttonArray[x][y].setLocation(79+x*85, 70+y*77);
+				buttonArray[x][y].setAlignmentX(82 + x*85);
+				buttonArray[x][y].setAlignmentY(230 + y*77);
 				buttonArray[x][y].setBackground(new Color(255, 255, 255));
 				buttonArray[x][y].addActionListener(this);
 				buttonArray[x][y].setVisible(true);
@@ -292,9 +291,15 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		window.add(southPanel, BorderLayout.CENTER);
 		window.setVisible(true);
 	}
-	
+
 	GamePieces source = null;
+	int possible_moves = 50;
 	GamePieces target = null;
+	Color black = new Color(0,0,0);
+	Color white = new Color(255,255,255);
+	int[] invalidMoves;
+	
+	
 
 	public void actionPerformed(ActionEvent click) {
 		Object actionSource = click.getSource(); //Get the source of what object is having an action performed
@@ -360,10 +365,9 @@ public class FanoronaGame extends JPanel implements ActionListener {
 						window.validate();
 						//window.setVisible(true);
 					}
-                            }  
-                                
-                        }
-                }
+               }
+            }
+		}
                         
                 else if (actionSource == exit) { //If you clicked the Exit button
                     int exit_option = askMessage("Are you sure you want to exit?",
@@ -386,27 +390,66 @@ public class FanoronaGame extends JPanel implements ActionListener {
                                                         + "More instructions to follow...", "Instructions", 
                                         JOptionPane.ERROR_MESSAGE);
 		}
-		else if(actionSource instanceof GamePieces) {
-			if(source == null) {
-				source = (GamePieces)actionSource;
-			}
-			else if(source != null && (GamePieces)actionSource != source) {
-				target = (GamePieces)actionSource;
+		else if(actionSource instanceof GamePieces) //A Piece was clicked
+		{					
+		//	while(has_available_moves()) { //while the piece chosen still has possible moves it can take and capture others...
 				
-				if(source.legalMove(target)) {
-					target.setColor(source.getBackground());
-					source.setColor(new Color(0,0,0,0));
-					//if(checkCapture()) then capture (pseudocode)
-				}else if(!(source.legalMove(target))){
-					JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
+				if(source == null) //no piece chosen, make it the source
+				{
+					source = (GamePieces)actionSource;
 				}
 				
-				source = null;
+				else if(source != null && (GamePieces)actionSource != source)  //a source is chosen, and another button is clicked
+				{
+					target = (GamePieces)actionSource; //this next button is our target, must check if it is a valid move to make now:
+
+			
+					if(source.legalMove(target)) //checking to see if the move selected is one piece away (so it's valid)
+					{
+						target.setColor(source.getBackground()); //moves piece
+						source.setColor(new Color(0,0,0,0)); //makes source invisible
+
+							source = target;
+							target = null;
+							
+							//possible_moves--; //after the move is over decrease the total possible moves based on the size of the board
+							
+						//if(checkCapture()) { //after moving, check if there are any pieces to be captured
+						//	capture(); //if so, capture them
+						//}
+					}
+
+					else //if the move is NOT legal, pop up a window and notify the user
+					{
+						JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
+					}
+						
+				
+				
+//				else if(source != null && (GamePieces)actionSource == source)
+//				{
+//					source = null;
+//				}
+					
+					
+				source = null; //set source and target back to null, as nothing is selected
 				target = null;
-			}
-		}
+
+				}
+		
+			//	}// End of while loop
+				
+//				if(possible_moves == 0) {
+//					JOptionPane.showMessageDialog(null, "You have reached the number of possible moves!\n" + "The Game is OVER!", "End of Game", JOptionPane.INFORMATION_MESSAGE);
+//				}
+			
+			}//End of clicking a game piece
+		
+		}//End of ActionPerformed
+
+
 	
-	}
+	
 
 	public int askMessage(String message, String title, int option) {
 		return JOptionPane.showConfirmDialog(null, message, title, option);
@@ -414,7 +457,5 @@ public class FanoronaGame extends JPanel implements ActionListener {
 
 	public static void main(String[] args) throws IOException {
 		FanoronaGame game = new FanoronaGame();
-		//Client client = new Client();
-		//Server server = new Server();
 	}
 }
