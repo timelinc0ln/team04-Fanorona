@@ -15,7 +15,7 @@ public class BoardforGamePieces extends FanoronaGame {
 	MiniMaxTree mmTree = new MiniMaxTree();
 
 
-// ---------------- This is a resize function for an array --------------------------
+/* ---------------- This is a resize function for an array --------------------------
 	private static Object resize_array (Object oldArray, int newSize) {
 		int oldSize = java.lang.reflect.Array.getLength(oldArray);
 		Class elementType = oldArray.getClass().getComponentType();
@@ -25,7 +25,7 @@ public class BoardforGamePieces extends FanoronaGame {
 			System.arraycopy(oldArray, 0, newArray, 0, preserveLength);
 		return newArray; 
 	}
-// ----------------------------------------------------------------------------------
+ ----------------------------------------------------------------------------------*/
 // -------------------------- Private members ---------------------------------------    
 	private int row_limit;
 	private int column_limit;
