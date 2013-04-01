@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class FanoronaAI extends Board {
 	MiniMaxTree mmTree = new MiniMaxTree(); 
-	char aiColor;
+	char aiColor = 'B'; // defualt is AI player is Black
 	boolean activeGame; 
 
 	/**
@@ -24,7 +24,7 @@ public class FanoronaAI extends Board {
 		int forward = 0;
 
 		// perform capture move
-		capture(aiColor, xPos, yPos, moveX, moveY, forward);
+		turn(aiColor, xPos, yPos, moveX, moveY, forward);
 	}
 
 	/**
@@ -38,6 +38,7 @@ public class FanoronaAI extends Board {
 			captures = check_for_capture(aiColor)
 			if (captures > 0) {
 				// It is possible for a piece to make a move
+				selectPiece(aiColor);
 			}
 			else {
 				String pieceColor;
