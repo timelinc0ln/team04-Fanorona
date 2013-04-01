@@ -20,8 +20,25 @@ class Board {
 	private char board[][] = new char[row_limit][column_limit];
 	// Move type functions
 // -------------------------- Public members ---------------------------------------
-	List<Integer> x_index = new ArrayList<Integer>();
-	List<Integer> y_index = new ArrayList<Integer>();
+	/**
+	* Creates a class to be used by FanoronaAI for determing valid moves
+	* Stores the x and y indices of pieces that have valid moves
+	* Boolean values indicate which directions in releation to the pice have valid moves
+	*/
+	public class PossibleMoves {
+		Boolean north = false;
+		Boolean northEast = false;
+		Boolean northWest = false;
+		Boolean south = false;
+		Boolean southEast = false;
+		Boolean southWest = false;
+		Boolean east = false;
+		Boolean west = false;
+		int x_index;
+		int y_index;
+}
+
+	List<PossibleMoves> validMoves = new ArrayList<PossibleMoves>();
 // -------------------------- Private Functions ---------------------------------------
 	private void capture(char team_moved, int x_ps, int y_ps, int x_zs, int y_zs, int forward) {
 		int i = 1;
@@ -350,10 +367,10 @@ class Board {
 
 	// This function returns the number of captures that are
 	// available for a given team.
+	// also adds valid capture moves to an array for the AI
 	public int check_for_capture(char team) {
 		int Captures = 0;
-		x_index.clear();
-		y_index.clear();
+		validMoves.clear();
 		for (int i = 0; i < row_limit; i++) {
 			for (int j = 0; j < column_limit; j++) {
 				if (board[i][j] == 'E') {
@@ -368,9 +385,12 @@ class Board {
 										board[i+1][j+1] != team && 
 										board[i+1][j+1] != 'E'  &&
 										board[i+1][j+1] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);	
+											moves.x_index = i;
+											moves.y_index = j; 
+											moves.northWest = true; 
+											validMoves.add(moves);
 										}
 									// Backwards capture
 									if (i != 1 && j != 1) {
@@ -378,9 +398,12 @@ class Board {
 											board[i-2][j-2] != team && 
 											board[i-2][j-2] != 'E'  &&
 											board[i-2][j-2] != 'X') {
+												PossibleMoves moves = new PossibleMoves();
 												Captures +=1;
-												x_index.add(i);
-												y_index.add(j);
+												moves.x_index = i;
+												moves.y_index = j; 
+												moves.southEast = true; 	
+												validMoves.add(moves);
 											}
 									}	
 									// Check up 
@@ -389,9 +412,12 @@ class Board {
 										board[i+1][j] != team && 
 										board[i+1][j] != 'E'  &&
 										board[i+1][j] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 	
+											moves.north = true;
+											validMoves.add(moves);
 										}
 									// Backwards capture
 									if (i != 1) {
@@ -399,9 +425,12 @@ class Board {
 											board[i-2][j] != team && 
 											board[i-2][j] != 'E'  &&
 											board[i-2][j] != 'X') {
+												PossibleMoves moves = new PossibleMoves();
 												Captures +=1;
-												x_index.add(i);
-												y_index.add(j);
+												moves.x_index = i;
+												moves.y_index = j; 
+												moves.south = true; 	
+												validMoves.add(moves);
 											}
 									}
 									// Check up and to the right 
@@ -410,9 +439,12 @@ class Board {
 										board[i+1][j-1] != team && 
 										board[i+1][j-1] != 'E'	&&
 										board[i+1][j-1] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 	
+											moves.northEast = true; 
+											validMoves.add(moves);
 										}	
 									// Backwards capture
 									if (i != 1 && j != column_limit-2) {
@@ -420,9 +452,12 @@ class Board {
 											board[i-2][j+2] != team && 
 											board[i-2][j+2] != 'E'	&&
 											board[i-2][j+2] != 'X') {
+												PossibleMoves moves = new PossibleMoves();
 												Captures +=1;
-												x_index.add(i);
-												y_index.add(j);
+												moves.x_index = i;
+												moves.y_index = j; 	
+												moves.southWest = true; 
+												validMoves.add(moves);
 											}
 									}	
 									// Check left 
@@ -431,9 +466,12 @@ class Board {
 										board[i][j+1] != team && 
 										board[i][j+1] != 'E'  &&
 										board[i][j+1] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 
+											moves.west = true; 	
+											validMoves.add(moves);
 										}
 									// Backwards capture
 									if (j != 1) {	
@@ -441,9 +479,12 @@ class Board {
 											board[i][j-2] != team && 
 											board[i][j-2] != 'E'  &&
 											board[i][j-2] != 'X') {
+												PossibleMoves moves = new PossibleMoves();
 												Captures +=1;
-												x_index.add(i);
-												y_index.add(j);
+												moves.x_index = i;
+												moves.y_index = j; 
+												moves.east = true; 	
+												validMoves.add(moves);
 											}
 									}
 									// Check right 
@@ -452,9 +493,12 @@ class Board {
 										board[i][j-1] != team && 
 										board[i][j-1] != 'E'  &&
 										board[i][j-1] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 
+											moves.east = true; 	
+											validMoves.add(moves);
 										}
 									// Backwards capture
 									if (j != column_limit-2) {
@@ -462,9 +506,12 @@ class Board {
 											board[i][j+2] != team && 
 											board[i][j+2] != 'E'&&
 											board[i][j+2] != 'X') {
+												PossibleMoves moves = new PossibleMoves();
 												Captures +=1;
-												x_index.add(i);
-												y_index.add(j);
+												moves.x_index = i;
+												moves.y_index = j; 	
+												moves.west = true; 
+												validMoves.add(moves);
 											}
 									}	
 									// Check down and to the left 
@@ -473,9 +520,12 @@ class Board {
 										board[i-1][j+1] != team && 
 										board[i-1][j+1] != 'E'	&&
 										board[i-1][j+1] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 
+											moves.southWest = true; 	
+											validMoves.add(moves);
 										}
 									// Backwards capture
 									if (i != row_limit-2 && j != 1) {
@@ -483,9 +533,12 @@ class Board {
 											board[i+2][j-2] != team && 
 											board[i+2][j-2] != 'E'  &&
 											board[i+2][j-2] != 'X') {
+												PossibleMoves moves = new PossibleMoves();
 												Captures +=1;
-												x_index.add(i);
-												y_index.add(j);
+												moves.x_index = i;
+												moves.y_index = j; 	
+												moves.northEast = true;
+												validMoves.add(moves);
 											}
 									}	
 									// Check down 
@@ -494,9 +547,12 @@ class Board {
 										board[i-1][j] != team && 
 										board[i-1][j] != 'E'  &&
 										board[i-1][j] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 	
+											moves.south = true; 
+											validMoves.add(moves);
 										}
 									// Backwards capture
 									if (i != row_limit-2) {
@@ -504,9 +560,12 @@ class Board {
 											board[i+2][j] != team && 
 											board[i+2][j] != 'E'  &&
 											board[i+2][j] != 'X') {
+												PossibleMoves moves = new PossibleMoves();
 												Captures +=1;
-												x_index.add(i);
-												y_index.add(j);
+												moves.x_index = i;
+												moves.y_index = j; 
+												moves.north = true; 	
+												validMoves.add(moves);
 											}
 									}	
 									// Check down and to the right 
@@ -515,9 +574,12 @@ class Board {
 										board[i-1][j-1] != team && 
 										board[i-1][j-1] != 'E' &&
 										board[i-1][j-1] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 	
+											moves.southEast = true;
+											validMoves.add(moves);
 										}
 									// Backwards capture
 									if ( i != row_limit-2 && 
@@ -526,9 +588,12 @@ class Board {
 												board[i+2][j+2] != team && 
 												board[i+2][j+2] != 'E'	&&
 												board[i+2][j+2] != 'X') {
+													PossibleMoves moves = new PossibleMoves();
 													Captures +=1;
-													x_index.add(i);
-													y_index.add(j);
+													moves.x_index = i;
+													moves.y_index = j; 	
+													moves.northWest = true
+													validMoves.add(moves);
 												}
 									}
 								}
@@ -540,9 +605,12 @@ class Board {
 								board[i+1][j] != team && 
 								board[i+1][j] != 'E'  &&
 								board[i+1][j] != 'X') {
-										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+									PossibleMoves moves = new PossibleMoves();
+									Captures +=1;
+									moves.x_index = i;
+									moves.y_index = j;
+									moves.north = true;	
+									validMoves.add(moves);
 								}
 							// Backwards capture
 							if (i != 1) {
@@ -550,9 +618,12 @@ class Board {
 									board[i-2][j] != team && 
 									board[i-2][j] != 'E'  &&
 									board[i-2][j] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 
+										moves.south = true; 	
+										validMoves.add(moves);
 									}
 							}
 							// Check down 
@@ -561,9 +632,12 @@ class Board {
 								board[i-1][j] != team && 
 								board[i-1][j] != 'E'  &&
 								board[i-1][j] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 
+										moves.south = true;	
+										validMoves.add(moves);
 								}
 							// Backwards capture
 							if (i != row_limit-2) {
@@ -571,9 +645,12 @@ class Board {
 									board[i+2][j] != team && 
 									board[i+2][j] != 'E'  &&
 									board[i+2][j] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										moves.north = true; 
+										validMoves.add(moves);
 									}
 							}	
 							// Check left 
@@ -582,9 +659,11 @@ class Board {
 								board[i][j+1] != team && 
 								board[i][j+1] != 'E'  &&
 								board[i][j+1] != 'X') {
-										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+									PossibleMoves moves = new PossibleMoves();
+									Captures +=1;
+									moves.x_index = i;
+									moves.y_index = j;	
+									validMoves.add(moves);
 								}
 							// Backwards capture
 							if ( j != 1) {
@@ -592,9 +671,11 @@ class Board {
 									board[i][j-2] != team && 
 									board[i][j-2] != 'E'  &&
 									board[i][j-2] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);	
 									}
 							}	
 							// Check right 
@@ -603,9 +684,11 @@ class Board {
 								board[i][j-1] != team && 
 								board[i][j-1] != 'E'  &&
 								board[i][j-1] != 'X') {
-										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+									PossibleMoves moves = new PossibleMoves();
+									Captures +=1;
+									moves.x_index = i;
+									moves.y_index = j;	
+									validMoves.add(moves);
 								}
 							// Backwards caputre
 							if (j != column_limit-2) {
@@ -613,14 +696,16 @@ class Board {
 									board[i][j+2] != team &&
 									board[i][j+2] != 'E'  &&
 									board[i][j+2] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 						}
 					}
-					// Checks the top edge
+					/ 
 					else if (i == 0) {
 						if (j > 0) {
 							// Check left 
@@ -630,9 +715,11 @@ class Board {
 									board[i][j+1] != team && 
 									board[i][j+1] != 'E'  &&
 									board[i][j+1] != 'X') {
+										PossibleMoves moves = new PossibleMoves;
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 
+										validMoves.add(moves);
 									}
 							}
 							// Backwards capture
@@ -641,9 +728,11 @@ class Board {
 									board[i][j-2] != team && 
 									board[i][j-2] != 'E'  &&
 									board[i][j-2] != 'X') {
+										PossibleMoves moves = new PossibleMoves;
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 
+										validMoves.add(moves);
 									}
 							}
 							// Check down and to the left
@@ -654,9 +743,11 @@ class Board {
 										board[i+2][j-2] != team && 
 										board[i+2][j-2] != 'E'  &&
 										board[i+2][j-2] != 'X') {
+											PossibleMoves moves = new PossibleMoves;
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 
+											validMoves.add(moves);
 										}
 								}
 							}
@@ -669,9 +760,11 @@ class Board {
 									board[i][j-1] != team && 
 									board[i][j-1] != 'E'  &&
 									board[i][j-1] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Backwards capture
@@ -680,9 +773,11 @@ class Board {
 									board[i][j+2] != team && 
 									board[i][j+2] != 'E'  &&
 									board[i][j+2] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Check down and to the right
@@ -693,9 +788,11 @@ class Board {
 										board[i+2][j+2] != team && 
 										board[i+2][j+2] != 'E'  &&
 										board[i+2][j+2] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 	
+											validMoves.add(moves);
 										}
 								}
 							}
@@ -711,9 +808,11 @@ class Board {
 									board[i][j+1] != team && 
 									board[i][j+1] != 'E'  &&
 									board[i][j+1] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Backwards capture
@@ -722,9 +821,11 @@ class Board {
 									board[i][j-2] != team && 
 									board[i][j-2] != 'E'  &&
 									board[i][j-2] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Check up and to the left
@@ -735,9 +836,11 @@ class Board {
 										board[i-2][j-2] != team && 
 										board[i-2][j-2] != 'E'  &&
 										board[i-2][j-2] != 'X') {
-										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+											PossibleMoves moves = new PossibleMoves();
+											Captures +=1;
+											moves.x_index = i;
+											moves.y_index = j; 	
+											validMoves.add(moves);
 										}
 								}
 							}
@@ -750,9 +853,11 @@ class Board {
 									board[i][j-1] != team && 
 									board[i][j-1] != 'E'  &&
 									board[i][j-1] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Backwards capture
@@ -761,9 +866,11 @@ class Board {
 									board[i][j+2] != team && 
 									board[i][j+2] != 'E'  &&
 									board[i][j+2] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}	
 							// Check up and to the right
@@ -774,9 +881,11 @@ class Board {
 										board[i-2][j+2] != team && 
 										board[i-2][j+2] != 'E'  &&
 										board[i-2][j+2] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 	
+											validMoves.add(moves);
 										}
 								}
 							}
@@ -792,9 +901,11 @@ class Board {
 									board[i+1][j] != team && 
 									board[i+1][j] != 'E'  &&
 									board[i+1][j] != 'X') {
-										Captures += 1;
-										x_index.add(i);
-										y_index.add(j);									
+										PossibleMoves moves = new PossibleMoves();
+										Captures +=1;
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);									
 									}
 							}
 							// Backwards capture
@@ -803,9 +914,11 @@ class Board {
 									board[i-2][j] != team && 
 									board[i-2][j] != 'E'  &&
 									board[i-2][j] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Check up and to the right
@@ -816,9 +929,11 @@ class Board {
 										board[i-2][j+2] != team && 
 										board[i-2][j+2] != 'E'  &&
 										board[i-2][j+2] != 'X') {
-											Captures +=1;											
-											x_index.add(i);
-											y_index.add(j);
+											PossibleMoves moves = new PossibleMoves();
+											Captures +=1;
+											moves.x_index = i;
+											moves.y_index = j; 	
+											validMoves.add(moves);
 										}
 								}
 							}
@@ -831,9 +946,11 @@ class Board {
 									board[i-1][j] != team && 
 									board[i-1][j] != 'E'  &&
 									board[i-1][j] != 'X') {
-										Captures += 1;	
-										x_index.add(i);
-										y_index.add(j);
+										PossibleMoves moves = new PossibleMoves();
+										Captures +=1;
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Backwards capture
@@ -842,9 +959,11 @@ class Board {
 									board[i+2][j] != team && 
 									board[i+2][j] != 'E'  &&
 									board[i+2][j] != 'X') {
-										Captures += 1;
-										x_index.add(i);
-										y_index.add(j);
+										PossibleMoves moves = new PossibleMoves();
+										Captures +=1;
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Check down and to the right
@@ -855,9 +974,11 @@ class Board {
 										board[i+2][j+2] != team && 
 										board[i+2][j+2] != 'E'  &&
 										board[i+2][j+2] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 	
+											validMoves.add(moves);
 										}
 								}
 							}
@@ -873,9 +994,11 @@ class Board {
 									board[i+1][j] != team && 
 									board[i+1][j] != 'E' &&
 									board[i+1][j] != 'X') {
-										Captures += 1;
-										x_index.add(i);
-										y_index.add(j);
+										PossibleMoves moves = new PossibleMoves();
+										Captures +=1;
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Backwards capture
@@ -884,9 +1007,11 @@ class Board {
 									board[i-2][j] != team && 
 									board[i-2][j] != 'E'  &&
 									board[i-2][j] != 'X') {
+										PossibleMoves moves = new PossibleMoves();
 										Captures +=1;
-										x_index.add(i);
-										y_index.add(j);
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Check up and to the left
@@ -897,9 +1022,11 @@ class Board {
 										board[i-2][j-2] != team && 
 										board[i-2][j-2] != 'E'  &&
 										board[i-2][j-2] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 	
+											validMoves.add(moves);
 										}
 								}
 							}
@@ -912,9 +1039,11 @@ class Board {
 									board[i-1][j] != team && 
 									board[i-1][j] != 'E'  &&
 									board[i-1][j] != 'X') {
-										Captures += 1;
-										x_index.add(i);
-										y_index.add(j);
+										PossibleMoves moves = new PossibleMoves();
+										Captures +=1;
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Backwards capture
@@ -923,9 +1052,11 @@ class Board {
 									board[i+2][j] != team && 
 									board[i+2][j] != 'E' &&
 									board[i+2][j] != 'X') {
-										Captures += 1;
-										x_index.add(i);
-										y_index.add(j);
+										PossibleMoves moves = new PossibleMoves();
+										Captures +=1;
+										moves.x_index = i;
+										moves.y_index = j; 	
+										validMoves.add(moves);
 									}
 							}
 							// Check down and to the left
@@ -936,9 +1067,11 @@ class Board {
 										board[i+2][j-2] != team && 
 										board[i+2][j-2] != 'E'  &&
 										board[i+2][j-2] != 'X') {
+											PossibleMoves moves = new PossibleMoves();
 											Captures +=1;
-											x_index.add(i);
-											y_index.add(j);
+											moves.x_index = i;
+											moves.y_index = j; 	
+											validMoves.add(moves);
 										}
 								}
 							}

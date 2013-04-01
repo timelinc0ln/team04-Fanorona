@@ -6,7 +6,7 @@ import java.util.Random;
 public class FanoronaAI extends Board {
 	MiniMaxTree mmTree = new MiniMaxTree(); 
 	char aiColor = 'B'; // defualt is AI player is Black
-	boolean activeGame; 
+	boolean isTurn; 
 
 	/**
 	* Function for selecting which piece to move
@@ -15,13 +15,10 @@ public class FanoronaAI extends Board {
 	*/
 	public selectPiece(char aiColor) {
 		// randomly select a piece using X,Y coordinates that has a valid move
-		int size = x_index.size();
+		int size = validMoves.size();
 		int random = 0 + (int)(Math.random() * ((size - 0) + 1));
-		int xPos = x_index[random];
-		int yPos = y_index[random];
-		int moveX = 0; // still working on this part
-		int moveY = 0;
-		int forward = 0;
+		int xPos = validMoves[random].x_index;
+		int yPos = validMoves[random].y_index;
 
 		// perform capture move
 		turn(aiColor, xPos, yPos, moveX, moveY, forward);
@@ -29,11 +26,11 @@ public class FanoronaAI extends Board {
 
 	/**
 	* Construct the AI which will pick active moves
-	* @pasram activeGame allows AI to run only when there is a game active
+	* @pasram isTurn allows AI to run only when there is a game active
 	*/
-	public FanoronaAI(boolean activeGame) {
+	public FanoronaAI(boolean isTurn) {
 		// TODO: This
-		while(activeGame) {
+		while(isTurn) {
 			int captures = 0;
 			captures = check_for_capture(aiColor)
 			if (captures > 0) {
@@ -47,7 +44,7 @@ public class FanoronaAI extends Board {
 				else
 					pieceColor = "White";
 				System.out.println(pieceColor + " cannot make any moves. The game has ended!")
-				activeGame = false;
+				isTurn = false;
 			} 
 		}
 	}
