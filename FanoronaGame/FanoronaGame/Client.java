@@ -8,8 +8,7 @@ import FanoronaGame.Commands;
 
 public class Client {
 
-/////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////Establishing connection with server side
+	//Establishing connection with server side
     Socket c_socket = null;
     InputStream c_sockInput;
     OutputStream c_sockOutput;
@@ -24,8 +23,8 @@ public class Client {
             System.err.println("Couldn't get I/O for the connection to : SERVER ");
             System.exit(1);
         }
-    ///////////////////////////////////////////////////////////////////
-    ////////////////////////Sending and recieving data
+		
+		//Sending and recieving data
         try {
             c_sockInput = c_socket.getInputStream();
         } catch (IOException e) {
@@ -40,7 +39,7 @@ public class Client {
         }
         
     }
-////////////////////////////MEGAN WROTE ABOVE CODE.. IT WAS THE ONLINE HELP THAT WAS POSTED///////////////////////////
+	//MEGAN WROTE ABOVE CODE.. IT WAS THE ONLINE HELP THAT WAS POSTED
 
 	public static void main(String[] args) {
 		String host = (args.length < 1) ? null : args[0];

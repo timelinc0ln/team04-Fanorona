@@ -10,7 +10,7 @@ public interface Server implements Commands extends Remote {
 	
 	
 	
-	//////////THIS IS HOW IT IS SAID TO SET IT UP ONLINE
+	//THIS IS HOW IT IS SAID TO SET IT UP ONLINE
     public Socket clientSocket = null;
     public ServerSocket serverSocket;
     InputStream sockInput = null;
@@ -34,7 +34,7 @@ public interface Server implements Commands extends Remote {
             System.err.println("Accept failed");
             System.exit(1);
         }
-        /////////////////////////////////////////////////////
+
         // Sending and recieving data
         try { //reading data
             buf = new byte[1024];
@@ -56,7 +56,7 @@ public interface Server implements Commands extends Remote {
       }
  
 
-    ////////////////////////////////////////   PART GOT CUT OFF, BUT THIS IS HOW I FOUND TO SET IT UP ON DIFFERENT SITES (FOR TIC TAK TOE) 
+	//   PART GOT CUT OFF, BUT THIS IS HOW I FOUND TO SET IT UP ON DIFFERENT SITES (FOR TIC TAK TOE) 
         
  /*       
         
