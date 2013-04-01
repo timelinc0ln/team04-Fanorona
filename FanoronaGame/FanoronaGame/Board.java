@@ -1015,7 +1015,7 @@ class Board {
 	public char turn_change(char team) {
 		for (int i = 0; i < row_limit; i++) {
 			for (int j = 0; j < column_limit; j++) {
-				if (board[i][j] == 'M') {
+				if (board[i][j] == 'M' || board[i][j] == 'X') {
 					board[i][j] = 'E';
 				}
 			}
