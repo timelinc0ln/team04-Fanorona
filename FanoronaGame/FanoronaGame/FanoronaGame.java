@@ -26,7 +26,9 @@ public class FanoronaGame extends JPanel implements ActionListener {
 	Object[] remote = { "Human vs. CPU", "Client Server" };
 
 	// Buttons for Menus
-	JButton pve = new JButton("Player vs CPU"), back = new JButton("exit");
+	JButton pve = new JButton("Player vs CPU");
+	JButton back = new JButton("exit");
+	
 	GamePieces buttonArray[][] = new GamePieces[9][5];
 
 	// Panels for Graphic interface
