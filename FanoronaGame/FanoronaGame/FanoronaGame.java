@@ -381,6 +381,26 @@ public class FanoronaGame extends JPanel implements ActionListener {
                                                         + "More instructions to follow...", "Instructions", 
                                         JOptionPane.ERROR_MESSAGE);
 		}
+				else if(actionSource instanceof GamePieces) {
+			if(source == null) {
+				source = (GamePieces)actionSource;
+			}
+			else if(source != null && (GamePieces)actionSource != source) {
+				target = (GamePieces)actionSource;
+				
+				if(source.legalMove(target)) {
+					target.setColor(source.getBackground());
+					source.setColor(new Color(0,0,0,0));
+					//if(checkCapture()) then capture
+				}else if(!(source.legalMove(target))){
+					JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				source = null;
+				target = null;
+			}
+		}
+	
 	}
 
 	public int askMessage(String message, String title, int option) {
