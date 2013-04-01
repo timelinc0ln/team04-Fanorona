@@ -328,7 +328,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
                         if(option == JOptionPane.NO_OPTION) {
                         	int playerOption = askMessage("You have chosen to play across a server, AI vs. AI \n Continue? \n",
                                                             "Client Server", JOptionPane.YES_NO_OPTION);
-                            if(playeroption == YES_OPTION) {
+                            if(playerOption == JOptionPane.YES_OPTION) {
                         	int newOption = JOptionPane.showOptionDialog(newGamePanel,
 								"Ok great, choose the difficulty of the AIs", "Difficulty AI Level",
 								JOptionPane.YES_NO_CANCEL_OPTION,
