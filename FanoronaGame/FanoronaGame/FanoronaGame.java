@@ -176,7 +176,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		// Create Black Pieces
 		for (int x = 0; x < 9; x++) {
 			for(int y =0; y < 2; y++) {
-				buttonArray[x][y] = new GamePieces('B');
+				buttonArray[x][y] = new GamePieces('B',x,y);
 			//	buttonArray[x][y].setLocation(79+x*85, 70+y*77);
 				buttonArray[x][y].setBackground(new Color(0, 0, 0));
 				buttonArray[x][y].addActionListener(this);
@@ -187,7 +187,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		}
 
 		// Manually set Row 3
-		buttonArray[0][2] = new GamePieces('W');
+		buttonArray[0][2] = new GamePieces('W',0,2);
 		//buttonArray[0][2].setLocation(82, 230);
 		//buttonArray[0][2].setAlignmentX(82); //DONT THINK THIS LINE
 		//buttonArray[0][2].setAlignmentY(230); //OR THIS ONE ARE NEEDED. BUT IT TELLS YOU WHERE THE PIECES ARE
@@ -196,7 +196,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		buttonArray[0][2].setVisible(true);
 		picLabel. add(buttonArray[0][2]);
 
-		buttonArray[1][2] = new GamePieces('B');
+		buttonArray[1][2] = new GamePieces('B',1,2);
 		//buttonArray[1][2].setLocation(167, 230);
 		//buttonArray[1][2].setAlignmentX(167);
 		//buttonArray[1][2].setAlignmentY(230);
@@ -205,7 +205,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		buttonArray[1][2].setVisible(true);
 		picLabel.add(buttonArray[1][2]);
 
-		buttonArray[2][2] = new GamePieces('W');
+		buttonArray[2][2] = new GamePieces('W',2,2);
 		//buttonArray[2][2].setLocation(252, 230);
 		//buttonArray[2][2].setAlignmentX(252);
 		//buttonArray[2][2].setAlignmentY(230);
@@ -214,7 +214,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		buttonArray[2][2].setVisible(true);
 		picLabel.add(buttonArray[2][2]);
 
-		buttonArray[3][2] = new GamePieces('B');
+		buttonArray[3][2] = new GamePieces('B',3,2);
 		//buttonArray[3][2].setLocation(167, 230);
 		//buttonArray[3][2].setAlignmentX(337);
 		//buttonArray[3][2].setAlignmentY(230);
@@ -223,7 +223,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		buttonArray[3][2].setVisible(true);
 		picLabel.add(buttonArray[3][2]);
 
-		buttonArray[4][2] = new GamePieces('E');
+		buttonArray[4][2] = new GamePieces('E',4,2);
 		//buttonArray[4][2].setLocation(422, 230);
 		//buttonArray[4][2].setAlignmentX(422);
 		//buttonArray[4][2].setAlignmentY(230);
@@ -234,7 +234,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		//buttonArray[4][2].setVisible(false);
 		picLabel.add(buttonArray[4][2]);
 
-		buttonArray[5][2] = new GamePieces('W');
+		buttonArray[5][2] = new GamePieces('W',5,2);
 		//buttonArray[5][2].setLocation(507, 230);
 		//buttonArray[5][2].setAlignmentX(507);
 		//buttonArray[5][2].setAlignmentY(230);
@@ -243,7 +243,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		buttonArray[5][2].setVisible(true);
 		picLabel.add(buttonArray[5][2]);
 
-		buttonArray[6][2] = new GamePieces('B');
+		buttonArray[6][2] = new GamePieces('B',6,2);
 		//buttonArray[6][2].setLocation(592, 230);
 		//buttonArray[6][2].setAlignmentX(592);
 		//buttonArray[6][2].setAlignmentY(230);
@@ -252,7 +252,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		buttonArray[6][2].setVisible(true);
 		picLabel.add(buttonArray[6][2]);
 
-		buttonArray[7][2] = new GamePieces('W');
+		buttonArray[7][2] = new GamePieces('W',7,2);
 		//buttonArray[7][2].setLocation(677, 230);
 		//buttonArray[7][2].setAlignmentX(677);
 		//buttonArray[7][2].setAlignmentY(230);
@@ -261,7 +261,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		buttonArray[7][2].setVisible(true);
 		picLabel.add(buttonArray[7][2]);
 
-		buttonArray[8][2] = new GamePieces('B');
+		buttonArray[8][2] = new GamePieces('B',8,2);
 		//buttonArray[8][2].setLocation(762, 230);
 		//buttonArray[8][2].setAlignmentX(762);
 		//buttonArray[8][2].setAlignmentY(230);
@@ -273,7 +273,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		// Create White Pieces
 		for(int y = 3; y < 5; y++ ) {
 			for(int x = 0; x < 9; x++) {
-				buttonArray[x][y] = new GamePieces('W');
+				buttonArray[x][y] = new GamePieces('W',x,y);
 				//buttonArray[x][y].setLocation(79+x*85, 70+y*77);
 				//buttonArray[x][y].setAlignmentX(82 + x*85);
 				//buttonArray[x][y].setAlignmentY(230 + y*77);
@@ -292,6 +292,9 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		window.add(southPanel, BorderLayout.CENTER);
 		window.setVisible(true);
 	}
+	
+	GamePieces source = null;
+	GamePieces target = null;
 
 	public void actionPerformed(ActionEvent click) {
 		Object actionSource = click.getSource(); //Get the source of what object is having an action performed
