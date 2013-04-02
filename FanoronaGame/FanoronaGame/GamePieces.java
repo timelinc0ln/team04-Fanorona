@@ -82,7 +82,7 @@ public class GamePieces extends JButton {
     	return xpos;
     	
     }
-    
+
     public int getYPos(){
     	int ypos;
     	ypos = this.y;
