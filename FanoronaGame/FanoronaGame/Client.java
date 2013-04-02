@@ -18,7 +18,8 @@ public class Client {
 			BufferedReader fromUser = new BufferedReader(new InputStreamReader(System.in));
 			DataOutputStream toServer = new DataOutputStream(clientSocket.getOutputStream());
 			BufferedReader fromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			command = fromUser.readLine();
+			command = "Connecting...\n";
+			//command = fromUser.readLine();
 			toServer.writeBytes(command + '\n');
 			newCommand = fromServer.readLine();
 			System.out.prinntln("Response from Game Server: " + newCommand + '\n');

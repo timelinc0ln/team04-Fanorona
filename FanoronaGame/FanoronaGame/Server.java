@@ -4,6 +4,7 @@ import java.net.*;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.util.*;
 
 public class Server {
 	String command;
@@ -12,6 +13,9 @@ public class Server {
 	Boolean isAscii = false;
 	Boolean currentGame = true; 
 
+	/**
+	* Class for checking whether data in ASCII values
+	*/
 	public class StringUtils {
 	  static CharsetEncoder asciiEncoder = 
 	      Charset.forName("US-ASCII").newEncoder();
@@ -21,6 +25,15 @@ public class Server {
 		}
 	}
 
+	public class Timer {
+		public Timer() {
+			long time = System.currentTimeMillis();
+		}
+	}
+
+	/**
+	* 
+	*/
 	public Server() {
 		while(currentGame) {
 			try {
@@ -30,7 +43,7 @@ public class Server {
 				command = fromClient.readLine();
 				isAscii = parseInput(command);
 
-				if(isAscii) {
+				if (isAscii) {
 					System.out.println("Received: " + command);
 					//execute code to get back newCommand
 					toClient.writeBytes(newCommand);
