@@ -40,15 +40,14 @@ class Board {
 
 	List<PossibleMoves> validMoves = new ArrayList<PossibleMoves>();
 // -------------------------- Private Functions ---------------------------------------
-	private void capture(char team_moved, int x_ps, int y_ps, int x_zs, int y_zs, int forward) {
+	private void capture(char team_moved, int x_ps, int y_ps, int x_zs, int y_zs, char direction) {
 		int i = 1;
-		if (forward == 1) {
+		if (direction == 'A') {
 			// Upper left
 			if ((x_ps-x_zs) > 0 && (y_ps-y_zs) > 0) {
 				while (x_zs-i >= 0 && y_zs-i >= 0) {
 					if (board[x_zs-i][y_zs-i] != 'E') {
-						if (board[x_zs-i][y_zs-i] == team_moved && 
-							board[x_zs-i][y_zs-i] != 'X') {
+						if (board[x_zs-i][y_zs-i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_zs-i][y_zs-i] = 'E';
@@ -60,8 +59,7 @@ class Board {
 			else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) == 0) {
 				while (x_zs-i >= 0) {
 					if (board[x_zs-i][y_zs] != 'E') {
-						if (board[x_zs-i][y_zs] == team_moved && 
-							board[x_zs-i][y_zs] != 'X') {
+						if (board[x_zs-i][y_zs] != opponent(team_moved)) {
 								break;
 							}
 						board[x_zs-i][y_zs] = 'E';
@@ -73,8 +71,7 @@ class Board {
 			else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) < 0) {
 				while (x_zs-i >= 0 && y_zs+i < column_limit) {
 					if (board[x_zs-i][y_zs+i] != 'E') {
-						if (board[x_zs-i][y_zs+i] == team_moved && 
-							board[x_zs-i][y_zs+i] != 'X') {
+						if (board[x_zs-i][y_zs+i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_zs-i][y_zs+i] = 'E';
@@ -86,8 +83,7 @@ class Board {
 			else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) > 0) {
 				while (y_zs-i >= 0) {
 					if (board[x_zs][y_zs-i] != 'E') {
-						if (board[x_zs][y_zs-i] == team_moved && 
-							board[x_zs][y_zs-i] != 'X') {
+						if (board[x_zs][y_zs-i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_zs][y_zs-i] = 'E';
@@ -99,8 +95,7 @@ class Board {
 			else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) < 0) {
 				while (y_zs+i < column_limit) {
 					if (board[x_zs][y_zs+i] != 'E') {
-						if (board[x_zs][y_zs+i] == team_moved && 
-							board[x_zs][y_zs+i] != 'X') {
+						if (board[x_zs][y_zs+i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_zs][y_zs+i] = 'E';
@@ -112,8 +107,7 @@ class Board {
 			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) > 0) {
 				while (x_zs+i < row_limit && y_zs-i >= 0) {
 					if (board[x_zs+i][y_zs-i] != 'E') {
-						if (board[x_zs+i][y_zs-i] == team_moved && 
-							board[x_zs+i][y_zs-i] != 'X') {
+						if (board[x_zs+i][y_zs-i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_zs+i][y_zs-i] = 'E';
@@ -125,8 +119,7 @@ class Board {
 			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) == 0) {
 				while (x_zs+i < row_limit) {
 					if (board[x_zs+i][y_zs] != 'E') {
-						if (board[x_zs+i][y_zs] == team_moved && 
-							board[x_zs+i][y_zs] != 'X') {
+						if (board[x_zs+i][y_zs] != opponent(team_moved)) {
 								break;
 							}
 						board[x_zs+i][y_zs] = 'E';
@@ -138,8 +131,7 @@ class Board {
 			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) < 0) {
 				while (x_zs+i < row_limit && y_zs+i < column_limit) {
 					if (board[x_zs+i][y_zs+i] != 'E') {
-						if (board[x_zs+i][y_zs+i] == team_moved && 
-							board[x_zs+i][y_zs+i] != 'X') {
+						if (board[x_zs+i][y_zs+i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_zs+i][y_zs+i] = 'E';
@@ -148,14 +140,13 @@ class Board {
 				}
 			}
 		}
-		// Backwards capture
-		else if (forward == 0) {
+		// Withdraw capture
+		else if (direction == 'W') {
 			// Upper left
 			if ((x_ps-x_zs) > 0 && (y_ps-y_zs) > 0) {
 				while (x_ps+i < row_limit && y_ps+i < column_limit) {
 					if (board[x_ps+i][y_ps+i] != 'E') {
-						if (board[x_ps+i][y_ps+i] == team_moved && 
-							board[x_ps+i][y_ps+i] != 'X') {
+						if (board[x_ps+i][y_ps+i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_ps+i][y_ps+i] = 'E';
@@ -167,8 +158,7 @@ class Board {
 			else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) == 0) {
 				while (x_ps+i < row_limit) {
 					if (board[x_ps+i][y_ps] != 'E') {
-						if (board[x_ps+i][y_ps] == team_moved && 
-							board[x_ps+i][y_ps] != 'X') {
+						if (board[x_ps+i][y_ps] != opponent(team_moved)) {
 								break;
 							}
 						board[x_ps+i][y_ps] = 'E';
@@ -178,10 +168,9 @@ class Board {
 			}
 			// Upper right
 			else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) < 0) {
-				while (x_ps-i < row_limit && y_ps+i >= 0) {
+				while (x_ps+i < row_limit && y_ps-i >= 0) {
 					if (board[x_ps+i][y_ps-i] != 'E') {
-						if (board[x_ps+i][y_ps-i] == team_moved && 
-							board[x_ps+i][y_ps-i] != 'X') {
+						if (board[x_ps+i][y_ps-i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_ps+i][y_ps-i] = 'E';
@@ -191,10 +180,9 @@ class Board {
 			}
 			// Left
 			else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) > 0) {
-				while (y_ps-i < column_limit) {
+				while (y_ps+i < column_limit) {
 					if (board[x_ps][y_ps+i] != 'E') {
-						if (board[x_ps][y_ps+i] == team_moved && 
-							board[x_ps][y_ps+i] != 'X') {
+						if (board[x_ps][y_ps+i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_ps][y_ps+i] = 'E';
@@ -204,10 +192,9 @@ class Board {
 			}
 			// Right
 			else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) < 0) {
-				while (y_ps+i >= 0) {
+				while (y_ps-i >= 0) {
 					if (board[x_ps][y_ps-i] != 'E') {
-						if (board[x_ps][y_ps-i] == team_moved && 
-							board[x_ps][y_ps-i] != 'X') {
+						if (board[x_ps][y_ps-i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_ps][y_ps-i] = 'E';
@@ -217,10 +204,9 @@ class Board {
 			}
 			// Down Left
 			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) > 0) {
-				while (x_ps+i >= 0 && y_ps-i < column_limit) {
+				while (x_ps-i >= 0 && y_ps+i < column_limit) {
 					if (board[x_ps-i][y_ps+i] != 'E') {
-						if (board[x_ps-i][y_ps+i] == team_moved && 
-							board[x_ps-i][y_ps+i] != 'X') {
+						if (board[x_ps-i][y_ps+i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_ps-i][y_ps+i] = 'E';
@@ -230,10 +216,9 @@ class Board {
 			}
 			// Down
 			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) == 0) {
-				while (x_ps+i >= 0) {
+				while (x_ps-i >= 0) {
 					if (board[x_ps-i][y_ps] != 'E') {
-						if (board[x_ps-i][y_ps] == team_moved && 
-							board[x_ps-i][y_ps] != 'X') {
+						if (board[x_ps-i][y_ps] != opponent(team_moved)) {
 								break;
 							}
 						board[x_ps-i][y_ps] = 'E';
@@ -243,10 +228,9 @@ class Board {
 			}
 			// Down Right
 			else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) < 0) {
-				while (x_ps+i >= 0 && y_ps+i >= 0) {
+				while (x_ps-i >= 0 && y_ps-i >= 0) {
 					if (board[x_ps-i][y_ps-i] != 'E') {
-						if (board[x_ps-i][y_ps-i] == team_moved && 
-							board[x_ps-i][y_ps-i] != 'X') {
+						if (board[x_ps-i][y_ps-i] != opponent(team_moved)) {
 								break;
 							}
 						board[x_ps-i][y_ps-i] = 'E';
@@ -262,9 +246,12 @@ class Board {
 		board[x_zs][y_zs] = team;
 		board[x_ps][y_ps] = 'E';
 	}
-
-	private void sacrifice(int x, int y) {
-		board[x][y] = 'X';
+	
+	private void sacrifice(char team, int x, int y) {
+		if (team == 'W') 
+			board[x][y] = 'O';
+		else if (team == 'B')
+			board[x][y] = 'Q';
 	}
 
 // ----------------------------------------------------------------------------------
@@ -295,7 +282,7 @@ class Board {
 				}
 		board[2][4] = 'E';
 	}
-
+	
 	// Board constructor with size
 	public Board(int row, int column) {
 		if (row >= 1 && row <= 13 && (row % 2) == 1) {
@@ -334,6 +321,15 @@ class Board {
 	}		
 // ----------------------------------------------------------------------------------
 // ---------------------------- Public Functions ------------------------------------
+	public char opponent(char team) {
+		char opponent = 'E';
+		if (team == 'W')
+			opponent = 'B';
+		else if (team == 'B')
+			opponent = 'W';
+		return opponent;
+	}
+	
 	public int white_remaining() {
 		int total = 0;
 		for (int i = 0; i < row_limit; i++) {
@@ -344,7 +340,7 @@ class Board {
 		}
 		return total;
 	}
-
+	
 	public int black_remaining() {
 		int total = 0;
 		for (int i = 0; i < row_limit; i++) {
@@ -355,7 +351,7 @@ class Board {
 		}
 		return total;
 	}
-
+	
 	public void display_board() {
 		for (int i = 0; i < row_limit; i++) {
 			for (int j = 0; j < column_limit; j++) {
@@ -367,7 +363,7 @@ class Board {
 
 	// This function returns the number of captures that are
 	// available for a given team.
-	// also adds valid capture moves to an array for the AI
+	// also adds valid capture moves to an array for the AI 
 	public int check_for_capture(char team) {
 		int Captures = 0;
 		validMoves.clear();
@@ -380,219 +376,186 @@ class Board {
 							if ( ((i % 2) == 1 && (j % 2) == 1) ||
 								((i % 2) == 0 && (j % 2) == 0)) {
 									// Check up and to the left 
-									// Forwards capture
+									// Advances capture
 									if (board[i-1][j-1] == team && 
-										board[i+1][j+1] != team && 
-										board[i+1][j+1] != 'E'  &&
-										board[i+1][j+1] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i+1][j+1] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
 											moves.y_index = j; 
 											moves.northWest = true; 
-											validMoves.add(moves);
-										}
-									// Backwards capture
+											validMoves.add(moves);											}
+									// Withdraw capture
 									if (i != 1 && j != 1) {
 										if (board[i-1][j-1] == team && 
-											board[i-2][j-2] != team && 
-											board[i-2][j-2] != 'E'  &&
-											board[i-2][j-2] != 'X') {
-												PossibleMoves moves = new PossibleMoves();
+											board[i-2][j-2] == opponent(team)) {
 												Captures +=1;
+												PossibleMoves moves = new PossibleMoves();
 												moves.x_index = i;
 												moves.y_index = j; 
-												moves.southEast = true; 	
+												moves.southEast = true; 
 												validMoves.add(moves);
 											}
 									}	
 									// Check up 
-									// Forwards capture
+									// Advances capture
 									if (board[i-1][j] == team && 
-										board[i+1][j] != team && 
-										board[i+1][j] != 'E'  &&
-										board[i+1][j] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i+1][j] == opponent(team)) {
 											Captures +=1;
-											moves.x_index = i;
-											moves.y_index = j; 	
-											moves.north = true;
-											validMoves.add(moves);
-										}
-									// Backwards capture
-									if (i != 1) {
-										if (board[i-1][j] == team && 
-											board[i-2][j] != team && 
-											board[i-2][j] != 'E'  &&
-											board[i-2][j] != 'X') {
-												PossibleMoves moves = new PossibleMoves();
-												Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 												moves.x_index = i;
 												moves.y_index = j; 
-												moves.south = true; 	
+												moves.north = true; 
+												validMoves.add(moves);
+										}
+									// Withdraw capture
+									if (i != 1) {
+										if (board[i-1][j] == team && 
+											board[i-2][j] == opponent(team)) {
+												Captures +=1;
+												PossibleMoves moves = new PossibleMoves();
+												moves.x_index = i;
+												moves.y_index = j; 
+												moves.south = true; 
 												validMoves.add(moves);
 											}
 									}
 									// Check up and to the right 
-									// Forwards capture
+									// Advances capture
 									if (board[i-1][j+1] == team && 
-										board[i+1][j-1] != team && 
-										board[i+1][j-1] != 'E'	&&
-										board[i+1][j-1] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i+1][j-1] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
-											moves.y_index = j; 	
+											moves.y_index = j; 
 											moves.northEast = true; 
 											validMoves.add(moves);
 										}	
-									// Backwards capture
+									// Withdraw capture
 									if (i != 1 && j != column_limit-2) {
 										if (board[i-1][j+1] == team && 
-											board[i-2][j+2] != team && 
-											board[i-2][j+2] != 'E'	&&
-											board[i-2][j+2] != 'X') {
-												PossibleMoves moves = new PossibleMoves();
+											board[i-2][j+2] == opponent(team)) {
 												Captures +=1;
+												PossibleMoves moves = new PossibleMoves();
 												moves.x_index = i;
-												moves.y_index = j; 	
+												moves.y_index = j; 
 												moves.southWest = true; 
 												validMoves.add(moves);
 											}
 									}	
 									// Check left 
-									// Forwards capture
+									// Advances capture
 									if (board[i][j-1] == team && 
-										board[i][j+1] != team && 
-										board[i][j+1] != 'E'  &&
-										board[i][j+1] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i][j+1] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
 											moves.y_index = j; 
-											moves.west = true; 	
+											moves.west = true; 
 											validMoves.add(moves);
 										}
-									// Backwards capture
+									// Withdraw capture
 									if (j != 1) {	
 										if (board[i][j-1] == team && 
-											board[i][j-2] != team && 
-											board[i][j-2] != 'E'  &&
-											board[i][j-2] != 'X') {
-												PossibleMoves moves = new PossibleMoves();
+											board[i][j-2] == opponent(team)) {
 												Captures +=1;
+												PossibleMoves moves = new PossibleMoves();
 												moves.x_index = i;
 												moves.y_index = j; 
-												moves.east = true; 	
+												moves.east = true; 
 												validMoves.add(moves);
 											}
 									}
 									// Check right 
-									// Forwards capture
+									// Advances capture
 									if (board[i][j+1] == team && 
-										board[i][j-1] != team && 
-										board[i][j-1] != 'E'  &&
-										board[i][j-1] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i][j-1] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
 											moves.y_index = j; 
-											moves.east = true; 	
+											moves.east = true; 
 											validMoves.add(moves);
 										}
-									// Backwards capture
+									// Withdraw capture
 									if (j != column_limit-2) {
 										if (board[i][j+1] == team && 
-											board[i][j+2] != team && 
-											board[i][j+2] != 'E'&&
-											board[i][j+2] != 'X') {
-												PossibleMoves moves = new PossibleMoves();
+											board[i][j+2] == opponent(team)) {
 												Captures +=1;
+												PossibleMoves moves = new PossibleMoves();
 												moves.x_index = i;
-												moves.y_index = j; 	
+												moves.y_index = j; 
 												moves.west = true; 
 												validMoves.add(moves);
 											}
 									}	
 									// Check down and to the left 
-									// Forwards capture
+									// Advances capture
 									if (board[i+1][j-1] == team && 
-										board[i-1][j+1] != team && 
-										board[i-1][j+1] != 'E'	&&
-										board[i-1][j+1] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i-1][j+1] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
 											moves.y_index = j; 
-											moves.southWest = true; 	
+											moves.southWest = true; 
 											validMoves.add(moves);
 										}
-									// Backwards capture
+									// Withdraw capture
 									if (i != row_limit-2 && j != 1) {
 										if (board[i+1][j-1] == team && 
-											board[i+2][j-2] != team && 
-											board[i+2][j-2] != 'E'  &&
-											board[i+2][j-2] != 'X') {
-												PossibleMoves moves = new PossibleMoves();
+											board[i+2][j-2] == opponent(team)) {
 												Captures +=1;
+												PossibleMoves moves = new PossibleMoves();
 												moves.x_index = i;
-												moves.y_index = j; 	
-												moves.northEast = true;
+												moves.y_index = j; 
+												moves.northEast = true; 
 												validMoves.add(moves);
 											}
 									}	
 									// Check down 
-									// Forwards capture
+									// Advances capture
 									if (board[i+1][j] == team && 
-										board[i-1][j] != team && 
-										board[i-1][j] != 'E'  &&
-										board[i-1][j] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i-1][j] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
-											moves.y_index = j; 	
+											moves.y_index = j; 
 											moves.south = true; 
 											validMoves.add(moves);
 										}
-									// Backwards capture
+									// Withdraw capture
 									if (i != row_limit-2) {
 										if (board[i+1][j] == team && 
-											board[i+2][j] != team && 
-											board[i+2][j] != 'E'  &&
-											board[i+2][j] != 'X') {
-												PossibleMoves moves = new PossibleMoves();
+											board[i+2][j] == opponent(team)) {
 												Captures +=1;
+												PossibleMoves moves = new PossibleMoves();
 												moves.x_index = i;
 												moves.y_index = j; 
-												moves.north = true; 	
+												moves.north = true; 
 												validMoves.add(moves);
 											}
 									}	
 									// Check down and to the right 
-									// Forwards capture
+									// Advances capture
 									if (board[i+1][j+1] == team && 
-										board[i-1][j-1] != team && 
-										board[i-1][j-1] != 'E' &&
-										board[i-1][j-1] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i-1][j-1] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
-											moves.y_index = j; 	
-											moves.southEast = true;
+											moves.y_index = j; 
+											moves.southEast = true; 
 											validMoves.add(moves);
 										}
-									// Backwards capture
+									// Withdraw capture
 									if ( i != row_limit-2 && 
 										j != column_limit-2) {
 											if (board[i+1][j+1] == team && 
-												board[i+2][j+2] != team && 
-												board[i+2][j+2] != 'E'	&&
-												board[i+2][j+2] != 'X') {
-													PossibleMoves moves = new PossibleMoves();
+												board[i+2][j+2] == opponent(team)) {
 													Captures +=1;
+													PossibleMoves moves = new PossibleMoves();
 													moves.x_index = i;
-													moves.y_index = j; 	
-													moves.northWest = true
+													moves.y_index = j; 
+													moves.northWest = true; 
 													validMoves.add(moves);
 												}
 									}
@@ -600,153 +563,138 @@ class Board {
 							// Check nodes that can move up, down, left, and right 	
 							else {
 							// Check up 
-							// Forwards capture
+							// Advances capture
 							if (board[i-1][j] == team && 
-								board[i+1][j] != team && 
-								board[i+1][j] != 'E'  &&
-								board[i+1][j] != 'X') {
-									PossibleMoves moves = new PossibleMoves();
-									Captures +=1;
-									moves.x_index = i;
-									moves.y_index = j;
-									moves.north = true;	
-									validMoves.add(moves);
-								}
-							// Backwards capture
-							if (i != 1) {
-								if (board[i-1][j] == team && 
-									board[i-2][j] != team && 
-									board[i-2][j] != 'E'  &&
-									board[i-2][j] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+								board[i+1][j] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
 										moves.y_index = j; 
-										moves.south = true; 	
+										moves.north = true; 
+										validMoves.add(moves);
+								}
+							// Withdraw capture
+							if (i != 1) {
+								if (board[i-1][j] == team && 
+									board[i-2][j] == opponent(team)) {
+										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
+										moves.x_index = i;
+										moves.y_index = j; 
+										moves.south = true; 
 										validMoves.add(moves);
 									}
 							}
 							// Check down 
-							// Forwards capture
+							// Advances capture
 							if (board[i+1][j] == team &&
-								board[i-1][j] != team && 
-								board[i-1][j] != 'E'  &&
-								board[i-1][j] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+								board[i-1][j] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
 										moves.y_index = j; 
-										moves.south = true;	
+										moves.south = true; 
 										validMoves.add(moves);
 								}
-							// Backwards capture
+							// Withdraw capture
 							if (i != row_limit-2) {
 								if (board[i+1][j] == team && 
-									board[i+2][j] != team && 
-									board[i+2][j] != 'E'  &&
-									board[i+2][j] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i+2][j] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
 										moves.north = true; 
 										validMoves.add(moves);
 									}
 							}	
 							// Check left 
-							// Forwards capture
+							// Advances capture
 							if (board[i][j-1] == team && 
-								board[i][j+1] != team && 
-								board[i][j+1] != 'E'  &&
-								board[i][j+1] != 'X') {
-									PossibleMoves moves = new PossibleMoves();
-									Captures +=1;
-									moves.x_index = i;
-									moves.y_index = j;	
-									validMoves.add(moves);
+								board[i][j+1] == opponent(team)) {
+										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
+										moves.x_index = i;
+										moves.y_index = j; 
+										moves.west = true; 
+										validMoves.add(moves);
 								}
-							// Backwards capture
+							// Withdraw capture
 							if ( j != 1) {
 								if (board[i][j-1] == team && 
-									board[i][j-2] != team && 
-									board[i][j-2] != 'E'  &&
-									board[i][j-2] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i][j-2] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
-										validMoves.add(moves);	
+										moves.y_index = j; 
+										moves.east = true; 
+										validMoves.add(moves);
 									}
 							}	
 							// Check right 
-							// Forwards capture
+							// Advances capture
 							if (board[i][j+1] == team && 
-								board[i][j-1] != team && 
-								board[i][j-1] != 'E'  &&
-								board[i][j-1] != 'X') {
-									PossibleMoves moves = new PossibleMoves();
-									Captures +=1;
-									moves.x_index = i;
-									moves.y_index = j;	
-									validMoves.add(moves);
+								board[i][j-1] == opponent(team)) {
+										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
+										moves.x_index = i;
+										moves.y_index = j; 
+										moves.east = true; 
+										validMoves.add(moves);
 								}
-							// Backwards caputre
+							// Withdraw caputre
 							if (j != column_limit-2) {
 								if (board[i][j+1] == team && 
-									board[i][j+2] != team &&
-									board[i][j+2] != 'E'  &&
-									board[i][j+2] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i][j+2] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.west = true; 
 										validMoves.add(moves);
 									}
 							}
 						}
 					}
-					/ 
+					// Checks the top edge
 					else if (i == 0) {
 						if (j > 0) {
 							// Check left 
-							// Forwards capture
+							// Advances capture
 							if ( j != column_limit-1) {
 								if (board[i][j-1] == team && 
-									board[i][j+1] != team && 
-									board[i][j+1] != 'E'  &&
-									board[i][j+1] != 'X') {
-										PossibleMoves moves = new PossibleMoves;
+									board[i][j+1] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
 										moves.y_index = j; 
+										moves.east = true; 
 										validMoves.add(moves);
 									}
 							}
-							// Backwards capture
+							// Withdraw capture
 							if (j != 1) {
 								if (board[i][j-1] == team && 
-									board[i][j-2] != team && 
-									board[i][j-2] != 'E'  &&
-									board[i][j-2] != 'X') {
-										PossibleMoves moves = new PossibleMoves;
+									board[i][j-2] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
 										moves.y_index = j; 
+										moves.west = true; 
 										validMoves.add(moves);
 									}
 							}
 							// Check down and to the left
-							// Backwards capture
+							// Withdraw capture
 							if (row_limit > 1) {
 								if ((j % 2) == 0) {
 									if (board[i+1][j-1] == team && 
-										board[i+2][j-2] != team && 
-										board[i+2][j-2] != 'E'  &&
-										board[i+2][j-2] != 'X') {
-											PossibleMoves moves = new PossibleMoves;
+										board[i+2][j-2] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
 											moves.y_index = j; 
+											moves.northEast = true; 
 											validMoves.add(moves);
 										}
 								}
@@ -754,44 +702,41 @@ class Board {
 						}
 						if (j < column_limit-1) {
 							// Check right 
-							// Forwards capture
+							// Advances capture
 							if (j != 0) {
 								if (board[i][j+1] == team && 
-									board[i][j-1] != team && 
-									board[i][j-1] != 'E'  &&
-									board[i][j-1] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i][j-1] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.east = true; 
 										validMoves.add(moves);
 									}
 							}
-							// Backwards capture
+							// Withdraw capture
 							if (j != column_limit-2) {
 								if (board[i][j+1] == team && 
-									board[i][j+2] != team && 
-									board[i][j+2] != 'E'  &&
-									board[i][j+2] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i][j+2] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.west = true; 
 										validMoves.add(moves);
 									}
 							}
 							// Check down and to the right
-							// Backwards capture
+							// Withdraw capture
 							if (row_limit > 1) {							
 								if ((j % 2) == 0) {
 									if (board[i+1][j+1] == team && 
-										board[i+2][j+2] != team && 
-										board[i+2][j+2] != 'E'  &&
-										board[i+2][j+2] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i+2][j+2] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
-											moves.y_index = j; 	
+											moves.y_index = j; 
+											moves.northWest = true; 
 											validMoves.add(moves);
 										}
 								}
@@ -802,89 +747,83 @@ class Board {
 					else if (i == row_limit-1) {
 						if (j > 0) {
 							// Check left 
-							// Forwards capture
+							// Advances capture
 							if ( j != column_limit-2) {
 								if (board[i][j-1] == team && 
-									board[i][j+1] != team && 
-									board[i][j+1] != 'E'  &&
-									board[i][j+1] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i][j+1] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.east = true; 
 										validMoves.add(moves);
 									}
 							}
-							// Backwards capture
+							// Withdraw capture
 							if (j != 1) {
 								if (board[i][j-1] == team && 
-									board[i][j-2] != team && 
-									board[i][j-2] != 'E'  &&
-									board[i][j-2] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i][j-2] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.west = true; 
 										validMoves.add(moves);
 									}
 							}
 							// Check up and to the left
-							// Backwards capture
+							// Withdraw capture
 							if (row_limit > 1) {
 								if ((j % 2) == 0) {
 									if (board[i-1][j-1] == team && 
-										board[i-2][j-2] != team && 
-										board[i-2][j-2] != 'E'  &&
-										board[i-2][j-2] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
-											Captures +=1;
-											moves.x_index = i;
-											moves.y_index = j; 	
-											validMoves.add(moves);
+										board[i-2][j-2] == opponent(team)) {
+										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
+										moves.x_index = i;
+										moves.y_index = j; 
+										moves.southEast = true; 
+										validMoves.add(moves);
 										}
 								}
 							}
 						}
 						if (j < column_limit-1) {
 							// Check right 
-							// Forwards capture
+							// Advances capture
 							if (j != 0) {
 								if (board[i][j+1] == team && 
-									board[i][j-1] != team && 
-									board[i][j-1] != 'E'  &&
-									board[i][j-1] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i][j-1] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.east = true; 
 										validMoves.add(moves);
 									}
 							}
-							// Backwards capture
+							// Withdraw capture
 							if (j != column_limit-1) {
 								if (board[i][j+1] == team && 
-									board[i][j+2] != team && 
-									board[i][j+2] != 'E'  &&
-									board[i][j+2] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i][j+2] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.west = true; 
 										validMoves.add(moves);
 									}
 							}	
 							// Check up and to the right
-							// Backwards capture
+							// Withdraw capture
 							if (row_limit > 1) {
 								if ((j % 2) == 0) {
 									if (board[i-1][j+1] == team && 
-										board[i-2][j+2] != team && 
-										board[i-2][j+2] != 'E'  &&
-										board[i-2][j+2] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i-2][j+2] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
-											moves.y_index = j; 	
+											moves.y_index = j; 
+											moves.southWest = true; 
 											validMoves.add(moves);
 										}
 								}
@@ -895,44 +834,41 @@ class Board {
 					else if (j == 0) {
 						if (i > 0) {
 							// Check up 
-							// Forwards capture
+							// Advances capture
 							if (i != row_limit-1) {
 								if (board[i-1][j] == team && 
-									board[i+1][j] != team && 
-									board[i+1][j] != 'E'  &&
-									board[i+1][j] != 'X') {
+									board[i+1][j] == opponent(team)) {
+										Captures += 1;
 										PossibleMoves moves = new PossibleMoves();
-										Captures +=1;
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.north = true; 
 										validMoves.add(moves);									
 									}
 							}
-							// Backwards capture
+							// Withdraw capture
 							if (i != 1) {
 								if (board[i-1][j] == team && 
-									board[i-2][j] != team && 
-									board[i-2][j] != 'E'  &&
-									board[i-2][j] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i-2][j]== opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.south = true; 
 										validMoves.add(moves);
 									}
 							}
 							// Check up and to the right
-							// Backwards capture
+							// Withdraw capture
 							if (column_limit > 1) {
 								if ((i % 2) == 0) {
 									if (board[i-1][j+1] == team && 
-										board[i-2][j+2] != team && 
-										board[i-2][j+2] != 'E'  &&
-										board[i-2][j+2] != 'X') {
+										board[i-2][j+2] == opponent(team)) {
+											Captures +=1;											
 											PossibleMoves moves = new PossibleMoves();
-											Captures +=1;
 											moves.x_index = i;
-											moves.y_index = j; 	
+											moves.y_index = j; 
+											moves.southWest = true; 
 											validMoves.add(moves);
 										}
 								}
@@ -940,44 +876,41 @@ class Board {
 						}
 						if (i < row_limit-1) {
 							// Check down 
-							// Forwards capture
+							// Advances capture
 							if (i != 0) {
 								if (board[i+1][j] == team && 
-									board[i-1][j] != team && 
-									board[i-1][j] != 'E'  &&
-									board[i-1][j] != 'X') {
+									board[i-1][j] == opponent(team)) {
+										Captures += 1;	
 										PossibleMoves moves = new PossibleMoves();
-										Captures +=1;
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.south = true; 
 										validMoves.add(moves);
 									}
 							}
-							// Backwards capture
+							// Withdraw capture
 							if (i != row_limit-2) {
 								if (board[i+1][j] == team && 
-									board[i+2][j] != team && 
-									board[i+2][j] != 'E'  &&
-									board[i+2][j] != 'X') {
+									board[i+2][j] == opponent(team)) {
+										Captures += 1;
 										PossibleMoves moves = new PossibleMoves();
-										Captures +=1;
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.north = true; 
 										validMoves.add(moves);
 									}
 							}
 							// Check down and to the right
-							// Backwards capture
+							// Withdraw capture
 							if (column_limit > 1) {	
 								if ((i %2 ) == 0) {
 									if (board[i+1][j+1] == team && 
-										board[i+2][j+2] != team && 
-										board[i+2][j+2] != 'E'  &&
-										board[i+2][j+2] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i+2][j+2] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
-											moves.y_index = j; 	
+											moves.y_index = j; 
+											moves.northWest = true; 
 											validMoves.add(moves);
 										}
 								}
@@ -988,44 +921,41 @@ class Board {
 					else if (j == column_limit-1) {
 						if (i > 0) {
 							// Check up 
-							// Forwards capture
+							// Advances capture
 							if (i != row_limit-1) {
 								if (board[i-1][j] == team && 
-									board[i+1][j] != team && 
-									board[i+1][j] != 'E' &&
-									board[i+1][j] != 'X') {
+									board[i+1][j] == opponent(team)) {
+										Captures += 1;
 										PossibleMoves moves = new PossibleMoves();
-										Captures +=1;
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.north = true; 
 										validMoves.add(moves);
 									}
 							}
-							// Backwards capture
+							// Withdraw capture
 							if (i != 1) {
 								if (board[i-1][j] == team && 
-									board[i-2][j] != team && 
-									board[i-2][j] != 'E'  &&
-									board[i-2][j] != 'X') {
-										PossibleMoves moves = new PossibleMoves();
+									board[i-2][j] == opponent(team)) {
 										Captures +=1;
+										PossibleMoves moves = new PossibleMoves();
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.south = true; 
 										validMoves.add(moves);
 									}
 							}
 							// Check up and to the left
-							// Backwards capture
+							// Withdraw capture
 							if (column_limit > 1) {
 								if ((i % 2) == 0) {
 									if (board[i-1][j-1] == team && 
-										board[i-2][j-2] != team && 
-										board[i-2][j-2] != 'E'  &&
-										board[i-2][j-2] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i-2][j-2] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
-											moves.y_index = j; 	
+											moves.y_index = j; 
+											moves.southEast = true; 
 											validMoves.add(moves);
 										}
 								}
@@ -1033,44 +963,41 @@ class Board {
 						}
 						if (i < row_limit-1) {
 							// Check down 
-							// Forwards capture
+							// Advances capture
 							if (i != 0) {
 								if (board[i+1][j] == team && 
-									board[i-1][j] != team && 
-									board[i-1][j] != 'E'  &&
-									board[i-1][j] != 'X') {
+									board[i-1][j] == opponent(team)) {
+										Captures += 1;
 										PossibleMoves moves = new PossibleMoves();
-										Captures +=1;
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.south = true; 
 										validMoves.add(moves);
 									}
 							}
-							// Backwards capture
+							// Withdraw capture
 							if (i != row_limit-2) {
 								if (board[i+1][j] == team && 
-									board[i+2][j] != team && 
-									board[i+2][j] != 'E' &&
-									board[i+2][j] != 'X') {
+									board[i+2][j] == opponent(team)) {
+										Captures += 1;
 										PossibleMoves moves = new PossibleMoves();
-										Captures +=1;
 										moves.x_index = i;
-										moves.y_index = j; 	
+										moves.y_index = j; 
+										moves.north = true; 
 										validMoves.add(moves);
 									}
 							}
 							// Check down and to the left
-							// Backwards capture
+							// Withdraw capture
 							if (column_limit > 1) {
 								if ((i % 2) == 0) {
 									if (board[i+1][j-1] == team && 
-										board[i+2][j-2] != team && 
-										board[i+2][j-2] != 'E'  &&
-										board[i+2][j-2] != 'X') {
-											PossibleMoves moves = new PossibleMoves();
+										board[i+2][j-2] == opponent(team)) {
 											Captures +=1;
+											PossibleMoves moves = new PossibleMoves();
 											moves.x_index = i;
-											moves.y_index = j; 	
+											moves.y_index = j; 
+											moves.northEast = true; 
 											validMoves.add(moves);
 										}
 								}
@@ -1082,69 +1009,352 @@ class Board {
 		}
 		return Captures;
 	}
-
-	public void turn(char team, int move, int x_ps, int y_ps, int x_zs, int y_zs) {
-		Scanner in = new Scanner(System.in);
-		while (check_for_capture(team) > 0 && move == 3) {
-			System.out.println("You must preform a capture move or sacrifice move");
-			System.out.print("current x: ");
-			x_ps = in.nextInt();
-			System.out.print("current y: ");
-			y_ps = in.nextInt();
-			System.out.print("next x: ");
-			x_zs = in.nextInt();
-			System.out.print("next y: ");
-			y_zs = in.nextInt();
-		}
-		if (move == 1) {
-			capture(team, x_ps, y_ps, x_zs, y_zs, move);
-			board[x_ps][y_ps] = 'M';
-			board[x_zs][y_zs] = team;
-		}
-		else if (move == 2) {
-			capture(team, x_ps, y_ps, x_zs, y_zs, move);
-			board[x_ps][y_ps] = 'M';
-			board[x_zs][y_zs] = team;
-		}
-		else if (move ==3) {
-			paika(x_ps, y_ps, x_zs, y_zs);
-		}
-		else if (move == 4) {
-			sacrifice(x_ps, y_ps);
-		}
+	
+	public boolean in_limits(int x, int y) {
+		boolean valid = false;
+		if (x >= 0 &&
+			y >= 0 && 
+			x < row_limit && 
+			y < column_limit) {
+				valid = true;
+			}
+		else
+			valid = false;
+		return valid;
+	}
+	
+	public boolean valid_move(char team, char move, int x_ps, int y_ps, int x_zs, int y_zs) {
+		boolean valid = false;
+		if (board[x_zs][y_zs] == 'E' &&
+			board[x_ps][y_ps] == team) {			
+				if (in_limits(x_zs, y_zs)) {
+					// UP
+					if ((x_ps - x_zs) > 0 && 
+						(y_ps - y_zs) == 0) {  
+							if (move == 'A' && 
+								board[x_zs-1][y_zs] == opponent(team) &&
+								x_zs > 0) {
+									valid = true;
+								}
+							else if (move == 'W' &&
+								board[x_ps+1][y_ps] == opponent(team) &&
+								x_zs < row_limit-1) {
+									valid = true;
+								}
+							else if (move == 'P' &&
+								check_for_capture(team) == 0 ) {
+									valid = true;
+								}
+						}
+					// Left
+					if ((x_ps - x_zs) == 0  &&
+						(y_ps - y_zs) > 0) {
+							if (move == 'A' && 
+							board[x_zs][y_zs-1] == opponent(team) &&
+								y_zs > 0) {
+									valid = true;
+								}
+							else if (move == 'W' && 
+								board[x_ps][y_ps+1] == opponent(team) &&
+								y_zs < column_limit-1) {
+									valid = true;
+								}
+							else if (move == 'P' &&
+							check_for_capture(team) == 0 ) {
+								valid = true;
+							}
+						}
+					// Right
+					if ((x_ps - x_zs) == 0  &&
+						(y_ps - y_zs) < 0) {
+							if (move == 'A' &&
+							board[x_zs][y_zs+1] == opponent(team) &&
+								y_zs < column_limit-1) {
+									valid = true;
+								}
+							else if (move == 'W' &&
+								board[x_ps][y_ps-1] == opponent(team) &&
+								y_zs > 0) {
+									valid = true;
+								}
+							else if (move == 'P' &&
+								check_for_capture(team) == 0 ) {
+									valid = true;
+								}
+						}
+					// Down
+					if ((x_ps - x_zs) < 0 &&
+						(y_ps - y_zs) == 0) {
+							if (move == 'A' &&
+							board[x_zs+1][y_zs] == opponent(team) &&
+								x_zs < row_limit-1) {
+									valid = true;
+								}
+							else if (move == 'W' &&
+							board[x_ps-1][y_ps] == opponent(team) &&
+								x_zs > 0) {
+									valid = true;
+								}
+							else if (move == 'P' &&
+								check_for_capture(team) == 0 ) {
+									valid = true;
+								}
+						}
+					// Up-left
+					if ((x_ps - x_zs) > 0  &&
+						(y_ps - y_zs) > 0  &&
+						(((x_ps == row_limit-1 && (y_ps % 2) == 0)) ||
+						(((x_ps % 2) == 0   && y_ps == column_limit-1)) ||
+						((x_zs == row_limit-1 && (y_zs % 2) == 0)) ||
+						(((x_zs % 2) == 0   && y_zs == column_limit-1)) ||
+						(((x_ps % 2) == 0  && (y_ps % 2) == 0)  ||
+						((x_ps % 2) == 1   && (y_ps % 2) == 1)) ||
+						(((x_zs % 2) == 0  && (y_zs % 2) == 0)  ||
+						((x_zs % 2) == 1   && (y_zs % 2) == 1)))) {
+							if (move == 'A' &&
+								board[x_zs-1][y_zs-1] == opponent(team) &&
+								x_zs > 0    &&
+								y_zs > 0) {
+									valid = true;
+								}
+							else if (move == 'W'   &&
+								board[x_ps+1][y_ps+1] == opponent(team) &&
+								x_zs < row_limit-1 &&
+								y_zs < column_limit) {
+									valid = true;
+								}
+							else if (move == 'P' &&
+								check_for_capture(team) == 0 ) {
+									valid = true;
+								}
+						}
+					// Up-right
+					if ((x_ps - x_zs) > 0  &&
+						(y_ps - y_zs) < 0  &&
+						(((x_ps == row_limit-1 && (y_ps % 2) == 0)) ||
+						(((x_ps % 2) == 0   && y_ps == 0))		||
+						((x_zs == row_limit-1 && (y_zs % 2) == 0)) ||
+						(((x_zs % 2) == 0   && y_zs == 0))		||
+						(((x_ps % 2) == 0  && (y_ps % 2) == 0)  ||
+						((x_ps % 2) == 1   && (y_ps % 2) == 1)) ||
+						(((x_zs % 2) == 0  && (y_zs % 2) == 0)  ||
+						((x_zs % 2) == 1   && (y_zs % 2) == 1)))) {
+							if (move == 'A' &&
+								board[x_zs-1][y_zs+1] == opponent(team) &&
+								x_zs > 0    &&
+								y_zs < column_limit-1) {
+									valid = true;
+								}
+							else if (move == 'W' &&
+								board[x_ps+1][y_ps-1] == opponent(team) &&
+								x_zs < row_limit-1 &&
+								y_zs > 0) {
+									valid = true;
+								}
+							else if (move == 'P' &&
+								check_for_capture(team) == 0 ) {
+									valid = true;
+								}
+						}
+					// Down-left
+					if ((x_ps - x_zs) < 0  &&
+						(y_ps - y_zs) > 0  &&
+						(((x_ps == 0         && (y_ps % 2) == 0))  ||
+						(((x_ps % 2) == 0   && y_ps == column_limit-1)) ||
+						((x_zs == 0         && (y_zs % 2) == 0))  ||
+						(((x_zs % 2) == 0   && y_zs == column_limit-1)) ||
+						(((x_ps % 2) == 0  && (y_ps % 2) == 0)  ||
+						((x_ps % 2) == 1   && (y_ps % 2) == 1)) ||
+						(((x_zs % 2) == 0  && (y_zs % 2) == 0)  ||
+						((x_zs % 2) == 1   && (y_zs % 2) == 1)))) {
+							if (move == 'A' &&
+								board[x_zs+1][y_zs-1] == opponent(team) &&
+								x_zs < row_limit-1 &&
+								y_zs > 0) {
+									valid = true;
+								}
+							else if (move == 'W' &&
+								board[x_ps-1][y_ps+1] == opponent(team) &&
+								x_zs > 0 		 && 
+								y_zs < column_limit-1) {
+									valid = true;
+								}
+							else if (move == 'P' &&
+								check_for_capture(team) == 0 ) {
+									valid = true;
+								}
+						}
+					// Down-right
+					if ((x_ps - x_zs) < 0  &&
+						(y_ps - y_zs) < 0  &&
+						(((x_ps == 0         && (y_ps % 2) == 0))  ||
+						(((x_ps % 2) == 0   && y_ps == 0)) 	    ||
+						((x_zs == 0         && (y_zs % 2) == 0))  ||
+						(((x_zs % 2) == 0   && y_zs == 0)) 	    ||
+						(((x_ps % 2) == 0  && (y_ps % 2) == 0)  ||
+						((x_ps % 2) == 1   && (y_ps % 2) == 1)) ||
+						(((x_zs % 2) == 0  && (y_zs % 2) == 0)  ||
+						((x_zs % 2) == 1   && (y_zs % 2) == 1)))) {
+							if (move == 'A'		   &&
+								board[x_zs+1][y_zs+1] == opponent(team) &&
+								x_zs < row_limit-1 &&
+								y_zs < column_limit-1) {
+									valid = true;
+								}
+							else if (move == 'W' &&
+								board[x_ps-1][y_ps-1] == opponent(team) &&
+								x_zs > 0 		 &&
+								y_zs > 0) {
+									valid = true;
+								}
+							else if (move == 'P' &&
+								check_for_capture(team) == 0 ) {
+									valid = true;
+								}
+						}
+				}
+			}
+		else if (move == 'S' &&
+			board[x_ps][y_ps] == team) {
+				valid = true;
+			}
+		else
+			valid = false;
+		return valid;
 	}
 
-	public void turn_change() {
+	public void turn(char team, char move, int x_ps, int y_ps, int x_zs, int y_zs) {
+		if (move == 'A') {
+			capture(team, x_ps, y_ps, x_zs, y_zs, move);
+			board[x_ps][y_ps] = 'M';
+			board[x_zs][y_zs] = team;
+		}
+		else if (move == 'W') {
+			capture(team, x_ps, y_ps, x_zs, y_zs, move);
+			board[x_ps][y_ps] = 'M';
+			board[x_zs][y_zs] = team;
+		}
+		else if (move == 'P') {
+			paika(x_ps, y_ps, x_zs, y_zs);
+		}
+		else if (move == 'S') {
+			sacrifice(team, x_ps, y_ps);
+		}
+	}
+	
+	public char turn_change(char team) {
 		for (int i = 0; i < row_limit; i++) {
 			for (int j = 0; j < column_limit; j++) {
 				if (board[i][j] == 'M') {
 					board[i][j] = 'E';
 				}
+				else if (team == 'B' && board[i][j] == 'O') {
+					board[i][j] = 'E';
+				}
+				else if (team == 'W' && board[i][j] == 'Q') {
+					board[i][j] = 'E';
+				}
 			}
 		}
+		if (team == 'W')
+			team = 'B';
+		else if (team == 'B') 
+			team = 'W';
+		return team;
+	}
+	
+	public char game_start() {
+		char team = 'W';
+		int turn_limit = 10 * column_limit;
+		int turn = 1;
+		char move, winner;
+		int x_ps, y_ps, x_zs, y_zs;
+		Scanner in = new Scanner(System.in);
+		
+		while (turn <= turn_limit && white_remaining() > 0 && black_remaining() > 0) {
+			if (team == 'W')
+				System.out.println("White turn");
+			else
+				System.out.println("Black turn");
+			System.out.print("What type of move? (A --> Advance capture, W --> Withdraw capture, P --> Paika, S --> sacarifice) ");
+			move = in.next().charAt(0);	
+			System.out.print("current x: ");
+			x_ps = in.nextInt();
+			System.out.print("current y: ");
+			y_ps = in.nextInt();
+			if (move == 'S') {
+				x_zs = 0;
+				y_zs = 0;
+			}
+			else {
+				System.out.print("next x: ");
+				x_zs = in.nextInt();
+				System.out.print("next y: ");
+				y_zs = in.nextInt();
+			}
+			while (valid_move(team, move, x_ps, y_ps, x_zs, y_zs) != true) {
+				System.out.println("Move was invalid :(");
+				System.out.print("What type of move? (A --> Advance capture, W --> Withdraw capture, P --> Paika, S --> sacarifice) ");
+				move = in.next().charAt(0);	
+				System.out.print("current x: ");
+				x_ps = in.nextInt();
+				System.out.print("current y: ");
+				y_ps = in.nextInt();
+				if (move == 'S') {
+					x_zs = 0;
+					y_zs = 0;
+				}
+				else {
+					System.out.print("next x: ");
+					x_zs = in.nextInt();
+					System.out.print("next y: ");
+					y_zs = in.nextInt();
+				}
+			}
+			turn(team, move, x_ps, y_ps, x_zs, y_zs);
+			team = turn_change(team);
+			display_board();
+			turn++;
+		}
+		if (white_remaining() > 0)
+			winner = 'W';
+		else if (black_remaining() > 0) 
+			winner = 'B';
+		else
+			winner = 'T';
+		return winner;
 	}
 // -----------------------------------------------------------------------------------
 // ------------------------------ Main testing ---------------------------------------	
 	public static void main(String[]args) {
+		char winner;
 		System.out.println("Default Board");
-		Board fanorona = new Board();
+		Board fanorona = new Board(5,5);
 		fanorona.display_board();
 		System.out.println("White has " + fanorona.white_remaining() + " remaining");
 		System.out.println("Black has " + fanorona.black_remaining() + " remaining");
 		System.out.println("White currently has " + fanorona.check_for_capture('W') + " captures");
 		System.out.println("Black currently has " + fanorona.check_for_capture('B') + " captures");
-		fanorona.turn('W', 1, 2, 3, 2, 4);
-		fanorona.display_board();
-		fanorona.turn_change();
-		System.out.println("Turn change");
-		fanorona.display_board();
-		System.out.println("13x1");
-		Board test = new Board(13,1);
-		test.display_board();
-		System.out.println("White has " + test.white_remaining() + " remaining");
-		System.out.println("Black has " + test.black_remaining() + " remaining");
-		System.out.println("White currently has " + test.check_for_capture('W') + " captures");
-		System.out.println("Black currently has " + test.check_for_capture('B') + " captures");
+		winner = fanorona.game_start();
+		
+		if (winner == 'W')
+			System.out.println("White wins!");
+		else if (winner == 'B')
+			System.out.println("Black wins!");
+		else if (winner == 'T')
+			System.out.println("Tie game!");
+		// fanorona.turn('W', 1, 2, 3, 2, 4);
+		// fanorona.display_board();
+		// fanorona.turn_change();
+		// System.out.println("Turn change");
+		// fanorona.display_board();
+		// System.out.println("13x1");
+		// Board test = new Board(13,1);
+		// test.display_board();
+		// System.out.println("White has " + test.white_remaining() + " remaining");
+		// System.out.println("Black has " + test.black_remaining() + " remaining");
+		// System.out.println("White currently has " + test.check_for_capture('W') + " captures");
+		// System.out.println("Black currently has " + test.check_for_capture('B') + " captures");
 	}
 //------------------------------------------------------------------------------------
 }
