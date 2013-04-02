@@ -1,5 +1,6 @@
 package FanoronaGame;
-//package fanoronagame;
+
+
 
 import java.io.IOException;
 import javax.swing.JPanel;
@@ -8,14 +9,14 @@ import javax.swing.JPanel;
 /////////////////BUT MAYBE IT CAN BE USED? NOT SURE. THIS IS WHY I MADE playingFieldPanel STATIC IN THE FANORONAGAME CLASS//////
 
 
-  // This function returns the number of captures that are
+// This function returns the number of captures that are
 	// available for a given team.
 public class BoardforGamePieces extends FanoronaGame {
-        JPanel panel;
+      JPanel panel;
 	MiniMaxTree mmTree = new MiniMaxTree();
 
 
-/* ---------------- This is a resize function for an array --------------------------
+ //---------------- This is a resize function for an array --------------------------
 	private static Object resize_array (Object oldArray, int newSize) {
 		int oldSize = java.lang.reflect.Array.getLength(oldArray);
 		Class elementType = oldArray.getClass().getComponentType();
@@ -25,114 +26,55 @@ public class BoardforGamePieces extends FanoronaGame {
 			System.arraycopy(oldArray, 0, newArray, 0, preserveLength);
 		return newArray; 
 	}
- ----------------------------------------------------------------------------------*/
-// -------------------------- Private members ---------------------------------------    
+//----------------------------------------------------------------------------------
+//-------------------------- Private members ---------------------------------------    
 	private int row_limit;
 	private int column_limit;
-	private GamePieces board[][];
-       // private JPanel playingFieldPanel;
-   
-        
-        /*****************************************
-         * 
-         * I WAS GOING TO PUT THIS IN GAME PIECES TO MAKE THEM MOVE.. I GOT THEM TO DISAPPEAR.. BUT NOT THE CORRECT FUNCTIONALITY
-         * 
-         * 
-         * 
-         * 
-        GamePieces source = null;
-        GamePieces target = null;
-        
-         public void move(GamePieces s, GamePieces t) {
-            s = source;
-            t = target;
-            target = source;
-            //source.setVisible(false);
-            source.getColorModel();
-            source = null;
-            target = null;
-            
-        }
-        
-	// Paint the round background and label.
-        
-        @Override
-	protected void paintComponent(Graphics g) {
-		if (getModel().isPressed()) 
-                {
-			source = this;
-			g.setColor(Color.red);
-                        g.fillOval(10, 10, getWidth()-10, getHeight()-10);
-                
-                    if(source != null && getModel() != source) {
-                        target = this;
-                        g.fillOval(10, 10, getWidth()-10, getHeight()-10);
-                        move(source, target);
-                    }
-                    else if(this == source) {
-                        source = null;
-                        g.fillOval(10, 10, getWidth()-10, getHeight()-10);
-                    }
-                        super.paintComponent(g);
-                 }
-         * 
-         * 
-         * 
-         */
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-                
-// ----------------------------------------------------------------------------------
-// ------------------------------- Constructors -------------------------------------
-	//Default AI constructor
-    /**
-     *
-     * @throws IOException
-     */
-    public BoardforGamePieces() throws IOException {
-       // this.board = FanoronaGame.buttonArray;
-        this.panel = playingFieldPanel;
+	private GamePieces board[][] = new GamePieces[row_limit][column_limit];
+     // private JPanel playingFieldPanel;
+ 
+
+              
+//----------------------------------------------------------------------------------
+//------------------------------- Constructors -------------------------------------
+	//Default constructor
+  /**
+   *
+   * @throws IOException
+   */
+  public BoardforGamePieces() throws IOException {
+     // this.board = FanoronaGame.buttonArray;
+      this.panel = playingFieldPanel;
 		row_limit = 5;
 		column_limit = 9;
 		// ------------------- Resize the board -------------------------
-                    board = (GamePieces[][])resize_array(board, row_limit);
-                    for (int z = 0; z < board.length; z++) {
-                            if (board[z] == null)
-                                    board[z] = new GamePieces[column_limit];
-                            else
-                                    board[z] = (GamePieces[])resize_array(board[z], column_limit);
-                    }
-             
+                  board = (GamePieces[][])resize_array(board, row_limit);
+                  for (int z = 0; z < board.length; z++) {
+                          if (board[z] == null)
+                                  board[z] = new GamePieces[column_limit];
+                          else
+                                  board[z] = (GamePieces[])resize_array(board[z], column_limit);
+                  }
+           
 		// --------------------------------------------------------------
 		for (int i = 0; i < row_limit; i++)
 			for (int j = 0; j < column_limit; j++) {
 				if (i==0 || i==1)
-					board[i][j] = new GamePieces('B');
+					board[i][j] = new GamePieces('B',i,j);
 				else if ( i == 2 && 
 					(j == 0 || j == 2 || j == 5 || j == 7)) {
-					board[i][j] = new GamePieces('B');
+					board[i][j] = new GamePieces('B',i,j);
 					}
 				else
-					board[i][j] = new GamePieces('W');
+					board[i][j] = new GamePieces('W',i,j);
 				}
-		board[2][4] = new GamePieces('E');
+		board[2][4] = new GamePieces('E',2,4);
 	}
 
 	// AI constructor with size
 	public BoardforGamePieces(int row, int column) throws IOException {
-      //  this.board = FanoronaGame.buttonArray;
-        this.panel = playingFieldPanel;
+    //  this.board = FanoronaGame.buttonArray;
+      this.panel = playingFieldPanel;
 		if (row >= 1 && row <= 13 && (row % 2) == 1) {
 			if (column >= 1 && column <= 13 && (row % 2) == 1) {
 				row_limit = row;
@@ -149,787 +91,675 @@ public class BoardforGamePieces extends FanoronaGame {
 				for (int i = 0; i < row_limit; i++) {
 					for (int j = 0; j < column_limit; j++) {
 						if (i < row/2) 
-							board[i][j] = new GamePieces('B');
+							board[i][j] = new GamePieces('B',i,j);
 						else if (i == row/2) {
 							if (((j % 2) == 0 && j < column/2) 
 								|| ((j % 2) == 1 && j > column/2)) {
-									board[i][j] = new GamePieces('B');
+									board[i][j] = new GamePieces('B',i,j);
 							}
 							else if (j == column/2)
-								board[i][j] = new GamePieces('E');
+								board[i][j] = new GamePieces('E',i,j);
 							else 
-								board[i][j] = new GamePieces('W');
+								board[i][j] = new GamePieces('W',i,j);
 						}
 						else
-							board[i][j] = new GamePieces('W');
+							board[i][j] = new GamePieces('W',i,j);
 					}
 				}
 			}
 		}
 	}		
-// ----------------------------------------------------------------------------------
-// ---------------------------- Public Functions ------------------------------------
-        GamePieces selected;
-        
-	public GamePieces game_piece(int i, int j) {
-		return board[i][j];
-	}
+//----------------------------------------------------------------------------------
+//---------------------------- Public Functions ------------------------------------
+    GamePieces selected;
 
-	public int white_remaining() {
-		int total = 0;
-		for (int i = 0; i < row_limit; i++) {
-			for (int j = 0; j < column_limit; j++) {
-				if (board[i][j] == new GamePieces('W'))
-					total += 1;
-			}
-		}
-		return total;
-	}
-
-	public int black_remaining() {
-		int total = 0;
-		for (int i = 0; i < row_limit; i++) {
-			for (int j = 0; j < column_limit; j++) {
-				if (board[i][j] == new GamePieces('B'))
-					total += 1;
-			}
-		}
-		return total;
-	}
-
-	public void display_board() {
-            playingFieldPanel.getComponents();
-            for (int i = 0; i < row_limit; i++) {
-		for (int j = 0; j < column_limit; j++) {
-                    System.out.print(board[i][j] + "  ");
-		}
-		System.out.println();
-            }
-	}
-        
+      
+	int upper_row;
+	int upper_column;
+	
 	public int check_for_capture() 
-        {
-            int Captures = 0;
-            for (int i = 0; i < row_limit; i++) 
-            {
-                for (int j = 0; j < column_limit; j++) 
-                {
-                    if (board[i][j] == new GamePieces('E'))
-                    {
-                        if ( i > 0 && i < row_limit-1 && j > 0 && j < column_limit-1)
-                        {
-                            // Check nodes that can move in all directions
-                            if ( ((i % 2) == 1 && (j % 2) == 1) || ((i % 2) == 0 && (j % 2) == 0))
-                            {
-                                // Check up and to the left 
-                                // Forwards capture
-                                if (board[i-1][j-1] == new GamePieces('B') || board[i-1][j-1] == new GamePieces ('W') 
-                                        && board[i+1][j+1] != new GamePieces('B') || board[i+1][j+1] != new GamePieces ('W') && 
-                                board[i+1][j+1] != new GamePieces('E')) 
-                                {
-                                        Captures += 1;	
-                                }
-                                // Backwards capture
-                                if (i != 1 && j != 1) {
-                                        if (board[i-1][j-1] == new GamePieces('B') || board[i-1][j-1] == new GamePieces ('W') && 
-                                                board[i-2][j-2] != new GamePieces('B') || board[i-2][j-2] == new GamePieces ('W') 
-                                                && board[i-2][j-2] != new GamePieces('E')) 
-                                        {
-                                                Captures += 1;
-                                        }
-                                }	
-                                // Check up 
-                                // Forwards capture
-                                if (board[i-1][j] == new GamePieces('B') || board[i-1][j] == new GamePieces('W')
-                                        && board[i+1][j] != new GamePieces('B') || board[i+1][j] == new GamePieces('W') 
-                                        && board[i+1][j] != new GamePieces('E')) {
-                                    Captures += 1;
-                                }
-                                // Backwards capture
-                                if (i != 1) {
-                                        if (board[i-1][j] == new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                                board[i-2][j] != new GamePieces('B') || board[i-2][j] == new GamePieces('W') && 
-                                                board[i-2][j] != new GamePieces('E')) {
-                                                        Captures += 1;
-                                                }
-                                }
-                                // Check up and to the right 
-                                // Forwards capture
-                                if (board[i-1][j+1] == new GamePieces('B') || board[i-1][j+1] == new GamePieces('W') && 
-                                        board[i+1][j-1] != new GamePieces('B') || board[i+1][j-1] == new GamePieces('W') && 
-                                        board[i+1][j-1] != new GamePieces('E')) {
-                                                Captures += 1;
-                                        }	
-                                // Backwards capture
-                                if (i != 1 && j != column_limit-2) {
-                                        if (board[i-1][j+1] == new GamePieces('B') || board[i-1][j+1] == new GamePieces('W') && 
-                                                board[i-2][j+2] != new GamePieces('B') || board[i-2][j+2] == new GamePieces('W') && 
-                                                board[i-2][j+2] != new GamePieces('E')) 
-                                        {
-                                            Captures += 1;
-                                        }
-                                }	
-                                // Check left 
-                                // Forwards capture
-                                if (board[i][j-1] == new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                        board[i][j+1] != new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                        board[i][j+1] != new GamePieces('E')) 
-                                {
-                                    Captures += 1;
-                                }
-                                // Backwards capture
-                                if (j != 1) 
-                                {	
-                                        if (board[i][j-1] == new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                                board[i][j-2] != new GamePieces('B') || board[i][j-2] == new GamePieces('W') && 
-                                                board[i][j-2] != new GamePieces('E')) 
-                                        {
-                                              Captures += 1;
-                                        }
-                                }
-                                // Check right 
-                                // Forwards capture
-                                if (board[i][j+1] == new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                        board[i][j-1] != new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                        board[i][j-1] != new GamePieces('E')) 
-                                {
-                                    Captures += 1;
-                                }
-                                // Backwards capture
-                                if (j != column_limit-2) 
-                                {
-                                    if (board[i][j+1] == new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                        board[i][j+2] != new GamePieces('B') || board[i][j+2] == new GamePieces('W') && 
-                                        board[i][j+2] != new GamePieces('E')) 
-                                    {
-                                        Captures += 1;
-                                    }
-                                }	
-                                // Check down and to the left 
-                                // Forwards capture
-                                if (board[i+1][j-1] == new GamePieces('B') || board[i+1][j-1] == new GamePieces('W') && 
-                                        board[i-1][j+1] != new GamePieces('B') || board[i-1][j+1] == new GamePieces('W') && 
-                                        board[i-1][j+1] != new GamePieces('E')) 
-                                {
-                                    Captures += 1;
-                                }
-                                // Backwards capture
-                                if (i != row_limit-2 && j != 1) 
-                                {
-                                        if (board[i+1][j-1] == new GamePieces('B') || board[i+1][j-1] == new GamePieces('W') && 
-                                            board[i+2][j-2] != new GamePieces('B') || board[i+2][j-2] == new GamePieces('W') && 
-                                            board[i+2][j-2] != new GamePieces('E')) 
-                                        {
-                                            Captures += 1;
-                                        }
-                                }	
-                                // Check down 
-                                // Forwards capture
-                                if (board[i+1][j] == new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
-                                        board[i-1][j] != new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                        board[i-1][j] != new GamePieces('E'))
-                                {
-                                    Captures += 1;
-                                }
-                                // Backwards capture
-                                if (i != row_limit-2) 
-                                {
-                                    if (board[i+1][j] == new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
-                                    board[i+2][j] != new GamePieces('B') || board[i+2][j] == new GamePieces('W') && 
-                                    board[i+2][j] != new GamePieces('E')) 
-                                    {
-                                        Captures += 1;
-                                    }
-                                }	
-                                // Check down and to the right 
-                                // Forwards capture
-                                if (board[i+1][j+1] == new GamePieces('B') || board[i+1][j+1] == new GamePieces('W') && 
-                                    board[i-1][j-1] != new GamePieces('B') || board[i-1][j-1] == new GamePieces('W') && 
-                                    board[i-1][j-1] != new GamePieces('E'))
-                                {
-                                    Captures += 1;
-                                }
-                                // Backwards capture
-                                if ( i != row_limit-2 && j != column_limit-2) 
-                                {
-                                    if (board[i+1][j+1] == new GamePieces('B') || board[i+1][j+1] == new GamePieces('W') && 
-                                        board[i+2][j+2] != new GamePieces('B') || board[i+2][j+2] == new GamePieces('W') && 
-                                        board[i+2][j+2] != new GamePieces('E')) 
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                            }
-                            // Check nodes that can move up, down, left, and right 	
-                            else {
-                                // Check up 
-                                // Forwards capture
-                                if (board[i-1][j] == new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                    board[i+1][j] != new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
-                                    board[i+1][j] != new GamePieces('E')) 
-                                {
-                                    Captures += 1;
-                                }
-                                // Backwards capture
-                                if (i != 1) 
-                                {
-                                    if(board[i-1][j] == new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                       board[i-2][j] != new GamePieces('B') || board[i-2][j] == new GamePieces('W') && 
-                                       board[i-2][j] != new GamePieces('E')) 
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                                // Check down 
-                                // Forwards capture
-                                if (board[i+1][j] == new GamePieces('B') || board[i+1][j] == new GamePieces('W') &&
-                                    board[i-1][j] != new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                    board[i-1][j] != new GamePieces('E'))
-                                {
-                                    Captures += 1;
-                                }
-                                // Backwards capture
-                                if (i != row_limit-2) {
-                                        if (board[i+1][j] == new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
-                                            board[i+2][j] != new GamePieces('B') || board[i+2][j] == new GamePieces('W') && 
-                                            board[i+2][j] != new GamePieces('E'))
-                                        {
-                                            Captures += 1;
-                                        }
-                                }	
-                                // Check left 
-                                // Forwards capture
-                                if (board[i][j-1] == new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                    board[i][j+1] != new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                    board[i][j+1] != new GamePieces('E'))
-                                {
-                                    Captures += 1;
-                                }
-                                // Backwards capture
-                                if ( j != 1) 
-                                {
-                                    if (board[i][j-1] == new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                        board[i][j-2] != new GamePieces('B') || board[i][j-2] == new GamePieces('W') && 
-                                        board[i][j-2] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }	
-                                // Check right 
-                                // Forwards capture
-                                if (board[i][j+1] == new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                    board[i][j-1] != new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                    board[i][j-1] != new GamePieces('E'))
-                                {
-                                    Captures += 1;
-                                }
-                                // Backwards caputre
-                                if (j != column_limit-2)
-                                {
-                                    if (board[i][j+1] == new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                        board[i][j+2] != new GamePieces('B') || board[i][j+2] == new GamePieces('W') &&
-                                        board[i][j+2] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                            }
-                        }
-                        // Checks the top edge
-                        else if (i == 0) 
-                        {
-                            if (j > 0) 
-                            {
-                                // Check left 
-                                // Forwards capture
-                                if ( j != column_limit-1) 
-                                {
-                                    if (board[i][j-1] == new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                        board[i][j+1] != new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                        board[i][j+1] != new GamePieces('E')) 
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                                // Backwards capture
-                                if (j != 1) 
-                                {
-                                    if (board[i][j-1] == new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                        board[i][j-2] != new GamePieces('B') || board[i][j-2] == new GamePieces('W') && 
-                                        board[i][j-2] != new GamePieces('E')) 
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                                // Check down and to the left
-                                // Backwards capture
-                                if (row_limit > 1) 
-                                {
-                                    if ((j % 2) == 0)
-                                    {
-                                        if (board[i+1][j-1] == new GamePieces('B') || board[i+1][j-1] == new GamePieces('W') && 
-                                            board[i+2][j-2] != new GamePieces('B') || board[i+2][j-2] == new GamePieces('W') && 
-                                            board[i+2][j-2] != new GamePieces('E')) 
-                                        {
-                                            Captures += 1;
-                                        }
-                                    }
-                                }
-                            }
-                            if (j < column_limit-1) 
-                            {
-                                // Check right 
-                                // Forwards capture
-                                if (j != 0) 
-                                {
-                                    if (board[i][j+1] == new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                        board[i][j-1] != new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                        board[i][j-1] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                                    // Backwards capture
-                                if (j != column_limit-2) 
-                                {
-                                    if (board[i][j+1] == new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                        board[i][j+2] != new GamePieces('B') || board[i][j+2] == new GamePieces('W') && 
-                                        board[i][j+2] != new GamePieces('E')) 
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                                // Check down and to the right
-                                // Backwards capture
-                                if (row_limit > 1) 
-                                {
-                                    if ((j % 2) == 0) 
-                                    {
-                                        if (board[i+1][j+1] == new GamePieces('B') || board[i+1][j+1] == new GamePieces('W') && 
-                                            board[i+2][j+2] != new GamePieces('B') || board[i+2][j+2] == new GamePieces('W') && 
-                                            board[i+2][j+2] != new GamePieces('E')) 
-                                        {
-                                            Captures += 1;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        // Checks the bottom edge
-                        else if (i == row_limit-1) 
-                        {
-                            if (j > 0) 
-                            {
-                                // Check left 
-                                // Forwards capture
-                                if ( j != column_limit-2) 
-                                {
-                                    if (board[i][j-1] == new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                        board[i][j+1] != new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                        board[i][j+1] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                                // Backwards capture
-                                if (j != 1) 
-                                {
-                                    if (board[i][j-1] == new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                        board[i][j-2] != new GamePieces('B') || board[i][j-2] == new GamePieces('W') && 
-                                        board[i][j-2] != new GamePieces('E')) 
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                                // Check up and to the left
-                                // Backwards capture
-                                if (row_limit > 1)
-                                {
-                                    if ((j % 2) == 0)
-                                    {
-                                        if (board[i-1][j-1] == new GamePieces('B') || board[i-1][j-1] == new GamePieces('W') && 
-                                            board[i-2][j-2] != new GamePieces('B') || board[i-2][j-2] == new GamePieces('W') && 
-                                            board[i-2][j-2] != new GamePieces('E'))
-                                        {
-                                            Captures += 1;
-                                        }
-                                    }
-                                }
-                            }
-                            if (j < column_limit-1) 
-                            {
-                                // Check right 
-                                // Forwards capture
-                                if (j != 0)
-                                {
-                                    if (board[i][j+1] == new GamePieces('B') || board[i][j+1] == new GamePieces('W') && 
-                                        board[i][j-1] != new GamePieces('B') || board[i][j-1] == new GamePieces('W') && 
-                                        board[i][j-1] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                                // Backwards capture
-                                if (j != column_limit-1)
-                                {
-                                    if (board[i][j+1] == new GamePieces('B') || board[i][j+1] == new GamePieces('W') &&
-                                        board[i][j+2] != new GamePieces('B') || board[i][j+2] == new GamePieces('W') && 
-                                        board[i][j+2] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                                // Check up and to the right
-                                // Backwards capture
-                                if (row_limit > 1) 
-                                {
-                                    if ((j % 2) == 0) 
-                                    {
-                                        if (board[i-1][j+1] == new GamePieces('B') || board[i-1][j+1] == new GamePieces('W') && 
-                                            board[i-2][j+2] != new GamePieces('B') || board[i-2][j+2] == new GamePieces('W') && 
-                                            board[i-2][j+2] != new GamePieces('E'))
-                                        {
-                                            Captures += 1;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        // Checks the left edge
-                        else if (j == 0) 
-                        {
-                            if (i > 0) 
-                            {
-                                // Check up 
-                                // Forwards capture
-                                if (i != row_limit-1) 
-                                {
-                                    if (board[i-1][j] == new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                        board[i+1][j] != new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
-                                        board[i+1][j] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                                // Backwards capture
-                                if (i != 1)
-                                {
-                                    if (board[i-1][j] == new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                        board[i-2][j] != new GamePieces('B') || board[i-2][j] == new GamePieces('W') && 
-                                        board[i-2][j] != new GamePieces('E'))
-                                    {
-                                        Captures +=1;
-                                    }
-                                }
-                                // Check up and to the right
-                                // Backwards capture
-                                if (column_limit > 1) 
-                                {
-                                    if ((i % 2) == 0) 
-                                    {
-                                        if (board[i-1][j+1] == new GamePieces('B') || board[i-1][j+1] == new GamePieces('W') && 
-                                            board[i-2][j+2] != new GamePieces('B') || board[i-2][j+2] == new GamePieces('W') && 
-                                            board[i-2][j+2] != new GamePieces('E')) 
-                                        {
-                                            Captures +=1;
-                                        }
-                                    }
-                                }
-                            }
-                            if (i < row_limit-1) 
-                            {
-                            // Check down 
-                            // Forwards capture
-                                if (i != 0) 
-                                {
-                                    if (board[i+1][j] == new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
-                                        board[i-1][j] != new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                        board[i-1][j] != new GamePieces('E')) 
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                            // Backwards capture
-                                if (i != row_limit-2) 
-                                {
-                                    if (board[i+1][j] == new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
-                                        board[i+2][j] != new GamePieces('B') || board[i+2][j] == new GamePieces('W') && 
-                                        board[i+2][j] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                            // Check down and to the right
-                            // Backwards capture
-                                if (column_limit > 1) 
-                                {
-                                    if ((i %2 ) == 0) 
-                                    {
-                                        if (board[i+1][j+1] == new GamePieces('B') || board[i+1][j+1] == new GamePieces('W') && 
-                                            board[i+2][j+2] != new GamePieces('B') || board[i+2][j+2] == new GamePieces('W') && 
-                                            board[i+2][j+2] != new GamePieces('E'))
-                                        {
-                                            Captures +=1;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        // Checks right edge
-                        else if (j == column_limit-1) 
-                        {
-                            if (i > 0)
-                            {
-                            // Check up 
-                            // Forwards capture
-                                if (i != row_limit-1)
-                                {
-                                    if (board[i-1][j] == new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                        board[i+1][j] != new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
-                                        board[i+1][j] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                            // Backwards capture
-                                if (i != 1)
-                                {
-                                    if (board[i-1][j] == new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                        board[i-2][j] != new GamePieces('B') || board[i-2][j] == new GamePieces('W') && 
-                                        board[i-2][j] != new GamePieces('E'))
-                                    {
-                                        Captures +=1;
-                                    }
-                                }
-                            // Check up and to the left
-                            // Backwards capture
-                                if (column_limit > 1)
-                                {
-                                    if ((i % 2) == 0)
-                                    {
-                                        if (board[i-1][j-1] == new GamePieces('B') || board[i-1][j-1] == new GamePieces('W') && 
-                                            board[i-2][j-2] != new GamePieces('B') || board[i-2][j-2] == new GamePieces('W') && 
-                                            board[i-2][j-2] != new GamePieces('E'))
-                                        {
-                                            Captures +=1;
-                                        }
-                                    }
-                                }
-                            }
-                            if (i < row_limit-1)
-                            {
-                            // Check down 
-                            // Forwards capture
-                                if (i != 0)
-                                {
-                                    if (board[i+1][j] == new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
-                                        board[i-1][j] != new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
-                                        board[i-1][j] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                            // Backwards capture
-                                if (i != row_limit-2)
-                                {
-                                    if (board[i+1][j] == new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
-                                        board[i+2][j] != new GamePieces('B') || board[i+2][j] == new GamePieces('W') && 
-                                        board[i+2][j] != new GamePieces('E'))
-                                    {
-                                        Captures += 1;
-                                    }
-                                }
-                            // Check down and to the left
-                            // Backwards capture
-                                if (column_limit > 1)
-                                {
-                                    if ((i % 2) == 0)
-                                    {
-                                        if (board[i+1][j-1] == new GamePieces('B') || board[i+1][j-1] == new GamePieces('W') && 
-                                            board[i+2][j-2] != new GamePieces('B') || board[i+2][j-2] == new GamePieces('W') && 
-                                            board[i+2][j-2] != new GamePieces('E'))
-                                        {
-                                            Captures +=1;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return Captures;
-        }
+      {
+          int[][] dirCaptures; //first >> 0 = fwd; 1 = back; //second >> 0 = up;// 1 = down;// 2 = left; 3 = right; // 4 = top lft; 5 = up right; // 6 = bottm lft; 7 = bottom right;
+          dirCaptures[1][8] = 0;
+          
+          for (int i = 0; i < row_limit; i++) 
+          {
+              for (int j = 0; j < column_limit; j++) 
+              {
+                  if (board[i][j].team == selected.checkTeam(i, j))
+                  {
+                      if ( i > 0 && i < row_limit-1 && j > 0 && j < column_limit-1)
+                      {
+                          // Check nodes that can move in all directions
+                          if ( ((i % 2) == 1 && (j % 2) == 1) || ((i % 2) == 0 && (j % 2) == 0))
+                          {
+                              // Check up and to the left 
+                              // Forwards capture
+                              if (board[i-1][j-1].team == selected.checkTeam(i-1, j-1) && (board[i+1][j+1].team != selected.checkTeam(i+1, j+1))) 
+                              {
+                            	  dirCaptures[0][4] += 1;	
+                              }
+                              // Backwards capture
+                              if (i != 1 && j != 1) 
+                              {
+                                      if (board[i-1][j-1].team == selected.checkTeam(i-1, j-1) && board[i-2][j-2].team != selected.checkTeam(i-2, j-2))
+                                      {
+                                    	  dirCaptures[1][4] += 1;
+                                      }
+                              }	
+                              // Check up 
+                              // Forwards capture
+                              if (board[i-1][j].team == selected.checkTeam(i-1, j) && board[i+1][j].team != selected.checkTeam(i+1, j))
+                              {
+                            	  dirCaptures[0][0] += 1;
+                              }
+                              // Backwards capture
+                              if (i != 1) 
+                              {
+                            	  if (board[i-1][j].team == selected.checkTeam(i-1, j) && board[i-2][j].team != selected.checkTeam(i-2, j))
+                                      {
+                                    	  dirCaptures[1][0] += 1;
+                                      }
+                              }
+                              // Check up and to the right 
+                              // Forwards capture
+                              if (board[i-1][j+1].team == selected.checkTeam(i-1, j+1) && board[i+1][j-1].team != selected.checkTeam(i+1, j-1)) 
+                              {
+                            	  dirCaptures[0][5] += 1;
+                              }	
+                              // Backwards capture
+                              if (i != 1 && j != column_limit-2) 
+                              {
+                            	  if (board[i-1][j+1].team == selected.checkTeam(i-1, j+1) && board[i-2][j+2].team != selected.checkTeam(i-2, j+2)) 
+                                      {
+                            		  		dirCaptures[1][5] += 1;
+                                      }
+                              }	
+                              // Check left 
+                              // Forwards capture
+                              if (board[i][j-1].team == selected.checkTeam(i, j-1) && board[i][j+1].team !=  selected.checkTeam(i, j+1)) 
+                              {
+                            	  dirCaptures[0][2] += 1;
+                              }
+                              // Backwards capture
+                              if (j != 1) 
+                              {
+                            	  if (board[i][j-1].team == selected.checkTeam(i-1, j+1) && board[i][j-2].team != selected.checkTeam(i, j-2))
+                                      {
+                                    	  dirCaptures[1][2] += 1;
+                                      }
+                              }
+                              // Check right 
+                              // Forwards capture
+                              if (board[i][j+1].team == selected.checkTeam(i-1, j+1) && board[i][j-1].team != selected.checkTeam(i, j-1))
+                              {
+                                  dirCaptures[0][3] += 1;
+                              }
+                              // Backwards capture
+                              if (j != column_limit-2) 
+                              {
+                                  if (board[i][j+1].team == selected.checkTeam(i, j+1) && board[i][j+2].team != selected.checkTeam(i, j+2)) 
+                                  {
+                                      dirCaptures[1][3] += 1;
+                                  }
+                              }	
+                              // Check down and to the left 
+                              // Forwards capture
+                              if (board[i+1][j-1].team == selected.checkTeam(i+1, j-1) && board[i-1][j+1].team != selected.checkTeam(i-1, j+1))
+                              {
+                                  dirCaptures[0][6] += 1;
+                              }
+                              // Backwards capture
+                              if (i != row_limit-2 && j != 1) 
+                              {
+                                      if (board[i+1][j-1].team == selected.checkTeam(i+1, j-1) && board[i+2][j-2].team != selected.checkTeam(i+2, j-2))
+                                      {
+                                          dirCaptures[1][6] += 1;
+                                      }
+                              }	
+                              // Check down 
+                              // Forwards capture
+                              if (board[i+1][j].team == selected.checkTeam(i+1, j) && board[i-1][j].team != selected.checkTeam(i-1, j))
+                              {
+                                  dirCaptures[0][1] += 1;
+                              }
+                              // Backwards capture
+                              if (i != row_limit-2) 
+                              {
+                                  if (board[i+1][j].team == selected.checkTeam(i+1, j) && board[i+2][j].team != selected.checkTeam(i+2, j))
+                                  {
+                                      dirCaptures[1][1] += 1;
+                                  }
+                              }	
+                              // Check down and to the right 
+                              // Forwards capture
+                              if (board[i+1][j+1].team == selected.checkTeam(i+1, j+1) && board[i-1][j-1].team != selected.checkTeam(i-1, j-1))
+                              {
+                                  dirCaptures[0][7] = 1;
+                              }
+                              // Backwards capture
+                              if ( i != row_limit-2 && j != column_limit-2) 
+                              {
+                                  if (board[i+1][j+1].team == selected.checkTeam(i+1, j+1) && board[i+2][j+2].team != selected.checkTeam(i+2, j+2)) 
+                                  {
+                                      dirCaptures[1][7] += 1;
+                                  }
+                              }
+                          }
+                          // Check nodes that can move up, down, left, and right 	
+                          else {
+                              // Check up 
+                              // Forwards capture
+                              if (board[i-1][j].team == selected.checkTeam(i-1, j) && board[i+1][j].team != selected.checkTeam(i+1, j))
+                              {
+                                  dirCaptures[0][0] += 1;
+                              }
+                              // Backwards capture
+                              if (i != 1) 
+                              {
+                                  if(board[i-1][j].team == selected.checkTeam(i-1, j) && board[i-2][j].team != selected.checkTeam(i-2, j)) 
+                                  {
+                                      dirCaptures[1][0] += 1;
+                                  }
+                              }
+                              // Check down 
+                              // Forwards capture
+                              if (board[i+1][j].team == selected.checkTeam(i+1, j) && board[i-1][j].team != selected.checkTeam(i-1, j))
+                              {
+                                  dirCaptures[0][1] += 1;
+                              }
+                              // Backwards capture
+                              if (i != row_limit-2)
+                              {
+                            	  if (board[i+1][j].team == selected.checkTeam(i+1, j) && board[i+2][j].team != selected.checkTeam(i+2, j))
+                                      {
+                                          dirCaptures[1][1] += 1;
+                                      }
+                              }	
+                              // Check left 
+                              // Forwards capture
+                              if (board[i][j-1].team == selected.checkTeam(i, j-1) && board[i][j+1].team != selected.checkTeam(i, j+1))
+                              {
+                                  dirCaptures[0][2] += 1;
+                              }
+                              // Backwards capture
+                              if ( j != 1) 
+                              {
+                                  if (board[i][j-1].team == selected.checkTeam(i, j-1) && board[i][j-2].team != selected.checkTeam(i, j-2))
+                                  {
+                                      dirCaptures[1][2] += 1;
+                                  }
+                              }	
+                              // Check right 
+                              // Forwards capture
+                              if (board[i][j+1].team == selected.checkTeam(i, j+1) && board[i][j-1].team != selected.checkTeam(i, j-1))
+                              {
+                                  dirCaptures[0][3] += 1;
+                              }
+                              // Backwards caputre
+                              if (j != column_limit-2)
+                              {
+                                  if (board[i][j+1].team == selected.checkTeam(i, j+1) && board[i][j+2].team != selected.checkTeam(i, j+2))
+                                  {
+                                      dirCaptures[1][3] += 1;
+                                  }
+                              }
+                          }
+                      }
+                      // Checks the top edge
+                      else if (i == 0) 
+                      {
+                          if (j > 0) 
+                          {
+                              // Check left 
+                              // Forwards capture
+                              if ( j != column_limit-1) 
+                              {
+                                  if (board[i][j-1].team == selected.checkTeam(i, j-1) && board[i][j+1].team != selected.checkTeam(i, j+1))
+                                  {
+                                      dirCaptures[0][2] += 1;
+                                  }
+                              }
+                              // Backwards capture
+                              if (j != 1) 
+                              {
+                                  if (board[i][j-1].team == selected.checkTeam(i, j-1) && board[i][j-2].team != selected.checkTeam(i, j-2))
+                                  {
+                                	  dirCaptures[1][2] += 1;
+                                  }
+                              }
+                              // Check down and to the left
+                              // Backwards capture
+                              if (row_limit > 1) 
+                              {
+                                  if ((j % 2) == 0)
+                                  {
+                                      if (board[i+1][j-1].team == selected.checkTeam(i+1, j-1) && board[i+2][j-2].team != selected.checkTeam(i+2, j-2))
+
+                                      {
+                                    	  dirCaptures[1][6] += 1;
+                                      }
+                                  }
+                              }
+                          }
+                          if (j < column_limit-1) 
+                          {
+                              // Check right 
+                              // Forwards capture
+                              if (j != 0) 
+                              {
+                                  if (board[i][j+1].team == selected.checkTeam(i, j+1) && board[i][j-1].team != selected.checkTeam(i, j-1))
+                                  {
+                                	  dirCaptures[0][3] += 1;
+                                  }
+                              }
+                                  // Backwards capture
+                              if (j != column_limit-2) 
+                              {
+                                  if (board[i][j+1].team == selected.checkTeam(i, j+1) && board[i][j+2].team != selected.checkTeam(i, j+2)) 
+                                  {
+                                	  dirCaptures[1][3] += 1;
+                                  }
+                              }
+                              // Check down and to the right
+                              // Backwards capture
+                              if (row_limit > 1) 
+                              {
+                                  if ((j % 2) == 0) 
+                                  {
+                                      if (board[i+1][j+1].team == selected.checkTeam(i+1, j+1) && board[i+2][j+2].team != selected.checkTeam(i+2, j+2))
+                                      {
+                                    	  dirCaptures[1][7] += 1;
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                      // Checks the bottom edge
+                      else if (i == row_limit-1) 
+                      {
+                          if (j > 0) 
+                          {
+                              // Check left 
+                              // Forwards capture
+                              if ( j != column_limit-2) 
+                              {
+                                  if (board[i][j-1].team == selected.checkTeam(i, j-1) && board[i][j+1].team != selected.checkTeam(i, j+1))
+                                  {
+                                      dirCaptures[0][2] += 1;
+                                  }
+                              }
+                              // Backwards capture
+                              if (j != 1) 
+                              {
+                                  if (board[i][j-1].team == selected.checkTeam(i, j-1) && board[i][j-2].team != selected.checkTeam(i, j-2))
+                                  {
+                                      dirCaptures[1][2] += 1;
+                                  }
+                              }
+                              // Check up and to the left
+                              // Backwards capture
+                              if (row_limit > 1)
+                              {
+                                  if ((j % 2) == 0)
+                                  {
+                                      if (board[i-1][j-1].team == selected.checkTeam(i-1, j-1) && board[i-2][j-2].team != selected.checkTeam(i-2, j-2))
+                                      {
+                                          dirCaptures[1][4] += 1;
+                                      }
+                                  }
+                              }
+                          }
+                          if (j < column_limit-1) 
+                          {
+                              // Check right 
+                              // Forwards capture
+                              if (j != 0)
+                              {
+                                  if (board[i][j+1].team == selected.checkTeam(i, j+1) && board[i][j-1].team != selected.checkTeam(i, j-1))
+                                  {
+                                      dirCaptures[0][3] += 1;
+                                  }
+                              }
+                              // Backwards capture
+                              if (j != column_limit-1)
+                              {
+                                  if (board[i][j+1].team == selected.checkTeam(i, j+1) && board[i][j+2].team != selected.checkTeam(i, j+2))
+                                  {
+                                      dirCaptures[1][3] += 1;
+                                  }
+                              }
+                              // Check up and to the right
+                              // Backwards capture
+                              if (row_limit > 1) 
+                              {
+                                  if ((j % 2) == 0) 
+                                  {
+                                      if (board[i-1][j+1].team == selected.checkTeam(i-1, j+1) && board[i-2][j+2].team != selected.checkTeam(i-2, j+2))
+                                      {
+                                          dirCaptures[1][5] += 1;
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                      // Checks the left edge
+                      else if (j == 0) 
+                      {
+                          if (i > 0) 
+                          {
+                              // Check up 
+                              // Forwards capture
+                              if (i != row_limit-1) 
+                              {
+                                  if (board[i-1][j].team == selected.checkTeam(i-1, j) && board[i+1][j].team != selected.checkTeam(i+1, j))
+                                  {
+                                      dirCaptures[0][0] += 1;
+                                  }
+                              }
+                              // Backwards capture
+                              if (i != 1)
+                              {
+                                  if (board[i-1][j].team == selected.checkTeam(i-1, j) && board[i-2][j].team != selected.checkTeam(i-2, j))
+                                  {
+                                      dirCaptures[1][0] +=1;
+                                  }
+                              }
+                              // Check up and to the right
+                              // Backwards capture
+                              if (column_limit > 1) 
+                              {
+                                  if ((i % 2) == 0) 
+                                  {
+                                      if (board[i-1][j+1].team == selected.checkTeam(i-1, j+1) && board[i-2][j+2].team != selected.checkTeam(i-2, j-2))
+                                      {
+                                          dirCaptures[1][5] +=1;
+                                      }
+                                  }
+                              }
+                          }
+                          if (i < row_limit-1) 
+                          {
+                          // Check down 
+                          // Forwards capture
+                              if (i != 0) 
+                              {
+                                  if (board[i+1][j].team == selected.checkTeam(i+1, j) && board[i-1][j].team != selected.checkTeam(i+1, j))
+                                  {
+                                      dirCaptures[0][1] += 1;
+                                  }
+                              }
+                          // Backwards capture
+                              if (i != row_limit-2) 
+                              {
+                                  if (board[i+1][j].team == selected.checkTeam(i+1, j) && board[i+2][j].team != selected.checkTeam(i+1, j))
+                                  {
+                                      dirCaptures[1][1] += 1;
+                                  }
+                              }
+                          // Check down and to the right
+                          // Backwards capture
+                              if (column_limit > 1) 
+                              {
+                                  if ((i %2 ) == 0) 
+                                  {
+                                      if (board[i+1][j+1].team ==  && board[i+2][j+2].team != )
+                                      {
+                                          dirCaptures[1][7] +=1;
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                      // Checks right edge
+                      else if (j == column_limit-1) 
+                      {
+                          if (i > 0)
+                          {
+                          // Check up 
+                          // Forwards capture
+                              if (i != row_limit-1)
+                              {
+                                  if (board[i-1][j].team == && board[i+1][j].team != )
+                                  {
+                                      dirCaptures[0][0] += 1;
+                                  }
+                              }
+                          // Backwards capture
+                              if (i != 1)
+                              {
+                                  if (board[i-1][j].team ==  && board[i-2][j].team != )
+                                  {
+                                      dirCaptures[1][0] +=1;
+                                  }
+                              }
+                          // Check up and to the left
+                          // Backwards capture
+                              if (column_limit > 1)
+                              {
+                                  if ((i % 2) == 0)
+                                  {
+                                      if (board[i-1][j-1].team ==  && board[i-2][j-2].team != )
+                                      {
+                                          dirCaptures[1][6] +=1;
+                                      }
+                                  }
+                              }
+                          }
+                          if (i < row_limit-1)
+                          {
+                          // Check down 
+                          // Forwards capture
+                              if (i != 0)
+                              {
+                                  if (board[i+1][j] == new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
+                                      board[i-1][j] != new GamePieces('B') || board[i-1][j] == new GamePieces('W') && 
+                                      board[i-1][j] != new GamePieces('E'))
+                                  {
+                                      Captures += 1;
+                                  }
+                              }
+                          // Backwards capture
+                              if (i != row_limit-2)
+                              {
+                                  if (board[i+1][j] == new GamePieces('B') || board[i+1][j] == new GamePieces('W') && 
+                                      board[i+2][j] != new GamePieces('B') || board[i+2][j] == new GamePieces('W') && 
+                                      board[i+2][j] != new GamePieces('E'))
+                                  {
+                                      Captures += 1;
+                                  }
+                              }
+                          // Check down and to the left
+                          // Backwards capture
+                              if (column_limit > 1)
+                              {
+                                  if ((i % 2) == 0)
+                                  {
+                                      if (board[i+1][j-1] == new GamePieces('B') || board[i+1][j-1] == new GamePieces('W') && 
+                                          board[i+2][j-2] != new GamePieces('B') || board[i+2][j-2] == new GamePieces('W') && 
+                                          board[i+2][j-2] != new GamePieces('E'))
+                                      {
+                                          Captures +=1;
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+          return Captures;
+      }
 
 	public void capture(GamePieces team_moved, int x_ps, int y_ps, int x_zs, int y_zs, int forward) 
-        {
-            int i = 1;
-            
-            if(team_moved == new GamePieces('B'))
-                team_moved = new GamePieces('B');
-            if(team_moved == new GamePieces('W'))
-                team_moved = new GamePieces('W');
-        
-            if (forward == 1) 
-            {
-                // Upper left
-                if ((x_ps-x_zs) > 0 && (y_ps-y_zs) > 0) 
-                {
-                    while (x_zs-i >= 0 && y_zs-i >= 0) 
-                    {
-                        if (board[x_zs-i][y_zs-i] != new GamePieces('E')) 
-                        {
-                            if (board[x_zs-i][y_zs-i] == team_moved && 
+      {
+          int i = 1;
+          
+          if(team_moved == new GamePieces('B'))
+              team_moved = new GamePieces('B');
+          if(team_moved == new GamePieces('W'))
+              team_moved = new GamePieces('W');
+      
+          if (forward == 1) 
+          {
+              // Upper left
+              if ((x_ps-x_zs) > 0 && (y_ps-y_zs) > 0) 
+              {
+                  while (x_zs-i >= 0 && y_zs-i >= 0) 
+                  {
+                      if (board[x_zs-i][y_zs-i] != new GamePieces('E')) 
+                      {
+                          if (board[x_zs-i][y_zs-i] == team_moved && 
 				board[x_zs-i][y_zs-i] != new GamePieces('X')) 
-                            {
-                                break;
-                            }
-                            
-                            board[x_zs-i][y_zs-i] = new GamePieces('E');
-                        }
-                        
-                        i++;
-                    }
-                }
-                // Upper
-                else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) == 0) 
-                {
-                    while (x_zs-i >= 0) 
-                    {
-                        if (board[x_zs-i][y_zs] != new GamePieces('E')) 
-                        {
-                            if (board[x_zs-i][y_zs] == team_moved && 
+                          {
+                              break;
+                          }
+                          
+                          board[x_zs-i][y_zs-i] = new GamePieces('E');
+                      }
+                      
+                      i++;
+                  }
+              }
+              // Upper
+              else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) == 0) 
+              {
+                  while (x_zs-i >= 0) 
+                  {
+                      if (board[x_zs-i][y_zs] != new GamePieces('E')) 
+                      {
+                          if (board[x_zs-i][y_zs] == team_moved && 
 				board[x_zs-i][y_zs] != new GamePieces('X'))
-                            {
-                                break;
-                            }
-                            
-                            board[x_zs-i][y_zs] = new GamePieces('E');
-                        }
-                        
-                        i++;
-                    }
-                }
-                // Upper right
-                else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) < 0) 
-                {
-                    while (x_zs-i >= 0 && y_zs+i < column_limit) 
-                    {
-                        if (board[x_zs-i][y_zs+i] != new GamePieces('E'))
-                        {
-                            if (board[x_zs-i][y_zs+i] == team_moved && 
+                          {
+                              break;
+                          }
+                          
+                          board[x_zs-i][y_zs] = new GamePieces('E');
+                      }
+                      
+                      i++;
+                  }
+              }
+              // Upper right
+              else if ((x_ps-x_zs) > 0 && (y_ps-y_zs) < 0) 
+              {
+                  while (x_zs-i >= 0 && y_zs+i < column_limit) 
+                  {
+                      if (board[x_zs-i][y_zs+i] != new GamePieces('E'))
+                      {
+                          if (board[x_zs-i][y_zs+i] == team_moved && 
 				board[x_zs-i][y_zs+i] != new GamePieces('X')) 
-                            {
-                                break;
-                            }
-                            
-                            board[x_zs-i][y_zs+i] = new GamePieces('E');
-                        }
-                        
-                        i++;
-                    }
-                }
-                // Left
-                else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) > 0)
-                {
-                    while (y_zs-i >= 0)
-                    {
-                        if (board[x_zs][y_zs-i] != new GamePieces('E'))
-                        {
-                            if (board[x_zs][y_zs-i] == team_moved && 
-                                board[x_zs][y_zs-i] != new GamePieces('X'))
-                            {
-                                break;
-                            }
+                          {
+                              break;
+                          }
+                          
+                          board[x_zs-i][y_zs+i] = new GamePieces('E');
+                      }
+                      
+                      i++;
+                  }
+              }
+              // Left
+              else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) > 0)
+              {
+                  while (y_zs-i >= 0)
+                  {
+                      if (board[x_zs][y_zs-i] != new GamePieces('E'))
+                      {
+                          if (board[x_zs][y_zs-i] == team_moved && 
+                              board[x_zs][y_zs-i] != new GamePieces('X'))
+                          {
+                              break;
+                          }
 
-                            board[x_zs][y_zs-i] = new GamePieces('E');
-                        }
-                                    
-                            i++;
-                        }
-                }
-                // Right
-                else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) < 0) 
-                {
-                    while (y_zs+i < column_limit)
-                    {
-                        if (board[x_zs][y_zs+i] != new GamePieces('E'))
-                        {
-                            if (board[x_zs][y_zs+i] == team_moved && 
-                                board[x_zs][y_zs+i] != new GamePieces('X'))
-                            {
-                                break;
-                            }
+                          board[x_zs][y_zs-i] = new GamePieces('E');
+                      }
+                                  
+                          i++;
+                      }
+              }
+              // Right
+              else if ((x_ps-x_zs) == 0 && (y_ps-y_zs) < 0) 
+              {
+                  while (y_zs+i < column_limit)
+                  {
+                      if (board[x_zs][y_zs+i] != new GamePieces('E'))
+                      {
+                          if (board[x_zs][y_zs+i] == team_moved && 
+                              board[x_zs][y_zs+i] != new GamePieces('X'))
+                          {
+                              break;
+                          }
 
-                            board[x_zs][y_zs+i] = new GamePieces('E');
+                          board[x_zs][y_zs+i] = new GamePieces('E');
 
-                        }
+                      }
 
-                        i++;
-                    }
-                }
-                // Down Left
-                else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) > 0)
-                {
-                    while (x_zs+i < row_limit && y_zs-i >= 0)
-                    {
-                        if (board[x_zs+i][y_zs-i] != new GamePieces('E'))
-                        {
-                            if (board[x_zs+i][y_zs-i] == team_moved && 
-                                board[x_zs+i][y_zs-i] != new GamePieces('X'))
-                            {
-                                break;
-                            }
+                      i++;
+                  }
+              }
+              // Down Left
+              else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) > 0)
+              {
+                  while (x_zs+i < row_limit && y_zs-i >= 0)
+                  {
+                      if (board[x_zs+i][y_zs-i] != new GamePieces('E'))
+                      {
+                          if (board[x_zs+i][y_zs-i] == team_moved && 
+                              board[x_zs+i][y_zs-i] != new GamePieces('X'))
+                          {
+                              break;
+                          }
 
-                            board[x_zs+i][y_zs-i] = new GamePieces('E');
-                        }
+                          board[x_zs+i][y_zs-i] = new GamePieces('E');
+                      }
 
-                        i++;
-                    }
-                }
-                // Down
-                else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) == 0) 
-                {
-                    while (x_zs+i < row_limit) 
-                    {
-                        if (board[x_zs+i][y_zs] != new GamePieces('E')) 
-                        {
-                            if (board[x_zs+i][y_zs] == team_moved && 
-                                board[x_zs+i][y_zs] != new GamePieces('X')) 
-                            {
-                                break;
-                            }
+                      i++;
+                  }
+              }
+              // Down
+              else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) == 0) 
+              {
+                  while (x_zs+i < row_limit) 
+                  {
+                      if (board[x_zs+i][y_zs] != new GamePieces('E')) 
+                      {
+                          if (board[x_zs+i][y_zs] == team_moved && 
+                              board[x_zs+i][y_zs] != new GamePieces('X')) 
+                          {
+                              break;
+                          }
 
-                            board[x_zs+i][y_zs] = new GamePieces('E');
-                        }
+                          board[x_zs+i][y_zs] = new GamePieces('E');
+                      }
 
-                        i++;
-                    }
-                }
-                // Down Right
-                else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) < 0) 
-                {
-                    while (x_zs+i < row_limit && y_zs+i < column_limit) 
-                    {
-                        if (board[x_zs+i][y_zs+i] != new GamePieces('E'))
-                        {
-                            if (board[x_zs+i][y_zs+i] == team_moved && 
-                                board[x_zs+i][y_zs+i] != new GamePieces('X'))
-                            {
-                                break;
-                            }
+                      i++;
+                  }
+              }
+              // Down Right
+              else if ((x_ps-x_zs) < 0 && (y_ps-y_zs) < 0) 
+              {
+                  while (x_zs+i < row_limit && y_zs+i < column_limit) 
+                  {
+                      if (board[x_zs+i][y_zs+i] != new GamePieces('E'))
+                      {
+                          if (board[x_zs+i][y_zs+i] == team_moved && 
+                              board[x_zs+i][y_zs+i] != new GamePieces('X'))
+                          {
+                              break;
+                          }
 
-                            board[x_zs+i][y_zs+i] = new GamePieces('E');
-                        }
+                          board[x_zs+i][y_zs+i] = new GamePieces('E');
+                      }
 
-                        i++;
-                    }
-                }
-            }
-        }
+                      i++;
+                  }
+              }
+          }
+      }
 
-// -----------------------------------------------------------------------------------
- //------------------------------ Main testing ---------------------------------------	
+//-----------------------------------------------------------------------------------
+//------------------------------ Main testing ---------------------------------------	
 	public static void main(String[]args) {
 	fanoronagame.Board fanorona = new fanoronagame.Board();
 	fanorona.display_board();
