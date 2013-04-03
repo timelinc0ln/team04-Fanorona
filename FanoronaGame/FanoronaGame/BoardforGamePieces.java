@@ -11,13 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import FanoronaGame.Board.PossibleMoves;
-
-////////////////I TRIED TO CHANGE THIS TO DEAL WITH GAMEPIECES RATHER THAN JUST CHARACTERS... DON'T THINK I GOT ANYWHERE
-/////////////////BUT MAYBE IT CAN BE USED? NOT SURE. THIS IS WHY I MADE playingFieldPanel STATIC IN THE FANORONAGAME CLASS//////
-
-
 // This function returns the number of captures that are
-	// available for a given team.
+// available for a given team.
 public class BoardforGamePieces {
 
 	JPanel panel;
@@ -61,10 +56,6 @@ public class BoardforGamePieces {
 	private int row_limit;
 	private int column_limit;
 	GamePieces board[][] = new GamePieces[row_limit][column_limit];
-	
-
-     // private JPanel playingFieldPanel;
- 
 	
 	public void capture(char team_moved, int x_ps, int y_ps, int x_zs, int y_zs, char direction) {
 		int i = 1;

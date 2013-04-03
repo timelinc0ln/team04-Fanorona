@@ -211,7 +211,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		window.setVisible(true);
 	}
 	
-	public static char moveChar(){
+	public static char moveChar() {
 		if(source.getYPos() < target.getYPos())
 			move = 'A';
 		if(source.getYPos() > target.getYPos())
@@ -331,69 +331,68 @@ public class FanoronaGame extends JPanel implements ActionListener {
             {	
             	char team = ((GamePieces)actionSource).team; //Player1 is W.
             		game:
-	            	while (turn <= turn_limit && boardForPieces.white_remaining() > 0 && boardForPieces.black_remaining() > 0 ) //while the piece chosen still has possible moves it can take and capture others...
-	            	{
-	     
+            		//while the piece chosen still has possible moves it can take and capture others...
+	            	while (turn <= turn_limit && boardForPieces.white_remaining() > 0 && boardForPieces.black_remaining() > 0 ) {
+	            	
 	            		source = null;
 	            		target = null;
 		            	x_index.clear();
 		            	y_index.clear();
 					
-				if (source == null) //no piece chosen, make it the source
-				{
-					//which player
-					source = (GamePieces)actionSource;
-					x_index.add(source.getXPos()); //this is where the piece started
-					y_index.add(source.getYPos());
-				}
-	
-				else if (source != null && (GamePieces)actionSource != source)  //a source is chosen, and another button is clicked
-				{
-					target = (GamePieces)actionSource; //this next button is our target, must check if it is a valid move to make now:
-					
-					if (target.team == 'B' || target.team == 'W' || target.team == 'X' || target.team == 'M') //cannot move onto a black, white, or sacrificed piece, or a place already visited in the turn
-						JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
-					
-				
-					else if (source.legalMove(target)) //checking to see if the move selected is one piece away (so it's valid)
-					{
-						x_index.add(target.getXPos()); //keep track of where the piece is moving
-						y_index.add(target.getYPos());
-												
-						target.setColor(source.getBackground()); //moves piece
-						source.setColor(new Color(0,0,0,0)); //makes source invisible
-						target.team = source.team; //change target's color
-						source.team = 'E'; //make the source have an 'empty' character attached to it now
-						source = target; //target piece is now new source
-						target = null;
-
-						if (boardForPieces.check_for_capture(team) > 0) {
-							turn++;
-							boardForPieces.capture(team, source.x, source.y, target.x, target.y, move);
-							continue game;
+						if (source == null) //no piece chosen, make it the source
+						{
+							//which player
+							source = (GamePieces)actionSource;
+							x_index.add(source.getXPos()); //this is where the piece started
+							y_index.add(source.getYPos());
 						}
-						else if (boardForPieces.check_for_capture(team) == 0) {
-							boardForPieces.turn_change(team);
-							//AI
-							boardForPieces.turn_change(team); //back to player1
-							continue game;
-						}
+						//a source is chosen, and another button is clicked
+						else if (source != null && (GamePieces)actionSource != source) { 
 						
-								
-					}
-	
-					else if (!(source.legalMove(target))) //if the move is NOT legal, pop up a window and notify the user
-					{
-							JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
-					}
+							target = (GamePieces)actionSource; //this next button is our target, must check if it is a valid move to make now:
+							
+							if (target.team == 'B' || target.team == 'W' || target.team == 'X' || target.team == 'M') //cannot move onto a black, white, or sacrificed piece, or a place already visited in the turn
+								JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
+
+							//checking to see if the move selected is one piece away (so it's valid)
+							else if (source.legalMove(target)) {
+							
+								x_index.add(target.getXPos()); //keep track of where the piece is moving
+								y_index.add(target.getYPos());
+														
+								target.setColor(source.getBackground()); //moves piece
+								source.setColor(new Color(0,0,0,0)); //makes source invisible
+								target.team = source.team; //change target's color
+								source.team = 'E'; //make the source have an 'empty' character attached to it now
+								source = target; //target piece is now new source
+								target = null;
+
+								if (boardForPieces.check_for_capture(team) > 0) {
+									turn++;
+									boardForPieces.capture(team, source.x, source.y, target.x, target.y, move);
+									continue game;
+								}
+								else if (boardForPieces.check_for_capture(team) == 0) {
+									boardForPieces.turn_change(team);
+									//AI
+									boardForPieces.turn_change(team); //back to player1
+									continue game;
+								}
+													
+							}
+
+							//if the move is NOT legal, pop up a window and notify the user
+							else if (!(source.legalMove(target))) {
+									JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
+							}
 				
-					source = null; //set source and target back to null, as nothing is selected
-					target = null;
-				}
-					
+							source = null; //set source and target back to null, as nothing is selected
+							target = null;
+						}
+
+				//either deselect or make the sacrifice piece				
+				else if (source != null && (GamePieces)actionSource == source) { 
 				
-				else if (source != null && (GamePieces)actionSource == source) //either deselect or make the sacrifice piece
-				{
 					int selectOrSacrifice = JOptionPane.showOptionDialog(null,
 								"Would you like to deselect this piece?\n" + "Or, make it a 'SACRIFICE' piece?", "Deselect or Sacrifice",
 								JOptionPane.YES_NO_OPTION,
@@ -413,13 +412,12 @@ public class FanoronaGame extends JPanel implements ActionListener {
 							source.setColor(new Color(0,0,0,0));
 							source.team = 'E';
 						}
-					
-					
+
 				}
-				else if (boardForPieces.check_for_capture(team) == 0) //no available caputres, end of game
-				{
-					
-					
+
+				//no available caputres, end of game
+				else if (boardForPieces.check_for_capture(team) == 0) {
+				
 					if (boardForPieces.white_remaining() > boardForPieces.black_remaining()) {
 					
 					JOptionPane.showMessageDialog(null, "End Of Game!\n" + "WHITE WINS!!", "WINNER", JOptionPane.PLAIN_MESSAGE);
@@ -439,9 +437,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		}//End of clicking a game piece
 
 	}//End of ActionPerformed
-
-
-
 	
 	public void initiateGame(Boolean remote) {
 		if (remote == false) {
@@ -456,7 +451,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 			client = new Client(); 
 			server = new Server();
 		}
-
 	}
 
 	public int askMessage(String message, String title, int option) {
