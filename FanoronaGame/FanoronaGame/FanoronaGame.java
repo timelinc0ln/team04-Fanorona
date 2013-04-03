@@ -44,6 +44,11 @@ public class FanoronaGame extends JPanel implements ActionListener {
 	// set window size and default color
 	int windowX = 900, windowY = 500, color = 190;
 
+	Board gameBoard = null; 
+	FanoronaAI CPU = null; 
+	Client client = null;
+	Server server = null; 
+
 	
 	
 	public FanoronaGame() throws IOException {
@@ -449,7 +454,17 @@ public class FanoronaGame extends JPanel implements ActionListener {
 
 
 	
-	
+	public void initiateGame(Boolean remote) {
+		if (remote == false) {
+			Boolean cpuTurn = false; 
+			gameBoard = new Board();
+			CPU = new FanoronaAI(cpuTurn); // user move if first
+		}
+		else {
+			Boolean 
+		}
+
+	}
 
 	public int askMessage(String message, String title, int option) {
 		return JOptionPane.showConfirmDialog(null, message, title, option);

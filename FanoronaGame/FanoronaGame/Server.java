@@ -8,7 +8,7 @@ import java.util.*;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 
-public class Server {
+public class Server extends Board {
 	String command;
 	String newCommand;
 	Boolean isAscii = false;
