@@ -9,6 +9,10 @@ public class FanoronaAI extends Board {
 	boolean isTurn; 
 	MiniMaxTree<Integer> mmTree = new MiniMaxTree<Integer>(); 
 	
+	/**
+	* Evaluate valid move direction and execute a valid move
+	* return the coordinates of the valid move
+	*/
 	public ArrayList<Integer> selectDirection(int i, int j, Boolean north, Boolean south, 
 		Boolean east, Boolean west, Boolean southEast, Boolean southWest, 
 		Boolean northEast, Boolean northWest) {
@@ -101,8 +105,6 @@ public class FanoronaAI extends Board {
 		int size = validMoves.size();
 		int random = 0 + (int)(Math.random() * ((size - 0) + 1));
 		char movement = 'E';
-		
-		//int xPos = fanorona.validMoves[random].x_index;
 		int xPos = validMoves.get(random).x_index;
 		int yPos = validMoves.get(random).y_index;
 		ArrayList<Integer> coordinates = new ArrayList<Integer>(); 

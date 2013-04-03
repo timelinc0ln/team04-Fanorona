@@ -1344,32 +1344,4 @@ public class BoardforGamePieces {
 			winner = 'T';
 		return winner;
 	}
-	
-	
-	
 }
-	
-	
-
-
-////-----------------------------------------------------------------------------------
-////------------------------------ Main testing ---------------------------------------	
-//	public static void main(String[]args) {
-//	FanoronaGame.BoardforGamePieces fanorona = new FanoronaGame.BoardforGamePieces();
-//	fanorona.display_board();
-//	System.out.println("White has " + fanorona.white_remaining() + " remaining");
-//	System.out.println("Black has " + fanorona.black_remaining() + " remaining");
-//	System.out.println("White currently has " + fanorona.check_for_capture('W') + " captures");
-//	//fanorona.capture('W', 3, 3, 2, 4, 1);
-//	//fanorona.capture('W', 3, 4, 2, 4, 1);
-//	//fanorona.capture('W', 3, 5, 2, 4, 1);
-//	//fanorona.capture('B', 2, 5, 2, 4, 1);
-//	//fanorona.capture('B', 0, 5, 1, 4, 1);
-//	fanorona.capture('B', 1, 4, 2, 4, 1);
-//	fanorona.display_board();
-//	FanoronaGame.BoardforGamePieces test = new FanoronaGame.BoardforGamePieces(13,1);
-//	test.display_board();
-//	System.out.println("White currently has " + test.check_for_capture('W') + " captures");
-//	}
-//}
-////------------------------------------------------------------------------------------

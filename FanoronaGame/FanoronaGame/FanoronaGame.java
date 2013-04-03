@@ -15,7 +15,10 @@ import javax.imageio.ImageIO;
 
 public class FanoronaGame extends JPanel implements ActionListener {
 	JFrame window = new JFrame("Fanorona Game");
-
+	Board gameBoard = null; 
+	FanoronaAI CPU = null; 
+	Client client = null;
+	Server server = null; 
 	// Game Menu variables
 	JMenuBar mainMenu = new JMenuBar();
 	JMenuItem newGame = new JMenuItem("New Game"), about = new JMenuItem(
@@ -40,47 +43,10 @@ public class FanoronaGame extends JPanel implements ActionListener {
 	JLabel gameTitle = new JLabel("Fanorona");
 	//JTextArea text = new JTextArea();
 
-	// Board gameBoard = new Board(); //this will work soon
-
 	// set window size and default color
-	int windowX = 900, windowY = 500, color = 190;
-
-	Board gameBoard = null; 
-	FanoronaAI CPU = null; 
-	Client client = null;
-	Server server = null; 
-
-	
+	int windowX = 900, windowY = 500, color = 190;	
 	
 	public FanoronaGame() throws IOException {
-	//	class gameGrid extends JPanel {
-			
-			
-			/*public void paintComponent(Graphics g) {
-				int x = getWidth();
-				int y = getHeight();
-				g.setColor(Color.black);
-				g.fillRect(0, 0, x, y);
-
-				Graphics2D g2 = (Graphics2D) g;
-				int w = x / 10;
-				int h = y / 10;
-				g.setColor(Color.cyan);
-
-				g2.setStroke(new BasicStroke(1));
-				for (int i = 1; i < 10; i++)
-					g2.drawLine(i * w, 0, i * w, y);
-				for (int i = 1; i < 10; i++)
-					g2.drawLine(0, i * h, x, i * h);
-				
-				 * g2.setColor(Color.red); double rowH = getHeight() / 10.0; for
-				 * (int i = 1; i < 10; i++) { Line2D line = new
-				 * Line2D.Double(0.0, (double) i * rowH, (double) getWidth(),
-				 * (double) i * rowH); g2.draw(line); }
-				 */
-			//}
-		
-
 		// Game window formatting
 		window.setSize(windowX, windowY);
 		window.setLocation(400, 400);
@@ -119,8 +85,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		pve.addActionListener(this);
 
 		// Game board setup
-		//playingFieldPanel.add(visibleBoard);
-		
 		BufferedImage myPicture = null;
 		Image pic = null; //pic that is scaled
 		try {
@@ -131,50 +95,12 @@ public class FanoronaGame extends JPanel implements ActionListener {
 			System.out.println("Could not load image.");
 		}
 		
-		JLabel picLabel = new JLabel(new ImageIcon( pic ));
-                
-                GridLayout grid = new GridLayout(5,9,15,8);
-                grid.setHgap(30);
-                grid.setVgap(20);
-		
+		JLabel picLabel = new JLabel(new ImageIcon( pic ));     
+	    GridLayout grid = new GridLayout(5,9,15,8);
+	    grid.setHgap(30);
+	    grid.setVgap(20);
 		picLabel.setLayout(grid);
-
 		playingFieldPanel.setBackground(new Color(110,110,110));
-
-		
-		
-		//THIS IS USED TO FIND X Y POINTS ON THE SCREEN
-//		picLabel.addMouseListener(new MouseListener() {
-//            public void mouseClicked(MouseEvent e) {
-//                System.out.println(" (" + e.getX() + ", " + e.getY() + ") ;");
-//            }
-//
-//
-//			@Override
-//			public void mouseEntered(MouseEvent arg0) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void mouseExited(MouseEvent arg0) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void mousePressed(MouseEvent arg0) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void mouseReleased(MouseEvent arg0) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
-
 		playingFieldPanel.add( picLabel ); //add the board background
 		playingFieldPanel.setBounds(77, 70, 770, 390); //don't think this does anything..
 
@@ -195,25 +121,18 @@ public class FanoronaGame extends JPanel implements ActionListener {
 
 		// Manually set Row 3
 		buttonArray[0][2] = new GamePieces('W',0,2);
-		//buttonArray[0][2].setLocation(82, 230);
-		//buttonArray[0][2].setAlignmentX(82);
-		//buttonArray[0][2].setAlignmentY(230);
 		buttonArray[0][2].setBackground(new Color(255, 255, 255)); //black
 		buttonArray[0][2].addActionListener(this);
 		buttonArray[0][2].setVisible(true);
 		picLabel. add(buttonArray[0][2]);
 
 		buttonArray[1][2] = new GamePieces('B',1,2);
-		//buttonArray[1][2].setLocation(167, 230);
-		//buttonArray[1][2].setAlignmentX(167);
-		//buttonArray[1][2].setAlignmentY(230);
 		buttonArray[1][2].setBackground(new Color(0, 0, 0)); //white
 		buttonArray[1][2].addActionListener(this);
 		buttonArray[1][2].setVisible(true);
 		picLabel.add(buttonArray[1][2]);
 
 		buttonArray[2][2] = new GamePieces('W',2,2);
-		//buttonArray[2][2].setLocation(252, 230);
 		buttonArray[2][2].setAlignmentX(252);
 		buttonArray[2][2].setAlignmentY(230);
 		buttonArray[2][2].setBackground(new Color(255, 255, 255));
@@ -222,7 +141,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		picLabel.add(buttonArray[2][2]);
 
 		buttonArray[3][2] = new GamePieces('B',3,2);
-//		buttonArray[3][2].setLocation(167, 230);
 		buttonArray[3][2].setAlignmentX(337);
 		buttonArray[3][2].setAlignmentY(230);
 		buttonArray[3][2].setBackground(new Color(0, 0, 0));
@@ -240,7 +158,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 
 
 		buttonArray[5][2] = new GamePieces('W',5,2);
-//		buttonArray[5][2].setLocation(507, 230);
 		buttonArray[5][2].setAlignmentX(507);
 		buttonArray[5][2].setAlignmentY(230);
 		buttonArray[5][2].setBackground(new Color(255, 255, 255));
@@ -249,7 +166,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		picLabel.add(buttonArray[5][2]);
 
 		buttonArray[6][2] = new GamePieces('B',6,2);
-//		buttonArray[6][2].setLocation(592, 230);
 		buttonArray[6][2].setAlignmentX(592);
 		buttonArray[6][2].setAlignmentY(230);
 		buttonArray[6][2].setBackground(new Color(0, 0, 0));
@@ -258,7 +174,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		picLabel.add(buttonArray[6][2]);
 
 		buttonArray[7][2] = new GamePieces('W',7,2);
-//		buttonArray[7][2].setLocation(677, 230);
 		buttonArray[7][2].setAlignmentX(677);
 		buttonArray[7][2].setAlignmentY(230);
 		buttonArray[7][2].setBackground(new Color(255, 255, 255));
@@ -267,7 +182,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		picLabel.add(buttonArray[7][2]);
 
 		buttonArray[8][2] = new GamePieces('B',8,2);
-//		buttonArray[8][2].setLocation(762, 230);
 		buttonArray[8][2].setAlignmentX(762);
 		buttonArray[8][2].setAlignmentY(230);
 		buttonArray[8][2].setBackground(new Color(0, 0, 0));
@@ -279,7 +193,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		for(int y = 3; y < 5; y++ ) {
 			for(int x = 0; x < 9; x++) {
 				buttonArray[x][y] = new GamePieces('W',x,y);
-//				buttonArray[x][y].setLocation(79+x*85, 70+y*77);
 				buttonArray[x][y].setAlignmentX(82 + x*85);
 				buttonArray[x][y].setAlignmentY(230 + y*77);
 				buttonArray[x][y].setBackground(new Color(255, 255, 255));
@@ -297,8 +210,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		window.add(southPanel, BorderLayout.CENTER);
 		window.setVisible(true);
 	}
-
-
 	
 	public static char moveChar(){
 		if(source.getYPos() < target.getYPos())
@@ -307,9 +218,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 			move = 'D';
 		return move;
 	}
-	
-	
-	
+		
 	int row_limit = 5;
 	int column_limit = 9;
 	static GamePieces source = null; //static to use in other class...
@@ -330,8 +239,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 	
 	char winner;
 	int x_ps, y_ps, x_zs, y_zs;
-//	long timer;
-	
 
 	public void actionPerformed(ActionEvent click) {
 		Object actionSource = click.getSource(); //Get the source of what object is having an action performed
@@ -341,9 +248,6 @@ public class FanoronaGame extends JPanel implements ActionListener {
 							+ " WARNING: All current progress will be lost.\n", "New Game",
 								JOptionPane.YES_NO_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, remote, remote[1]);
-//					"Would you like to play over a server? Or directly with the CPU?"
-//							+ " WARNING: All current progress will be lost.\n", "New Game",
-//                                                        JOptionPane.YES_NO_OPTION);
 			if (option == JOptionPane.YES_OPTION) {
 				int playOption = JOptionPane.showOptionDialog(newGamePanel,
 								"You've chosen to play against the CPU\n Select your difficulty", "Difficulty Level",
@@ -384,26 +288,17 @@ public class FanoronaGame extends JPanel implements ActionListener {
 						window.remove(southPanel);
 						window.add(playingFieldPanel, BorderLayout.CENTER);
 						initiateGame(true);
-						//Server e_srv = new Server(); //this doesn't work
-						//Client e_clt = new Client(); //this doesn't work
-						window.validate(); // is validate needed?
-						//window.setVisible(true);
+						window.validate(); 
 					} else if (newOption == JOptionPane.NO_OPTION) { //Medium difficutly
 						window.remove(southPanel);
 						window.add(playingFieldPanel, BorderLayout.CENTER);
 						initiateGame(true);
-						//Server m_srv = new Server(); //this doesn't work
-						//Client m_clt = new Client(); //this doesn't work
 						window.validate();
-						//window.setVisible(true);
 					} else if (newOption == JOptionPane.CANCEL_OPTION) { //Hard difficulty
 						window.remove(southPanel);
 						window.add(playingFieldPanel, BorderLayout.CENTER);
 						initiateGame(true);
-						//Server h_srv = new Server(); //this doesn't work
-						//Client h_clt = new Client(); //this doesn't work
 						window.validate();
-						//window.setVisible(true);
 					}
                }
             }
@@ -431,15 +326,12 @@ public class FanoronaGame extends JPanel implements ActionListener {
                                                         + "More instructions to follow...", "Instructions", 
                                         JOptionPane.ERROR_MESSAGE);
             }
-		
-		
-		
-            else if(actionSource instanceof GamePieces) //A Piece was clicked
+			
+            else if (actionSource instanceof GamePieces) //A Piece was clicked
             {	
-            	
             	char team = ((GamePieces)actionSource).team; //Player1 is W.
             		game:
-	            	while(turn <= turn_limit && boardForPieces.white_remaining() > 0 && boardForPieces.black_remaining() > 0 ) //while the piece chosen still has possible moves it can take and capture others...
+	            	while (turn <= turn_limit && boardForPieces.white_remaining() > 0 && boardForPieces.black_remaining() > 0 ) //while the piece chosen still has possible moves it can take and capture others...
 	            	{
 	     
 	            		source = null;
@@ -447,7 +339,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		            	x_index.clear();
 		            	y_index.clear();
 					
-				if(source == null) //no piece chosen, make it the source
+				if (source == null) //no piece chosen, make it the source
 				{
 					//which player
 					source = (GamePieces)actionSource;
@@ -455,37 +347,32 @@ public class FanoronaGame extends JPanel implements ActionListener {
 					y_index.add(source.getYPos());
 				}
 	
-				else if(source != null && (GamePieces)actionSource != source)  //a source is chosen, and another button is clicked
+				else if (source != null && (GamePieces)actionSource != source)  //a source is chosen, and another button is clicked
 				{
 					target = (GamePieces)actionSource; //this next button is our target, must check if it is a valid move to make now:
 					
-					if(target.team == 'B' || target.team == 'W' || target.team == 'X' || target.team == 'M') //cannot move onto a black, white, or sacrificed piece, or a place already visited in the turn
+					if (target.team == 'B' || target.team == 'W' || target.team == 'X' || target.team == 'M') //cannot move onto a black, white, or sacrificed piece, or a place already visited in the turn
 						JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
 					
 				
-					else if(source.legalMove(target)) //checking to see if the move selected is one piece away (so it's valid)
+					else if (source.legalMove(target)) //checking to see if the move selected is one piece away (so it's valid)
 					{
 						x_index.add(target.getXPos()); //keep track of where the piece is moving
 						y_index.add(target.getYPos());
 												
-						
 						target.setColor(source.getBackground()); //moves piece
 						source.setColor(new Color(0,0,0,0)); //makes source invisible
 						target.team = source.team; //change target's color
 						source.team = 'E'; //make the source have an 'empty' character attached to it now
-						
-						
-	
 						source = target; //target piece is now new source
 						target = null;
-						
-							
-						if(boardForPieces.check_for_capture(team) > 0) {
+
+						if (boardForPieces.check_for_capture(team) > 0) {
 							turn++;
 							boardForPieces.capture(team, source.x, source.y, target.x, target.y, move);
 							continue game;
 						}
-						else if(boardForPieces.check_for_capture(team) == 0) {
+						else if (boardForPieces.check_for_capture(team) == 0) {
 							boardForPieces.turn_change(team);
 							//AI
 							boardForPieces.turn_change(team); //back to player1
@@ -495,40 +382,27 @@ public class FanoronaGame extends JPanel implements ActionListener {
 								
 					}
 	
-					else if(!(source.legalMove(target))) //if the move is NOT legal, pop up a window and notify the user
+					else if (!(source.legalMove(target))) //if the move is NOT legal, pop up a window and notify the user
 					{
 							JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
 					}
-		
-		
+				
 					source = null; //set source and target back to null, as nothing is selected
 					target = null;
-					
-					//if((timer/1000)-60 == 0) {
-					//	JOptionPane.showMessageDialog(null, "TIME'S UP!!\n" + "Other player's TURN!::", "TIMER is UP", JOptionPane.ERROR_MESSAGE);
-					//	boardForPieces.turn_change(team);
-					//	continue game;
-					//}
-				
 				}
-			
-		
-		//				if(possible_moves == 0) {
-		//					JOptionPane.showMessageDialog(null, "You have reached the number of possible moves!\n" + "The Game is OVER!", "End of Game", JOptionPane.INFORMATION_MESSAGE);
-		//				}
-						
+					
 				
-				else if(source != null && (GamePieces)actionSource == source) //either deselect or make the sacrifice piece
+				else if (source != null && (GamePieces)actionSource == source) //either deselect or make the sacrifice piece
 				{
 					int selectOrSacrifice = JOptionPane.showOptionDialog(null,
 								"Would you like to deselect this piece?\n" + "Or, make it a 'SACRIFICE' piece?", "Deselect or Sacrifice",
 								JOptionPane.YES_NO_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, sacrifice, sacrifice[1]);
-						if(selectOrSacrifice == JOptionPane.YES_OPTION) {
+						if (selectOrSacrifice == JOptionPane.YES_OPTION) {
 							source = null;
 							continue game;
 						}
-						else if(selectOrSacrifice == JOptionPane.NO_OPTION) {
+						else if (selectOrSacrifice == JOptionPane.NO_OPTION) {
 							move = 'S';
 							source.setColor(Color.gray);
 							source.team = 'X';
@@ -542,16 +416,16 @@ public class FanoronaGame extends JPanel implements ActionListener {
 					
 					
 				}
-				else if(boardForPieces.check_for_capture(team) == 0) //no available caputres, end of game
+				else if (boardForPieces.check_for_capture(team) == 0) //no available caputres, end of game
 				{
 					
 					
-					if(boardForPieces.white_remaining() > boardForPieces.black_remaining()) {
+					if (boardForPieces.white_remaining() > boardForPieces.black_remaining()) {
 					
 					JOptionPane.showMessageDialog(null, "End Of Game!\n" + "WHITE WINS!!", "WINNER", JOptionPane.PLAIN_MESSAGE);
 					System.exit(0);
 					}
-					else if( boardForPieces.black_remaining() > boardForPieces.white_remaining()) {
+					else if (boardForPieces.black_remaining() > boardForPieces.white_remaining()) {
 						JOptionPane.showMessageDialog(null, "End Of Game!\n" + "BLACK WINS!!", "WINNER", JOptionPane.PLAIN_MESSAGE);
 						System.exit(0);
 					}

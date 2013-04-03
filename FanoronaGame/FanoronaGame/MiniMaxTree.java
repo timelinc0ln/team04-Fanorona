@@ -25,10 +25,6 @@ public class MiniMaxTree<T> {
 			}
 		}
 
-/*		for (int i = 0; i < mmTree.getLevel(1).size(); i++) {
-			System.out.println(mmTree.getLevel(1).get(i).getData().toString());
-		}*/
-
 		int minMove = mmTree.getLevel(1).get(0).getData();
 
 		for(int i = 0; i < mmTree.getLevel(1).size(); i++) {
