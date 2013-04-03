@@ -116,6 +116,7 @@ public class FanoronaAI extends Board {
 		Boolean southWest = validMoves.get(random).southWest;
 		Boolean east = validMoves.get(random).east;
 		Boolean west = validMoves.get(random).west; 
+		Boolean isValid = false; 
 		
 		// Determine direction of piece movement (withdraw/advance)
 		Boolean direction = validMoves.get(random).advance;
@@ -127,9 +128,12 @@ public class FanoronaAI extends Board {
 		else if (direction == false) {
 			movement = 'W'; // moving away from enemy pieces
 		}
-		
+		//check that the move about to be performed is valid
+		isValid = valid_move(aiColor, movement, xPos, yPos,coordinates.get(0), coordinates.get(1));
 		// perform capture move with basic capture options
-		turn(aiColor, movement, xPos, yPos, coordinates.get(0), coordinates.get(1));
+		if (isValid){
+			turn(aiColor, movement, xPos, yPos, coordinates.get(0), coordinates.get(1));
+		}
 	}
 
 	/**

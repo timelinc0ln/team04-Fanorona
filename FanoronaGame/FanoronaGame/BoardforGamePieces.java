@@ -1304,7 +1304,7 @@ public class BoardforGamePieces {
 				JOptionPane.showMessageDialog(null, "White Starts", "Move Type", JOptionPane.PLAIN_MESSAGE);
 			else
 				JOptionPane.showMessageDialog(null, "Black Starts", "Move Type", JOptionPane.PLAIN_MESSAGE);
-			//System.out.print("What type of move? (A --> Advance capture, D --> Down-board capture, P --> Paika, S --> sacarifice) ");
+			//System.out.print("What type of move? (A --> Advance capture, D --> Down-board capture, P --> Paika, S --> sacrifice) ");
 			move = FanoronaGame.moveChar();	
 			x_ps = FanoronaGame.source.x;
 			y_ps = FanoronaGame.source.y;

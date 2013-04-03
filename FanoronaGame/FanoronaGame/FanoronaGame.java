@@ -353,16 +353,19 @@ public class FanoronaGame extends JPanel implements ActionListener {
 					window.remove(southPanel);
 					window.add(playingFieldPanel, BorderLayout.CENTER);
 					window.validate(); // is validate needed?
+					initiateGame(false);
 					//window.setVisible(true);
 				} else if (playOption == JOptionPane.NO_OPTION) { //Medium difficutly
 					window.remove(southPanel);
 					window.add(playingFieldPanel, BorderLayout.CENTER);
 					window.validate();
+					initiateGame(false);
 					//window.setVisible(true);
 				} else if (playOption == JOptionPane.CANCEL_OPTION) { //Hard difficulty
 					window.remove(southPanel);
 					window.add(playingFieldPanel, BorderLayout.CENTER);
 					window.validate();
+					initiateGame(false);
 					//window.setVisible(true);
 				}
 
@@ -377,32 +380,34 @@ public class FanoronaGame extends JPanel implements ActionListener {
 								"Ok great, choose the difficulty of the AIs", "Difficulty AI Level",
 								JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
-					
-                            	if (newOption == JOptionPane.OK_OPTION) //Easy difficutly
-                            	{ 
-                            		window.remove(southPanel);
-                            		window.add(playingFieldPanel, BorderLayout.CENTER);
-					//Server e_srv = new Server(); //this doesn't work
-					//Client e_clt = new Client(); //this doesn't work
-					window.validate(); // is validate needed?
-					//window.setVisible(true);
-				} else if (newOption == JOptionPane.NO_OPTION) { //Medium difficutly
-					window.remove(southPanel);
-					window.add(playingFieldPanel, BorderLayout.CENTER);
-					//Server m_srv = new Server(); //this doesn't work
-					//Client m_clt = new Client(); //this doesn't work
-					window.validate();
-					//window.setVisible(true);
-				} else if (newOption == JOptionPane.CANCEL_OPTION) { //Hard difficulty
-					window.remove(southPanel);
-					window.add(playingFieldPanel, BorderLayout.CENTER);
-					//Server h_srv = new Server(); //this doesn't work
-					//Client h_clt = new Client(); //this doesn't work
-					window.validate();
-					//window.setVisible(true);
-				}
-                            }
-			}
+					if (newOption == JOptionPane.OK_OPTION) { //Easy difficutly
+						window.remove(southPanel);
+						window.add(playingFieldPanel, BorderLayout.CENTER);
+						initiateGame(true);
+						//Server e_srv = new Server(); //this doesn't work
+						//Client e_clt = new Client(); //this doesn't work
+						window.validate(); // is validate needed?
+						//window.setVisible(true);
+					} else if (newOption == JOptionPane.NO_OPTION) { //Medium difficutly
+						window.remove(southPanel);
+						window.add(playingFieldPanel, BorderLayout.CENTER);
+						initiateGame(true);
+						//Server m_srv = new Server(); //this doesn't work
+						//Client m_clt = new Client(); //this doesn't work
+						window.validate();
+						//window.setVisible(true);
+					} else if (newOption == JOptionPane.CANCEL_OPTION) { //Hard difficulty
+						window.remove(southPanel);
+						window.add(playingFieldPanel, BorderLayout.CENTER);
+						initiateGame(true);
+						//Server h_srv = new Server(); //this doesn't work
+						//Client h_clt = new Client(); //this doesn't work
+						window.validate();
+						//window.setVisible(true);
+					}
+               }
+            }
+
 		}
             else if (actionSource == exit) 
             { //If you clicked the Exit button
@@ -571,7 +576,11 @@ public class FanoronaGame extends JPanel implements ActionListener {
 			CPU = new FanoronaAI(cpuTurn); // user move if first
 		}
 		else {
-			Boolean 
+			Boolean cpuTurn = false;
+			gameBoard = new Board();
+			CPU = new FanoronaAI(cpuTurn);
+			client = new Client(); 
+			server = new Server();
 		}
 
 	}
