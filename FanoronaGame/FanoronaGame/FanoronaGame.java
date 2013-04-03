@@ -24,6 +24,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 	// New Game buttons
 	Object[] options = { "Easy", "Medium", "Hard" };
 	Object[] remote = { "Human vs. CPU", "Client Server" };
+	Object[] sacrifice = { "Deselect", "Sacrifice" };
 
 	// Buttons for Menus
 	JButton pve = new JButton("Player vs CPU");
@@ -297,13 +298,39 @@ public class FanoronaGame extends JPanel implements ActionListener {
 		window.setVisible(true);
 	}
 
-	GamePieces source = null;
+
+	
+	public static char moveChar(){
+		if(source.getYPos() < target.getYPos())
+			move = 'A';
+		if(source.getYPos() > target.getYPos())
+			move = 'D';
+		return move;
+	}
+	
+	
+	
+	int row_limit = 5;
+	int column_limit = 9;
+	static GamePieces source = null; //static to use in other class...
 	int possible_moves = 50;
-	GamePieces target = null;
+	static GamePieces target = null;
 	Color black = new Color(0,0,0);
 	Color white = new Color(255,255,255);
 	int[] invalidMoves;
+	List<Integer> x_index = new ArrayList<Integer>();
+	List<Integer> y_index = new ArrayList<Integer>();
+	char team = 'W';
+	int turn_limit = 10 * column_limit;
+	int turn = 1;
+	static char move;
+
+	BoardforGamePieces boardForPieces = new BoardforGamePieces(9,5);
 	
+	
+	char winner;
+	int x_ps, y_ps, x_zs, y_zs;
+//	long timer;
 	
 
 	public void actionPerformed(ActionEvent click) {
@@ -340,117 +367,200 @@ public class FanoronaGame extends JPanel implements ActionListener {
 				}
 
 			}
-                        if(option == JOptionPane.NO_OPTION) {
-                        	int playerOption = askMessage("You have chosen to play across a server, AI vs. AI \n Continue? \n",
-                                                            "Client Server", JOptionPane.YES_NO_OPTION);
-                            if(playerOption == JOptionPane.YES_OPTION) {
-                        	int newOption = JOptionPane.showOptionDialog(newGamePanel,
+			
+			if(option == JOptionPane.NO_OPTION) {
+                  		int playerOption = askMessage("You have chosen to play across a server, AI vs. AI \n Continue? \n",
+                                             "Client Server", JOptionPane.YES_NO_OPTION);
+                            	if(playerOption == JOptionPane.YES_OPTION) 
+                            	{
+                            		int newOption = JOptionPane.showOptionDialog(newGamePanel,
 								"Ok great, choose the difficulty of the AIs", "Difficulty AI Level",
 								JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
-					if (newOption == JOptionPane.OK_OPTION) { //Easy difficutly
-						window.remove(southPanel);
-						window.add(playingFieldPanel, BorderLayout.CENTER);
-						//Server e_srv = new Server(); //this doesn't work
-						//Client e_clt = new Client(); //this doesn't work
-						window.validate(); // is validate needed?
-						//window.setVisible(true);
-					} else if (newOption == JOptionPane.NO_OPTION) { //Medium difficutly
-						window.remove(southPanel);
-						window.add(playingFieldPanel, BorderLayout.CENTER);
-						//Server m_srv = new Server(); //this doesn't work
-						//Client m_clt = new Client(); //this doesn't work
-						window.validate();
-						//window.setVisible(true);
-					} else if (newOption == JOptionPane.CANCEL_OPTION) { //Hard difficulty
-						window.remove(southPanel);
-						window.add(playingFieldPanel, BorderLayout.CENTER);
-						//Server h_srv = new Server(); //this doesn't work
-						//Client h_clt = new Client(); //this doesn't work
-						window.validate();
-						//window.setVisible(true);
-					}
-               }
-            }
+					
+                            	if (newOption == JOptionPane.OK_OPTION) //Easy difficutly
+                            	{ 
+                            		window.remove(southPanel);
+                            		window.add(playingFieldPanel, BorderLayout.CENTER);
+					//Server e_srv = new Server(); //this doesn't work
+					//Client e_clt = new Client(); //this doesn't work
+					window.validate(); // is validate needed?
+					//window.setVisible(true);
+				} else if (newOption == JOptionPane.NO_OPTION) { //Medium difficutly
+					window.remove(southPanel);
+					window.add(playingFieldPanel, BorderLayout.CENTER);
+					//Server m_srv = new Server(); //this doesn't work
+					//Client m_clt = new Client(); //this doesn't work
+					window.validate();
+					//window.setVisible(true);
+				} else if (newOption == JOptionPane.CANCEL_OPTION) { //Hard difficulty
+					window.remove(southPanel);
+					window.add(playingFieldPanel, BorderLayout.CENTER);
+					//Server h_srv = new Server(); //this doesn't work
+					//Client h_clt = new Client(); //this doesn't work
+					window.validate();
+					//window.setVisible(true);
+				}
+                            }
+			}
 		}
-                        
-                else if (actionSource == exit) { //If you clicked the Exit button
+            else if (actionSource == exit) 
+            { //If you clicked the Exit button
                     int exit_option = askMessage("Are you sure you want to exit?",
                                     "Exit Game", JOptionPane.YES_NO_OPTION);
                     if (exit_option == JOptionPane.YES_OPTION) //yes == close window. No, do nothing.
                             System.exit(0);
                 
-		} else if (actionSource == about) { //If you clicked the About button, tells who created it.
-			JOptionPane.showMessageDialog(null,
+            } else if (actionSource == about) { //If you clicked the About button, tells who created it.
+            	JOptionPane.showMessageDialog(null,
 					"This Game was created by Megan Kernis, Patrick Casey, and Matt Hacker.\n"
 							+ "Current Version: 0.1\n"
 							+ "Team 04, CSCE 315-501\n", "About",
 					JOptionPane.ERROR_MESSAGE);
                         
-		} else if (actionSource == instructions) { //The Instructions button, tells how to play the game and rules
-			JOptionPane.showMessageDialog(null,
+            } else if (actionSource == instructions) { //The Instructions button, tells how to play the game and rules
+            	JOptionPane.showMessageDialog(null,
                                         "Move your piece toward or way from an enemy piece to capture it.\n"
                                                         + "You may only move a piece that will cause the capture of an enemy piece.\n"
                                                         + "The Game will continue as long as there are valid move to be made.\n"
                                                         + "More instructions to follow...", "Instructions", 
                                         JOptionPane.ERROR_MESSAGE);
-		}
-		else if(actionSource instanceof GamePieces) //A Piece was clicked
-		{					
-		//	while(has_available_moves()) { //while the piece chosen still has possible moves it can take and capture others...
-				
+            }
+		
+		
+		
+            else if(actionSource instanceof GamePieces) //A Piece was clicked
+            {	
+            	
+            	char team = ((GamePieces)actionSource).team; //Player1 is W.
+            		game:
+	            	while(turn <= turn_limit && boardForPieces.white_remaining() > 0 && boardForPieces.black_remaining() > 0 ) //while the piece chosen still has possible moves it can take and capture others...
+	            	{
+	     
+	            		source = null;
+	            		target = null;
+		            	x_index.clear();
+		            	y_index.clear();
+					
 				if(source == null) //no piece chosen, make it the source
 				{
+					//which player
 					source = (GamePieces)actionSource;
+					x_index.add(source.getXPos()); //this is where the piece started
+					y_index.add(source.getYPos());
 				}
-				
+	
 				else if(source != null && (GamePieces)actionSource != source)  //a source is chosen, and another button is clicked
 				{
 					target = (GamePieces)actionSource; //this next button is our target, must check if it is a valid move to make now:
-
-			
-					if(source.legalMove(target)) //checking to see if the move selected is one piece away (so it's valid)
+					
+					if(target.team == 'B' || target.team == 'W' || target.team == 'X' || target.team == 'M') //cannot move onto a black, white, or sacrificed piece, or a place already visited in the turn
+						JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
+					
+				
+					else if(source.legalMove(target)) //checking to see if the move selected is one piece away (so it's valid)
 					{
+						x_index.add(target.getXPos()); //keep track of where the piece is moving
+						y_index.add(target.getYPos());
+												
+						
 						target.setColor(source.getBackground()); //moves piece
 						source.setColor(new Color(0,0,0,0)); //makes source invisible
-
-							source = target;
-							target = null;
+						target.team = source.team; //change target's color
+						source.team = 'E'; //make the source have an 'empty' character attached to it now
+						
+						
+	
+						source = target; //target piece is now new source
+						target = null;
+						
 							
-							//possible_moves--; //after the move is over decrease the total possible moves based on the size of the board
-							
-						//if(checkCapture()) { //after moving, check if there are any pieces to be captured
-						//	capture(); //if so, capture them
-						//}
+						if(boardForPieces.check_for_capture(team) > 0) {
+							turn++;
+							boardForPieces.capture(team, source.x, source.y, target.x, target.y, move);
+							continue game;
+						}
+						else if(boardForPieces.check_for_capture(team) == 0) {
+							boardForPieces.turn_change(team);
+							//AI
+							boardForPieces.turn_change(team); //back to player1
+							continue game;
+						}
+						
+								
 					}
-
-					else //if the move is NOT legal, pop up a window and notify the user
+	
+					else if(!(source.legalMove(target))) //if the move is NOT legal, pop up a window and notify the user
 					{
-						JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Illegal Move", "Move Type", JOptionPane.ERROR_MESSAGE);
 					}
+		
+		
+					source = null; //set source and target back to null, as nothing is selected
+					target = null;
+					
+					//if((timer/1000)-60 == 0) {
+					//	JOptionPane.showMessageDialog(null, "TIME'S UP!!\n" + "Other player's TURN!::", "TIMER is UP", JOptionPane.ERROR_MESSAGE);
+					//	boardForPieces.turn_change(team);
+					//	continue game;
+					//}
+				
+				}
+			
+		
+		//				if(possible_moves == 0) {
+		//					JOptionPane.showMessageDialog(null, "You have reached the number of possible moves!\n" + "The Game is OVER!", "End of Game", JOptionPane.INFORMATION_MESSAGE);
+		//				}
 						
 				
-				
-//				else if(source != null && (GamePieces)actionSource == source)
-//				{
-//					source = null;
-//				}
+				else if(source != null && (GamePieces)actionSource == source) //either deselect or make the sacrifice piece
+				{
+					int selectOrSacrifice = JOptionPane.showOptionDialog(null,
+								"Would you like to deselect this piece?\n" + "Or, make it a 'SACRIFICE' piece?", "Deselect or Sacrifice",
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, sacrifice, sacrifice[1]);
+						if(selectOrSacrifice == JOptionPane.YES_OPTION) {
+							source = null;
+							continue game;
+						}
+						else if(selectOrSacrifice == JOptionPane.NO_OPTION) {
+							move = 'S';
+							source.setColor(Color.gray);
+							source.team = 'X';
+							source.setEnabled(false);
+							turn++;
+							boardForPieces.turn_change(team);
+							//AI goes
+							source.setColor(new Color(0,0,0,0));
+							source.team = 'E';
+						}
 					
 					
-				source = null; //set source and target back to null, as nothing is selected
-				target = null;
-
 				}
-		
-			//	}// End of while loop
+				else if(boardForPieces.check_for_capture(team) == 0) //no available caputres, end of game
+				{
+					
+					
+					if(boardForPieces.white_remaining() > boardForPieces.black_remaining()) {
+					
+					JOptionPane.showMessageDialog(null, "End Of Game!\n" + "WHITE WINS!!", "WINNER", JOptionPane.PLAIN_MESSAGE);
+					System.exit(0);
+					}
+					else if( boardForPieces.black_remaining() > boardForPieces.white_remaining()) {
+						JOptionPane.showMessageDialog(null, "End Of Game!\n" + "BLACK WINS!!", "WINNER", JOptionPane.PLAIN_MESSAGE);
+						System.exit(0);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "End Of Game!\n" + "It's A TIE!! ", "TIE", JOptionPane.PLAIN_MESSAGE);
+						System.exit(0);
+					}
+				}
+			} //End of while loop
 				
-//				if(possible_moves == 0) {
-//					JOptionPane.showMessageDialog(null, "You have reached the number of possible moves!\n" + "The Game is OVER!", "End of Game", JOptionPane.INFORMATION_MESSAGE);
-//				}
-			
-			}//End of clicking a game piece
-		
-		}//End of ActionPerformed
+		}//End of clicking a game piece
+
+	}//End of ActionPerformed
+
 
 
 	
@@ -461,11 +571,7 @@ public class FanoronaGame extends JPanel implements ActionListener {
 			CPU = new FanoronaAI(cpuTurn); // user move if first
 		}
 		else {
-			Boolean cpuTurn = false;
-			gameBoard = newBoard();
-			CPU = new FanoronaAI(cpuTurn);
-			client = new Client(); 
-			server = new Server();
+			Boolean 
 		}
 
 	}
