@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Tree<T> {
 
-	public static final int MAXDEPTH = 2;
+	public static final int MAXDEPTH = 2; // search a depth of 2
 	public static final int MAXINT = Integer.MAX_VALUE/2;
 	public static final int MININT = Integer.MIN_VALUE/2;
 

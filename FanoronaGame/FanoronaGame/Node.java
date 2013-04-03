@@ -34,11 +34,11 @@ public class Node<T> {
 	 * 
 	 * @return the children of Node<T>
 	 */
-	public List<Node<T>> getChildren() {
+	public ArrayList<Node<T>> getChildren() {
 		if (this.children == null) {
 			return new ArrayList<Node<T>>();
 		}
-		return this.children;
+		return (ArrayList<Node<T>>) this.children;
 	}
 
 	/**

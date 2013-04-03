@@ -19,7 +19,7 @@ public class GamePieces extends JButton {
 			c = Color.white;
 			team = 'W';
 		} else if (color == 'E') {
-			c = new Color(110,110,110);
+			c = new Color(110, 110, 110, 0);
 			team = 'E';
 			setContentAreaFilled(false);
 			setBorderPainted(false);

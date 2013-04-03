@@ -3,7 +3,7 @@
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 
-public interface Server implements Commands {
+public interface Server extends Commands {
 	//public int sum(int a, int b) throws RemoteException;
 	public Server() {}
 

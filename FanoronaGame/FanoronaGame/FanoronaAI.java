@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class FanoronaAI extends Board {
-	MiniMaxTree mmTree = new MiniMaxTree(); 
-	char aiColor = 'B'; // defualt is AI player is Black
+	char aiColor = 'B'; // default is AI player is Black
 	boolean isTurn; 
-	Board fanorona = new Board(5,5);
-
+	MiniMaxTree<Integer> mmTree = new MiniMaxTree<Integer>(); 
+	
 	public ArrayList<Integer> selectDirection(int i, int j, Boolean north, Boolean south, 
 		Boolean east, Boolean west, Boolean southEast, Boolean southWest, 
 		Boolean northEast, Boolean northWest) {
@@ -102,10 +101,12 @@ public class FanoronaAI extends Board {
 		int size = validMoves.size();
 		int random = 0 + (int)(Math.random() * ((size - 0) + 1));
 		char movement = 'E';
+		
 		//int xPos = fanorona.validMoves[random].x_index;
 		int xPos = validMoves.get(random).x_index;
 		int yPos = validMoves.get(random).y_index;
 		ArrayList<Integer> coordinates = new ArrayList<Integer>(); 
+		
 		// Determine what pieces it can capture
 		Boolean north = validMoves.get(random).north;
 		Boolean northEast = validMoves.get(random).northEast;
@@ -115,23 +116,26 @@ public class FanoronaAI extends Board {
 		Boolean southWest = validMoves.get(random).southWest;
 		Boolean east = validMoves.get(random).east;
 		Boolean west = validMoves.get(random).west; 
+		
 		// Determine direction of piece movement (withdraw/advance)
 		Boolean direction = validMoves.get(random).advance;
 		coordinates = selectDirection(xPos, yPos, north, south, east, west, 
 			southEast, southWest, northEast, northWest); 
 		if (direction == true) {
-			movement = 'A';
+			movement = 'A'; // moving toward enemy pieces
 		}
 		else if (direction == false) {
-			movement = 'W';
+			movement = 'W'; // moving away from enemy pieces
 		}
+		
 		// perform capture move with basic capture options
 		turn(aiColor, movement, xPos, yPos, coordinates.get(0), coordinates.get(1));
 	}
 
 	/**
 	* Construct the AI which will pick active moves
-	* @param isTurn allows AI to run only when there is a game active
+	* @param isTurn allows AI to run only when there is a game active 
+	* and it is the AI's turn
 	*/
 	public FanoronaAI(boolean isTurn) {
 		while (isTurn) {

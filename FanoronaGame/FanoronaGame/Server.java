@@ -5,13 +5,15 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.util.*;
+import java.rmi.*;
+import java.rmi.server.UnicastRemoteObject;
 
 public class Server {
 	String command;
 	String newCommand;
-	ServerSocket serverSocket = new ServerSocket(6001);
 	Boolean isAscii = false;
 	Boolean currentGame = true; 
+	
 
 	/**
 	* Class for checking whether data in ASCII values
@@ -37,11 +39,13 @@ public class Server {
 	public Server() {
 		while(currentGame) {
 			try {
+				ServerSocket serverSocket = new ServerSocket(6001);
 				Socket clientSocket = serverSocket.accept();
-				BufferedReader fromClient = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
-				DataOutputStream toClient = new DataOutputStream(serverSocket.getOutputStream());
+				ObjectInputStream fromClient = new ObjectInputStream(clientSocket.getInputStream());
+				ObjectOutputStream toClient = new ObjectOutputStream(clientSocket.getOutputStream()); 
 				command = fromClient.readLine();
-				isAscii = parseInput(command);
+				StringUtils checkData = new StringUtils();
+				isAscii = checkData.parseInput(command);
 
 				if (isAscii) {
 					System.out.println("Received: " + command);
@@ -52,6 +56,7 @@ public class Server {
 					System.out.println("Invalid non-ASCII value input received.\n" + 
 						"Data has not been read for security purposes.\n" +
 						"Game is now exiting...\n");
+					serverSocket.close();
 					currentGame = false; 
 				}
 			}
@@ -62,10 +67,5 @@ public class Server {
 
 		}
 
-	}
-
-	private Boolean parseInput(String command2) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

@@ -22,9 +22,9 @@ public class Client {
 			//command = fromUser.readLine();
 			toServer.writeBytes(command + '\n');
 			newCommand = fromServer.readLine();
-			System.out.prinntln("Response from Game Server: " + newCommand + '\n');
+			System.out.println("Response from Game Server: " + newCommand + '\n');
 			clientSocket.close();
-		} catch (UknownHostException e) {
+		} catch (UnknownHostException e) {
 			System.err.println("Cannot resolve host: Game Server\n");
 			System.exit(1);
 		} catch (IOException e) {
