@@ -1,4 +1,4 @@
-package FanoronaGame;
+//package FanoronaGame;
 
 import java.util.Scanner;
 import java.util.List;
@@ -55,6 +55,8 @@ class Board {
 							}
 						board[x_zs-i][y_zs-i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -67,6 +69,8 @@ class Board {
 							}
 						board[x_zs-i][y_zs] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -79,6 +83,8 @@ class Board {
 							}
 						board[x_zs-i][y_zs+i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -91,6 +97,8 @@ class Board {
 							}
 						board[x_zs][y_zs-i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -103,6 +111,8 @@ class Board {
 							}
 						board[x_zs][y_zs+i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -115,6 +125,8 @@ class Board {
 							}
 						board[x_zs+i][y_zs-i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -127,6 +139,8 @@ class Board {
 							}
 						board[x_zs+i][y_zs] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -139,6 +153,8 @@ class Board {
 							}
 						board[x_zs+i][y_zs+i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -154,6 +170,8 @@ class Board {
 							}
 						board[x_ps+i][y_ps+i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -166,6 +184,8 @@ class Board {
 							}
 						board[x_ps+i][y_ps] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -178,6 +198,8 @@ class Board {
 							}
 						board[x_ps+i][y_ps-i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -190,6 +212,8 @@ class Board {
 							}
 						board[x_ps][y_ps+i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -202,6 +226,8 @@ class Board {
 							}
 						board[x_ps][y_ps-i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -214,6 +240,8 @@ class Board {
 							}
 						board[x_ps-i][y_ps+i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -226,6 +254,8 @@ class Board {
 							}
 						board[x_ps-i][y_ps] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -238,6 +268,8 @@ class Board {
 							}
 						board[x_ps-i][y_ps-i] = 'E';
 					}
+					else
+						break;
 					i++;
 				}
 			}
@@ -1337,6 +1369,8 @@ class Board {
 			}
 			turn(team, move, x_ps, y_ps, x_zs, y_zs);
 			team = turn_change(team);
+			System.out.println(" ");
+			System.out.println(" ");
 			display_board();
 			turn++;
 		}
@@ -1352,13 +1386,23 @@ class Board {
 // ------------------------------ Main testing ---------------------------------------	
 	public static void main(String[]args) {
 		char winner;
-		System.out.println("Default Board");
-		Board fanorona = new Board(5,5);
+		int row =0, column =0;
+		Scanner in = new Scanner(System.in);
+		System.out.println("Welcome to Fanorona");
+		System.out.println("Enter in the size of the game board");
+		System.out.println("Values has to be odd and between 1 and 13");
+		System.out.print("Row: ");
+		row = in.nextInt();
+		System.out.print("Column: ");
+		column = in.nextInt();
+		System.out.print("Creating board.....  ");
+		Board fanorona = new Board(row,column);
+		System.out.println("Board Created");
+		System.out.println(" ");
+		System.out.println(" ");
+		System.out.println("Game start");
 		fanorona.display_board();
-		System.out.println("White has " + fanorona.white_remaining() + " remaining");
-		System.out.println("Black has " + fanorona.black_remaining() + " remaining");
-		System.out.println("White currently has " + fanorona.check_for_capture('W') + " captures");
-		System.out.println("Black currently has " + fanorona.check_for_capture('B') + " captures");
+		
 		winner = fanorona.game_start();
 		
 		if (winner == 'W')
@@ -1367,18 +1411,7 @@ class Board {
 			System.out.println("Black wins!");
 		else if (winner == 'T')
 			System.out.println("Tie game!");
-		// fanorona.turn('W', 1, 2, 3, 2, 4);
-		// fanorona.display_board();
-		// fanorona.turn_change();
-		// System.out.println("Turn change");
-		// fanorona.display_board();
-		// System.out.println("13x1");
-		// Board test = new Board(13,1);
-		// test.display_board();
-		// System.out.println("White has " + test.white_remaining() + " remaining");
-		// System.out.println("Black has " + test.black_remaining() + " remaining");
-		// System.out.println("White currently has " + test.check_for_capture('W') + " captures");
-		// System.out.println("Black currently has " + test.check_for_capture('B') + " captures");
+		
 	}
 //------------------------------------------------------------------------------------
 }
