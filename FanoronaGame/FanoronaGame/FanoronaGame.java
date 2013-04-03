@@ -461,7 +461,11 @@ public class FanoronaGame extends JPanel implements ActionListener {
 			CPU = new FanoronaAI(cpuTurn); // user move if first
 		}
 		else {
-			Boolean 
+			Boolean cpuTurn = false;
+			gameBoard = newBoard();
+			CPU = new FanoronaAI(cpuTurn);
+			client = new Client(); 
+			server = new Server();
 		}
 
 	}
