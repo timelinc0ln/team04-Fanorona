@@ -16,6 +16,71 @@ class Board {
 		return newArray; 
 	}
 // ----------------------------------------------------------------------------------
+// ------------------------------- Constructors -------------------------------------
+	//Default Board constructor
+	public Board() {
+		row_limit = 5;
+		column_limit = 9;
+		// ------------------- Resize the board -------------------------
+		board = (char[][])resize_array(board, row_limit);
+		for (int z = 0; z < board.length; z++) {
+			if (board[z] == null)
+				board[z] = new char[column_limit];
+			else
+				board[z] = (char[])resize_array(board[z], column_limit);
+		}
+		// --------------------------------------------------------------
+		for (int i = 0; i < row_limit; i++)
+			for (int j = 0; j < column_limit; j++) {
+				if (i==0 || i==1)
+					board[i][j] = 'B';
+				else if ( i == 2 && 
+					(j == 0 || j == 2 || j == 5 || j == 7)) {
+					board[i][j] = 'B';
+					}
+				else
+					board[i][j] = 'W';
+				}
+		board[2][4] = 'E';
+	}
+	
+	// Board constructor with size
+	public Board(int row, int column) {
+		if (row >= 1 && row <= 13 && (row % 2) == 1) {
+			if (column >= 1 && column <= 13 && (row % 2) == 1) {
+				row_limit = row;
+				column_limit = column;
+				// ------------------- Resize the board -------------------------
+				board = (char[][])resize_array(board, row_limit);
+				for (int z = 0; z < board.length; z++) {
+					if (board[z] == null)
+						board[z] = new char[column_limit];
+					else
+						board[z] = (char[])resize_array(board[z], column_limit);
+				}
+				// --------------------------------------------------------------
+				for (int i = 0; i < row_limit; i++) {
+					for (int j = 0; j < column_limit; j++) {
+						if (i < row/2) 
+							board[i][j] = 'B';
+						else if (i == row/2) {
+							if (((j % 2) == 0 && j < column/2) 
+								|| ((j % 2) == 1 && j > column/2)) {
+									board[i][j] = 'B';
+							}
+							else if (j == column/2)
+								board[i][j] = 'E';
+							else 
+								board[i][j] = 'W';
+						}
+						else
+							board[i][j] = 'W';
+					}
+				}
+			}
+		}
+	}		
+// ----------------------------------------------------------------------------------
 // -------------------------- Private members ---------------------------------------    
 	private int row_limit;
 	private int column_limit;
@@ -289,71 +354,6 @@ class Board {
 			board[x][y] = 'Q';
 	}
 
-// ----------------------------------------------------------------------------------
-// ------------------------------- Constructors -------------------------------------
-	//Default Board constructor
-	public Board() {
-		row_limit = 5;
-		column_limit = 9;
-		// ------------------- Resize the board -------------------------
-		board = (char[][])resize_array(board, row_limit);
-		for (int z = 0; z < board.length; z++) {
-			if (board[z] == null)
-				board[z] = new char[column_limit];
-			else
-				board[z] = (char[])resize_array(board[z], column_limit);
-		}
-		// --------------------------------------------------------------
-		for (int i = 0; i < row_limit; i++)
-			for (int j = 0; j < column_limit; j++) {
-				if (i==0 || i==1)
-					board[i][j] = 'B';
-				else if ( i == 2 && 
-					(j == 0 || j == 2 || j == 5 || j == 7)) {
-					board[i][j] = 'B';
-					}
-				else
-					board[i][j] = 'W';
-				}
-		board[2][4] = 'E';
-	}
-	
-	// Board constructor with size
-	public Board(int row, int column) {
-		if (row >= 1 && row <= 13 && (row % 2) == 1) {
-			if (column >= 1 && column <= 13 && (row % 2) == 1) {
-				row_limit = row;
-				column_limit = column;
-				// ------------------- Resize the board -------------------------
-				board = (char[][])resize_array(board, row_limit);
-				for (int z = 0; z < board.length; z++) {
-					if (board[z] == null)
-						board[z] = new char[column_limit];
-					else
-						board[z] = (char[])resize_array(board[z], column_limit);
-				}
-				// --------------------------------------------------------------
-				for (int i = 0; i < row_limit; i++) {
-					for (int j = 0; j < column_limit; j++) {
-						if (i < row/2) 
-							board[i][j] = 'B';
-						else if (i == row/2) {
-							if (((j % 2) == 0 && j < column/2) 
-								|| ((j % 2) == 1 && j > column/2)) {
-									board[i][j] = 'B';
-							}
-							else if (j == column/2)
-								board[i][j] = 'E';
-							else 
-								board[i][j] = 'W';
-						}
-						else
-							board[i][j] = 'W';
-					}
-				}
-			}
-		}
-	}		
 // ----------------------------------------------------------------------------------
 // ---------------------------- Public Functions ------------------------------------
 	public char opponent(char team) {
