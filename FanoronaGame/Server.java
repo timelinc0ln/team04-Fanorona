@@ -1,4 +1,4 @@
-package FanoronaGame;
+
 
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;

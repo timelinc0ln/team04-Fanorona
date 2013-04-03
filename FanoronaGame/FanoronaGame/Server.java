@@ -9,7 +9,7 @@ import java.util.*;
 public class Server {
 	String command;
 	String newCommand;
-	ServerSocket socket = new ServerSocket(6001);
+	ServerSocket serverSocket = new ServerSocket(6001);
 	Boolean isAscii = false;
 	Boolean currentGame = true; 
 
@@ -17,10 +17,10 @@ public class Server {
 	* Class for checking whether data in ASCII values
 	*/
 	public class StringUtils {
-	  static CharsetEncoder asciiEncoder = 
+	  CharsetEncoder asciiEncoder = 
 	      Charset.forName("US-ASCII").newEncoder();
 
-		public static Boolean parseInput(String command) {
+		public Boolean parseInput(String command) {
 			return asciiEncoder.canEncode(command);
 		}
 	}
@@ -37,9 +37,9 @@ public class Server {
 	public Server() {
 		while(currentGame) {
 			try {
-				Socket clientSocket = socket.accept();
-				BufferedReader fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				DataOutputStream toClient = new DataOutputStream(socket.getOutputStream());
+				Socket clientSocket = serverSocket.accept();
+				BufferedReader fromClient = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+				DataOutputStream toClient = new DataOutputStream(serverSocket.getOutputStream());
 				command = fromClient.readLine();
 				isAscii = parseInput(command);
 
@@ -62,5 +62,10 @@ public class Server {
 
 		}
 
+	}
+
+	private Boolean parseInput(String command2) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

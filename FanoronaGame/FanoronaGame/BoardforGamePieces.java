@@ -503,10 +503,10 @@ public class BoardforGamePieces extends FanoronaGame {
                               {
                                   if ((i %2 ) == 0) 
                                   {
-                                      if (board[i+1][j+1].team ==  && board[i+2][j+2].team != )
+                                    /*  if (board[i+1][j+1].team ==  && board[i+2][j+2].team != )
                                       {
                                           dirCaptures[1][7] +=1;
-                                      }
+                                      }*/
                                   }
                               }
                           }

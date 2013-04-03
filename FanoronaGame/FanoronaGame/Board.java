@@ -34,11 +34,12 @@ class Board {
 		Boolean southWest = false;
 		Boolean east = false;
 		Boolean west = false;
+		Boolean advance = false;
 		int x_index;
 		int y_index;
 }
 
-	List<PossibleMoves> validMoves = new ArrayList<PossibleMoves>();
+	static List<PossibleMoves> validMoves = new ArrayList<PossibleMoves>();
 // -------------------------- Private Functions ---------------------------------------
 	private void capture(char team_moved, int x_ps, int y_ps, int x_zs, int y_zs, char direction) {
 		int i = 1;
@@ -384,6 +385,7 @@ class Board {
 											moves.x_index = i;
 											moves.y_index = j; 
 											moves.northWest = true; 
+											moves.advance = true; 
 											validMoves.add(moves);											}
 									// Withdraw capture
 									if (i != 1 && j != 1) {
@@ -406,6 +408,7 @@ class Board {
 												moves.x_index = i;
 												moves.y_index = j; 
 												moves.north = true; 
+												moves.advance = true;
 												validMoves.add(moves);
 										}
 									// Withdraw capture
@@ -416,7 +419,7 @@ class Board {
 												PossibleMoves moves = new PossibleMoves();
 												moves.x_index = i;
 												moves.y_index = j; 
-												moves.south = true; 
+												moves.south = true;
 												validMoves.add(moves);
 											}
 									}
@@ -429,6 +432,7 @@ class Board {
 											moves.x_index = i;
 											moves.y_index = j; 
 											moves.northEast = true; 
+											moves.advance = true;
 											validMoves.add(moves);
 										}	
 									// Withdraw capture
@@ -452,6 +456,7 @@ class Board {
 											moves.x_index = i;
 											moves.y_index = j; 
 											moves.west = true; 
+											moves.advance = true;
 											validMoves.add(moves);
 										}
 									// Withdraw capture
@@ -475,6 +480,7 @@ class Board {
 											moves.x_index = i;
 											moves.y_index = j; 
 											moves.east = true; 
+											moves.advance = true;
 											validMoves.add(moves);
 										}
 									// Withdraw capture
@@ -498,6 +504,7 @@ class Board {
 											moves.x_index = i;
 											moves.y_index = j; 
 											moves.southWest = true; 
+											moves.advance = true;
 											validMoves.add(moves);
 										}
 									// Withdraw capture
@@ -521,6 +528,7 @@ class Board {
 											moves.x_index = i;
 											moves.y_index = j; 
 											moves.south = true; 
+											moves.advance = true;
 											validMoves.add(moves);
 										}
 									// Withdraw capture
@@ -544,6 +552,7 @@ class Board {
 											moves.x_index = i;
 											moves.y_index = j; 
 											moves.southEast = true; 
+											moves.advance = true;
 											validMoves.add(moves);
 										}
 									// Withdraw capture
@@ -571,6 +580,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.north = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 								}
 							// Withdraw capture
@@ -594,6 +604,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.south = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 								}
 							// Withdraw capture
@@ -617,6 +628,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.west = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 								}
 							// Withdraw capture
@@ -640,6 +652,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.east = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 								}
 							// Withdraw caputre
@@ -669,6 +682,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.east = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 									}
 							}
@@ -711,6 +725,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.east = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 									}
 							}
@@ -756,6 +771,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.east = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 									}
 							}
@@ -798,6 +814,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.east = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 									}
 							}
@@ -843,6 +860,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.north = true; 
+										moves.advance = true;
 										validMoves.add(moves);									
 									}
 							}
@@ -885,6 +903,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.south = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 									}
 							}
@@ -930,6 +949,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.north = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 									}
 							}
@@ -972,6 +992,7 @@ class Board {
 										moves.x_index = i;
 										moves.y_index = j; 
 										moves.south = true; 
+										moves.advance = true;
 										validMoves.add(moves);
 									}
 							}
@@ -1023,7 +1044,8 @@ class Board {
 		return valid;
 	}
 	
-	public boolean valid_move(char team, char move, int x_ps, int y_ps, int x_zs, int y_zs) {
+	public boolean valid_move(char team, char move, int x_ps, int y_ps,
+	 int x_zs, int y_zs) {
 		boolean valid = false;
 		if (board[x_zs][y_zs] == 'E' &&
 			board[x_ps][y_ps] == team) {			
